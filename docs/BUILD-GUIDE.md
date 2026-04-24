@@ -375,6 +375,7 @@ mpirun --allow-run-as-root --oversubscribe -np 8 -x OMP_NUM_THREADS=1 ./diag \
   --carryover_threshold 1.0e-3 \
   --carryover_adetfile carryover_adet.txt \
   --rdm 1
+```
 
 **Note on MPI Warnings:** You may see many "Read -1, expected..." error messages during the test. These are harmless OpenMPI communication warnings that occur in containerized environments (especially on macOS with Podman). The solver is working correctly if you see Davidson iteration progress with converging energy values. These warnings can be safely ignored.
 
