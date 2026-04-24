@@ -1,0 +1,84 @@
+# QPU Configuration Template
+#
+# Copy this file to config.yaml and fill in your credentials.
+# IMPORTANT: config.yaml is gitignored - never commit credentials!
+#
+# ============================================================================
+# Workflow Configuration
+# ============================================================================
+workflow:
+  basis: 'sto-3g'  # Basis set for molecular calculations
+
+# ============================================================================
+# Embedder Configuration
+# ============================================================================
+embedder:
+  ewf:
+    bath_type: 'mp2'  # Options: 'mp2', 'dmet', 'full'
+    truncation: 1.e-5  # Bath orbital truncation threshold
+    fragmentation: 'iao'  # Fragmentation scheme: 'iao' or 'atomic'
+
+# ============================================================================
+# QPU Configuration
+# ============================================================================
+qpu:
+  provider: "ibm_quantum"
+  backend_name: "ibm_pittsburgh"
+
+  credentials:
+    channel: "ibm_cloud"  # or "ibm_quantum" for IBM Quantum Network
+    # Get your token from: https://quantum.ibm.com/account
+    token: "<YOUR_TOKEN_HERE>"
+    # Instance format: crn:v1:bluemix:public:quantum-computing:REGION:a/ACCOUNT_ID:SERVICE_ID::
+    # Find at: https://quantum.ibm.com/account
+    instance: "<YOUR_CRN_HERE>"
+
+  sampler_options:
+    default_shots: 1000000  # Number of measurement shots
+
+    dynamical_decoupling:
+      enable: true
+      sequence_type: "XY4"  # Options: XY4, XpXm, XY4pm
+
+    twirling:
+      enable_gates: false  # Pauli twirling for gate noise mitigation
+      enable_measure: false  # Measurement twirling
+
+# ============================================================================
+# SQD Solver Configuration
+# ============================================================================
+sqd:
+  # LUCJ ansatz parameters
+  lucj:
+    n_reps: 1  # Number of LUCJ repetitions
+    max_connection: 12  # Maximum orbital index for alpha-beta connections
+    connect_every_n: 4  # Connect alpha-beta pairs every N qubits (for heavy-hex topology)
+  
+  # Transpilation options
+  transpilation:
+    optimization_level: 0  # Qiskit optimization level (0-3)
+    seed_transpiler: 42  # Seed for reproducibility
+  
+  # SQD algorithm parameters
+  n_batches: 2  # Number of batches to run in parallel (10 usually best)
+  iterations: 1  # Number of self-consistent iterations (5 usually best)
+  samples_per_batch: 100  # Number of measurement outcomes per batch (3000 usually best)
+  energy_tol: 1.e-8  # Energy convergence tolerance
+  occupancies_tol: 1.e-5  # Occupancy convergence tolerance
+  carryover_threshold: 1.e-4  # Threshold for carrying over configurations
+  add_hf_string: true  # Add Hartree-Fock string to all subspaces (critical for challenging sampling)
+
+  # SBD solver options
+  sbd:
+    exe_path: '/workspace/executable/diag'  # Path to SBD executable
+    cpus_per_batch: 8  # Number of CPUs per batch (don't use less than 8)
+    submission_delay: 1  # Delay between job submissions (seconds)
+    monitor_delay: 60  # Delay between job status checks (seconds)
+
+# ============================================================================
+# ext-SQD Configuration (for extended SQD algorithm)
+# ============================================================================
+ext_sqd:
+  dprime_cutoff: 1.e-5  # Cutoff for amplitudes of dominant configurations
+  # Lower cutoff = more configurations included (more accurate, more expensive)
+  # Higher cutoff = fewer configurations (less accurate, less expensive)

@@ -1,0 +1,39 @@
+# Include documentation and metadata files
+include README.md
+include LICENSE
+include CITATION.cff
+
+# Include all example files and data
+recursive-include examples *.py
+recursive-include examples *.ipynb
+recursive-include examples *.xyz
+recursive-include examples *.txt
+recursive-include examples *.json
+recursive-include examples *.yaml
+
+# Include all Python source files in the package
+recursive-include quantum_fragment_methods *.py
+
+# Include any data files in the package
+recursive-include quantum_fragment_methods *.txt
+recursive-include quantum_fragment_methods *.json
+recursive-include quantum_fragment_methods *.yaml
+recursive-include quantum_fragment_methods *.xyz
+
+# Exclude compiled Python files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude __pycache__
+global-exclude *.so
+global-exclude *.dylib
+
+# Exclude version control and IDE files
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude *.swp
+global-exclude *~
+
+# Exclude build artifacts
+prune build
+prune dist
+prune *.egg-info
