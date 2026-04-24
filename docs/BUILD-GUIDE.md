@@ -380,11 +380,14 @@ mpirun --allow-run-as-root --oversubscribe -np 8 -x OMP_NUM_THREADS=1 ./diag \
 **Note on MPI Warnings:** You may see many "Read -1, expected..." error messages during the test. These are harmless OpenMPI communication warnings that occur in containerized environments (especially on macOS with Podman). The solver is working correctly if you see Davidson iteration progress with converging energy values. These warnings can be safely ignored.
 
 # Install executable
+```bash
 cd /workspace
 mkdir -p executable
 cp Compilation_and_Test/diag executable/
+```
 
 # Verify
+```bash
 ls -lh /workspace/executable/diag
 ```
 
