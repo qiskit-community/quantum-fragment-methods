@@ -1,0 +1,129 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quantum-fragment-methods"
+version = "0.0.1"
+description = "Fragment-based Wavefunction Embedding framework for quantum simulation of macromolecules"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "Apache-2.0"
+authors = [
+    {name = "Akhil Shajan"},
+    {name = "Danil Kaliakin"},
+    {name = "Thaddeus Pellegrini"}
+]
+maintainers = [
+    {name = "Thaddeus Pellegrini"}
+]
+keywords = [
+    "quantum computing",
+    "quantum chemistry",
+    "embedding",
+    "fragments",
+    "wavefunction embedding",
+    "EWF",
+    "SQD",
+    "quantum algorithms"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "pyscf>=2.9.0",
+    "ffsim>=0.0.1",
+    "qiskit>=1.0.0",
+    "qiskit-ibm-runtime>=0.15.0",
+    "qiskit-addon-sqd>=0.1.0",
+    "scipy>=1.10.0",
+    "numpy>=1.24.0,<2.0.0",
+    "qc-pyci>=0.1.0",
+    "cmake>=3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black[jupyter]>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0"
+]
+docs = [
+    "sphinx>=6.0.0",
+    "sphinx-rtd-theme>=1.2.0",
+    "sphinx-autodoc-typehints>=1.23.0",
+    "myst-parser>=1.0.0"
+]
+hpc = [
+    "mpi4py>=3.1.0"
+]
+all = [
+    "quantum-fragment-methods[dev,docs,hpc]"
+]
+
+[project.urls]
+Homepage = "https://github.ibm.com/Thaddeus-Pellegrini/quantum-fragment-methods"
+Repository = "https://github.ibm.com/Thaddeus-Pellegrini/quantum-fragment-methods"
+"Bug Tracker" = "https://github.ibm.com/Thaddeus-Pellegrini/quantum-fragment-methods/issues"
+
+[tool.setuptools]
+packages = ["quantum_fragment_methods"]
+
+[tool.setuptools.package-data]
+quantum_fragment_methods = ["py.typed"]
+
+[tool.black]
+line-length = 100
+target-version = ["py38", "py39", "py310", "py311"]
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["quantum_fragment_methods/tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=quantum_fragment_methods --cov-report=term-missing --cov-report=html"

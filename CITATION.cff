@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Shajan
+    given-names: Akhil
+    orcid:
+  - family-names: Kaliakin
+    given-names: Danil
+    orcid:
+  - family-names: Liang
+    given-names: Fangchun
+    orcid:
+  - family-names: Bhowmik
+    given-names: Subhamoy
+    orcid:
+  - family-names: Das
+    given-names: Susanta
+    orcid:
+  - family-names: Liang
+    given-names: Fangchun
+    orcid:
+  - family-names: Li
+    given-names: Zhen
+    orcid:
+  - family-names: Bazayeva
+    given-names: Milana
+    orcid:
+  - family-names: Pellegrini
+    given-names: Thaddeus
+    orcid:
+
+title: "Quantum Fragment Methods"
+version: 0.0.1
+doi:
+date-released: April 24, 2026
