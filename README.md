@@ -48,7 +48,7 @@ See [examples/local_demo/config.yaml](examples/local_demo/config.yaml) for a com
 - **Memory**: 12-16 GB RAM minimum 
 - **CPU**: 8+ cores recommended
 - **Disk**: 20 GB free space
-- **OS**: macOS, Linux, or Windows with WSL2
+- **OS**: macOS, Linux, or Windows with WSL2 (Windows Subsystem for Linux)
 
 ## Project Structure
 
