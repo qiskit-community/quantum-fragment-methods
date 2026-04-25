@@ -81,7 +81,7 @@ If you use this software in your research, please cite:
 ```bibtex
 @software{quantum_fragment_methods,
   title = {Quantum Fragment Methods},
-  author = {Akhil Shajan, Danil Kaliakin, Fangchun Liang, Subhamoy Bhowmik, Susanta Das, Zhen Li, Milana Bazayeva, Thaddeus Pellegrini},
+  author = {Akhil Shajan, Danil Kaliakin, Fangchun Liang, Subhamoy Bhowmik, Susanta Das, Zhen Li, Milana Bazayeva, and Thaddeus Pellegrini},
   year = {2026},
   version = {0.0.1},
   url = {https://github.com/qiskit-community/quantum-fragment-methods}
