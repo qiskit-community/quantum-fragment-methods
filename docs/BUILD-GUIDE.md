@@ -179,8 +179,8 @@ import ffsim
 import scipy
 
 print("✅ All packages loaded successfully!")
-print(f"PySCF version: {pyscf.__version__}")
-print(f"Qiskit version: {qiskit.__version__}")
+print(f"✅ PySCF version: {pyscf.__version__}")
+print(f"✅ Qiskit version: {qiskit.__version__}")
 ```
 
 **For HPC/SSH workflows and remote execution, see [HPC-JUPYTER.md](HPC-JUPYTER.md)**
