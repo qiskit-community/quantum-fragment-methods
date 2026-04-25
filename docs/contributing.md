@@ -17,7 +17,8 @@ Thank you for your interest in contributing to the Quantum Fragment Methods proj
 
 This project adheres to a code of conduct that all contributors are expected to follow. Please be respectful and constructive in all interactions. The open-source tools are provided with the intention of contributing to the community of scientists and researchers working to advance medicine, healthcare, and life sciences. The tools are made freely available in support of future innovations which may improve the health and wellbeing of all. 
 
-We encourage this same spirit to be applied to derivative works and contribute to solving previously intractible problems in human health as a community. 
+We encourage this same spirit to be applied to derivative works and contribute to solving previously intractable problems in human health as a community. 
+ 
 
 ## Getting Started
 
