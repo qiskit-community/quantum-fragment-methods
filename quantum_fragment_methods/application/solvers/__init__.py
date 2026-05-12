@@ -22,13 +22,9 @@ from __future__ import annotations
 
 from .base import BaseSolver, SolverResult
 from .classical_zoo.ccsd import CCSD
-from .classical_zoo.dmrg import DMRG
 from .classical_zoo.fci import FCI
-from .classical_zoo.hci import HCI
-from .classical_zoo.rhf import RHF
 from .quantum_zoo.ext_sqd import extSQD
 from .quantum_zoo.sqd import SQDSolver
-from .quantum_zoo.sqdrift import SqDRIFT
 
 # Backward compatibility alias
 SQD = SQDSolver
@@ -38,11 +34,8 @@ __all__ = [
     "SolverResult",
     "RHF",
     "CCSD",
-    "DMRG",
     "FCI",
-    "HCI",
     "extSQD",
     "SQD",
     "SQDSolver",
-    "SqDRIFT",
 ]
