@@ -607,6 +607,7 @@ class SQDSolver(BaseSolver):
         energy_tol = self.sqd_config.get("energy_tol", 1.0e-8)
         occupancies_tol = self.sqd_config.get("occupancies_tol", 1.0e-5)
         carryover_threshold = self.sqd_config.get("carryover_threshold", 1.0e-4)
+        symmetrize_spin = self.sqd_config.get("symmetrize_spin", True)
 
         logger.info(
             f"SQD parameters: iterations={iterations}, n_batches={n_batches}, "
@@ -622,6 +623,7 @@ class SQDSolver(BaseSolver):
             h1e,
             h2e,
             counts,
+            symmetrize_spin = symmetrize_spin,
             samples_per_batch=samples_per_batch,
             norb=norb,
             nelec=nelec,
