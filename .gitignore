@@ -176,3 +176,6 @@ cython_debug/
 # QPU credentials - NEVER COMMIT THESE!
 **/qpu_config.yaml
 qpu_config.yaml
+
+# Local version of config.yaml used only for testing
+examples/local_demo/config_local.yaml
