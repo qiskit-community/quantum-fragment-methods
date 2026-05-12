@@ -25,23 +25,17 @@ from . import embedding, solvers
 
 # Re-export commonly used classes for convenience
 from .embedding import (
-    DMET,
     EWF,
-    MBE,
     BaseEmbedder,
     EmbeddingResult,
     Fragment,
 )
 from .solvers import (
     CCSD,
-    DMRG,
     FCI,
-    HCI,
-    RHF,
     SQD,
     BaseSolver,
     SolverResult,
-    SqDRIFT,
     extSQD,
 )
 
@@ -53,18 +47,12 @@ __all__ = [
     "BaseEmbedder",
     "EmbeddingResult",
     "Fragment",
-    "DMET",
     "EWF",
-    "MBE",
     # Solver classes
     "BaseSolver",
     "SolverResult",
-    "RHF",
     "CCSD",
-    "DMRG",
     "FCI",
-    "HCI",
     "extSQD",
     "SQD",
-    "SqDRIFT",
 ]
