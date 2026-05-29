@@ -34,7 +34,7 @@ qpu:
     instance: "<YOUR_CRN_HERE>"
 
   sampler_options:
-    default_shots: 50  # Number of measurement shots
+    default_shots: 100  # Number of measurement shots
 
     dynamical_decoupling:
       enable: true
