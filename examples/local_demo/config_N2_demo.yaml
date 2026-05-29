@@ -34,7 +34,7 @@ qpu:
     instance: "<YOUR_CRN_HERE>"
 
   sampler_options:
-    default_shots: 10000  # Number of measurement shots
+    default_shots: 1000  # Number of measurement shots
 
     dynamical_decoupling:
       enable: true
@@ -62,8 +62,8 @@ sqd:
   # SQD algorithm parameters
   symmetrize_spin: True # Usage of identical alpha and beta strings. Right now only "true" is supported
   n_batches: 1  # Number of batches to run in parallel (10 usually best)
-  iterations: 5  # Number of self-consistent iterations (5 usually best)
-  samples_per_batch: 400  # Number of measurement outcomes per batch (3000 usually best)
+  iterations: 3  # Number of self-consistent iterations (5 usually best)
+  samples_per_batch: 200  # Number of measurement outcomes per batch (3000 usually best)
   energy_tol: 1.e-8  # Energy convergence tolerance
   occupancies_tol: 1.e-5  # Occupancy convergence tolerance
   carryover_threshold: 1.e-4  # Threshold for carrying over configurations
