@@ -7,7 +7,7 @@
 # Workflow Configuration
 # ============================================================================
 workflow:
-  basis: 'sto-3g'  # Basis set for molecular calculations
+  basis: '6-31g'  # Basis set for molecular calculations
 
 # ============================================================================
 # Embedder Configuration
