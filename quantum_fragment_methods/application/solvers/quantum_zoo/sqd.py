@@ -93,8 +93,8 @@ class SQDSolver(BaseSolver):
         4. Run SBD post-processing
 
         Args:
-            h1e: One-body Hamiltonian tensor (norb x norb)
-            h2e: Two-body Hamiltonian tensor (norb x norb x norb x norb)
+            h1e: One-body Hamiltonian tensor in MO basis (norb x norb)
+            h2e: Two-body Hamiltonian tensor in MO basis (norb x norb x norb x norb)
             norb: Number of spatial orbitals
             nelec: Tuple of (n_alpha, n_beta) electrons
             mf: Mean-field object (for getting CCSD amplitudes if not provided)
@@ -119,6 +119,17 @@ class SQDSolver(BaseSolver):
             TimeoutError: If job doesn't complete within max_wait_time
 
         Notes:
+            **Basis Requirements:**
+            The Hamiltonian integrals (h1e, h2e) must be in MO basis for consistency
+            with CCSD amplitudes. When used within the EWF workflow, fragment Hamiltonians
+            are automatically provided in the correct basis by Vayesta. For standalone usage,
+            transform integrals to MO basis using:
+            
+                mo_coeff = mf.mo_coeff
+                h1e = mo_coeff.T @ mf.get_hcore() @ mo_coeff
+                h2e = ao2mo.restore(1, ao2mo.kernel(mol, mo_coeff), norb)
+            
+            **Checkpoint Workflow:**
             For long queue times (up to 24 hours), use wait_for_completion=False and
             re-run solve() later. The method will detect existing job_id and resume
             from the appropriate checkpoint.
@@ -607,6 +618,7 @@ class SQDSolver(BaseSolver):
         energy_tol = self.sqd_config.get("energy_tol", 1.0e-8)
         occupancies_tol = self.sqd_config.get("occupancies_tol", 1.0e-5)
         carryover_threshold = self.sqd_config.get("carryover_threshold", 1.0e-4)
+        symmetrize_spin = self.sqd_config.get("symmetrize_spin", True)
 
         logger.info(
             f"SQD parameters: iterations={iterations}, n_batches={n_batches}, "
@@ -622,6 +634,7 @@ class SQDSolver(BaseSolver):
             h1e,
             h2e,
             counts,
+            symmetrize_spin = symmetrize_spin,
             samples_per_batch=samples_per_batch,
             norb=norb,
             nelec=nelec,
