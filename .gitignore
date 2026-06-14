@@ -176,3 +176,9 @@ cython_debug/
 # QPU credentials - NEVER COMMIT THESE!
 **/qpu_config.yaml
 qpu_config.yaml
+
+# Local version of config.yaml used only for testing
+examples/local_demo/config_local.yaml
+
+# Temporal files of SQD calculations. Too heavy in terms of disk storage
+examples/local_demo/sqd_results

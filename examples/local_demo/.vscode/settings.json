@@ -1,0 +1,5 @@
+{
+“jupyter.runStartupCommands”: “”,
+“jupyter.askForKernelRestart”: false,
+“Jupyter.jupyterLaunchTimeout”: 60000
+}

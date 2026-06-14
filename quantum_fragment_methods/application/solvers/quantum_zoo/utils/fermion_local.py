@@ -186,7 +186,7 @@ def diagonalize_fermionic_hamiltonian(
     energy_tol: float = 1e-8,
     occupancies_tol: float = 1e-5,
     max_iterations: int = 100,
-    symmetrize_spin: bool = False,
+    symmetrize_spin: bool = True, # set to true to work with current version of SBD wrapper
     max_dim: int | tuple[int, int] | None = None,
     include_configurations: list[int] | tuple[list[int], list[int]] | np.ndarray | None = None,
     initial_occupancies: tuple[np.ndarray, np.ndarray] | None = None,
