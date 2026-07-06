@@ -48,7 +48,7 @@ dependencies = [
     "qiskit-ibm-runtime>=0.15.0",
     "qiskit-addon-sqd>=0.1.0",
     "scipy>=1.10.0",
-    "numpy>=1.24.0,<2.0.0",
+    "numpy>=1.24.0",
     "qc-pyci>=0.1.0",
     "cmake>=3.0.0",
 ]

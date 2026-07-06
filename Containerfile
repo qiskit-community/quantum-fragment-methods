@@ -67,12 +67,16 @@ RUN echo "channels:" > /root/.condarc && \
 RUN conda init bash
 
 # Create conda environment with Python 3.12 using conda-forge only
-RUN conda create -n qfrag-env python=3.12 --override-channels -c conda-forge -y
+# Pin Python to 3.12.* to prevent upgrades to 3.13
+RUN conda create -n qfrag-env python=3.12.* --override-channels -c conda-forge -y
 
 # ============================================================================
 # PHASE 3: Install Conda Packages
+# Pin Python 3.12 to prevent conda from upgrading to 3.13
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
+    conda install python=3.12.* --override-channels -c conda-forge \
+        --no-update-deps -y && \
     conda install --override-channels -c conda-forge \
         cmake=4.2.3 \
         h5py=3.15.1 \
@@ -91,6 +95,7 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
         qiskit==2.3.0 \
         qiskit-ibm-runtime==0.45.1 \
         qc-pyci==0.6.3 \
+        cvxpy>=1.1 \
         matplotlib==3.10.8 \
         pandas==3.0.1 \
         seaborn==0.13.2 \
@@ -113,17 +118,14 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
     pip install --no-cache-dir qiskit-addon-sqd==0.12.1"
 
-# Clone qiskit-addon-sqd-hpc for C++ headers (required by Fulqrum)
-# This is a separate repository that provides C++ headers for HPC compilation
-RUN git clone https://github.com/Qiskit/qiskit-addon-sqd-hpc.git /workspace/qiskit-addon-sqd-hpc
-
 # Install Fulqrum (Full Quantum Resource Utilization Manager)
-# Note: Fulqrum requires qiskit-addon-sqd C++ headers from the cloned repository above
+# CRITICAL: Must clone with --recurse-submodules to get qiskit-addon-sqd-hpc as a Git submodule
+# Fulqrum uses qiskit-addon-sqd-hpc headers which are included as a submodule in the Fulqrum repo
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
-    git clone https://github.com/qiskit-community/fulqrum.git /workspace/fulqrum && \
+    git clone --recurse-submodules https://github.com/qiskit-community/fulqrum.git /workspace/fulqrum && \
     cd /workspace/fulqrum && \
-    pip install -e ."
+    pip install ."
 
 # Install block2 from preview repository (x86_64 wheel)
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
