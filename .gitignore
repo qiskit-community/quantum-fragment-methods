@@ -177,6 +177,9 @@ cython_debug/
 **/qpu_config.yaml
 qpu_config.yaml
 
+# HPC credentials - NEVER COMMIT THESE!
+.hpc_config
+
 # Local version of config.yaml used only for testing
 examples/local_demo/config_local.yaml
 

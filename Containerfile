@@ -1,5 +1,4 @@
 # Quantum Fragment Methods Container
-# Quantum Fragment Methods Container
 
 FROM --platform=linux/amd64 ubuntu:22.04
 
@@ -8,8 +7,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Add labels for documentation
 LABEL maintainer="Thaddeus Pellegrini"
-LABEL description="Complete environment for quantum fragment methods with PySCF, Qiskit, Vayesta, PyCI, and SBD"
-LABEL version="1.0"
+LABEL description="Complete environment for quantum fragment methods with PySCF, Qiskit, Qiskit Addon SQD, Vayesta, PyCI, SBD, QRMI, and Fulqrum"
+LABEL version="2.0"
 
 # Set working directory
 WORKDIR /workspace
@@ -67,8 +66,8 @@ RUN echo "channels:" > /root/.condarc && \
 # Initialize conda for bash
 RUN conda init bash
 
-# Create conda environment with Python 3.11.15 using conda-forge only
-RUN conda create -n qfrag-env python=3.11.15 --override-channels -c conda-forge -y
+# Create conda environment with Python 3.12 using conda-forge only
+RUN conda create -n qfrag-env python=3.12 --override-channels -c conda-forge -y
 
 # ============================================================================
 # PHASE 3: Install Conda Packages
@@ -91,7 +90,6 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
         ffsim==0.0.70 \
         qiskit==2.3.0 \
         qiskit-ibm-runtime==0.45.1 \
-        qiskit-addon-sqd==0.12.1 \
         qc-pyci==0.6.3 \
         matplotlib==3.10.8 \
         pandas==3.0.1 \
@@ -102,6 +100,30 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
         ipywidgets \
         pytest \
         pytest-cov"
+
+# Install QRMI (Qiskit Runtime Model Interface)
+# Note: QRMI requires Rust compilation which fails on ARM64 emulation
+# Use pip install from PyPI instead of building from source
+RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
+    conda activate qfrag-env && \
+    pip install --no-cache-dir 'qrmi[ibm]'"
+
+# Install qiskit-addon-sqd Python package from PyPI
+RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
+    conda activate qfrag-env && \
+    pip install --no-cache-dir qiskit-addon-sqd==0.12.1"
+
+# Clone qiskit-addon-sqd-hpc for C++ headers (required by Fulqrum)
+# This is a separate repository that provides C++ headers for HPC compilation
+RUN git clone https://github.com/Qiskit/qiskit-addon-sqd-hpc.git /workspace/qiskit-addon-sqd-hpc
+
+# Install Fulqrum (Full Quantum Resource Utilization Manager)
+# Note: Fulqrum requires qiskit-addon-sqd C++ headers from the cloned repository above
+RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
+    conda activate qfrag-env && \
+    git clone https://github.com/qiskit-community/fulqrum.git /workspace/fulqrum && \
+    cd /workspace/fulqrum && \
+    pip install -e ."
 
 # Install block2 from preview repository (x86_64 wheel)
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
