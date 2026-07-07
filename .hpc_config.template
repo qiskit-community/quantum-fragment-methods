@@ -1,0 +1,24 @@
+# HPC Configuration Template
+# Copy to .hpc_config and customize for your cluster
+# This file is gitignored and will not be committed
+# Usage: source .hpc_config
+
+# HPC Login Information
+export HPC_USERNAME=your_username
+export HPC_LOGIN_HOST=login.hpc.example.edu
+export HPC_PROJECT_DIR=/path/to/your/project
+
+# Slurm Configuration
+export SLURM_PARTITION=gpu
+export SLURM_ACCOUNT=your_account  # Optional, if required by cluster
+export SLURM_QOS=normal            # Optional, if required by cluster
+
+# Container Configuration
+export CONTAINER_IMAGE=$HOME/qfm-hpc-py312.sqsh
+
+# Jupyter Configuration (for interactive sessions)
+export JUPYTER_PORT=8899
+export JUPYTER_TOKEN=              # Leave empty to auto-generate
+
+# Conda Environment (if not using containers)
+export CONDA_ENV_NAME=qfm-hpc
