@@ -179,9 +179,48 @@ qpu_config.yaml
 
 # HPC credentials - NEVER COMMIT THESE!
 .hpc_config
+*hpc_config
+*.hpc_config
+
+# SSH keys and credentials
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+*.ppk
+
+# API tokens and secrets
+.secrets
+secrets.yaml
+secrets.json
+*.token
+*.secret
+
+# Container images (too large for git)
+*.tar
+*.sqsh
+*.sif
 
 # Local version of config.yaml used only for testing
 examples/local_demo/config_local.yaml
+*_local.yaml
 
 # Temporal files of SQD calculations. Too heavy in terms of disk storage
 examples/local_demo/sqd_results
+
+# Simple HPC demo outputs
+examples/simple_hpc_demo/logs/
+examples/simple_hpc_demo/results/
+examples/simple_hpc_demo/config_local.yaml
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~

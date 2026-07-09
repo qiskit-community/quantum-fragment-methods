@@ -1,13 +1,13 @@
 # Quantum Fragment Methods Container
 
-FROM --platform=linux/amd64 ubuntu:22.04
+FROM --platform=linux/amd64 public.ecr.aws/ubuntu/ubuntu:22.04
 
 # Prevent interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Add labels for documentation
 LABEL maintainer="Thaddeus Pellegrini"
-LABEL description="Complete environment for quantum fragment methods with PySCF, Qiskit, Qiskit Addon SQD, Vayesta, PyCI, SBD, QRMI, and Fulqrum"
+LABEL description="Complete environment for quantum fragment methods with PySCF, GPU4PySCF, Qiskit, Qiskit Addon SQD, Vayesta, PyCI, SBD, QRMI, Fulqrum, and Block2. Includes CUDA 12.6 for GPU acceleration on HPC clusters."
 LABEL version="2.0"
 
 # Set working directory
@@ -48,7 +48,23 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # ============================================================================
-# PHASE 2: Install Miniconda for Python Environment Management
+# PHASE 2: Install CUDA Toolkit 12.6 for GPU Support
+# IBM SCC H200 cluster automatically passes through GPUs to containers
+# Container needs CUDA Toolkit for GPU4PySCF to work
+RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb && \
+    dpkg -i cuda-keyring_1.1-1_all.deb && \
+    apt-get update && \
+    apt-get install -y cuda-toolkit-12-6 && \
+    rm cuda-keyring_1.1-1_all.deb && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set CUDA environment variables
+ENV PATH="/usr/local/cuda/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64:${LD_LIBRARY_PATH}"
+ENV CUDA_HOME="/usr/local/cuda"
+
+# ============================================================================
+# PHASE 3: Install Miniconda for Python Environment Management
 # Install Miniconda for x86_64 
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
     bash /tmp/miniconda.sh -b -p /opt/conda && \
@@ -71,7 +87,7 @@ RUN conda init bash
 RUN conda create -n qfrag-env python=3.12.* --override-channels -c conda-forge -y
 
 # ============================================================================
-# PHASE 3: Install Conda Packages
+# PHASE 4: Install Conda Packages
 # Pin Python 3.12 to prevent conda from upgrading to 3.13
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
@@ -85,7 +101,7 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
         -y"
 
 # ============================================================================
-# PHASE 4: Install Python Packages via pip
+# PHASE 5: Install Python Packages via pip
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
     pip install --no-cache-dir \
@@ -105,6 +121,13 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
         ipywidgets \
         pytest \
         pytest-cov"
+
+# Install GPU4PySCF for GPU-accelerated quantum chemistry (CUDA 12.x version)
+# Works with IBM SCC H200 GPUs via automatic GPU passthrough
+RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
+    conda activate qfrag-env && \
+    pip install --no-cache-dir gpu4pyscf-cuda12x && \
+    pip install --no-cache-dir cutensor-cu12"
 
 # Install QRMI (Qiskit Runtime Model Interface)
 # Note: QRMI requires Rust compilation which fails on ARM64 emulation
@@ -131,9 +154,20 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
     pip install --no-cache-dir block2 --extra-index-url=https://block-hczhai.github.io/block2-preview/pypi/"
+# Install high-priority additional libraries (commented out for current build)
+# Uncomment to include in future builds:
+# RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
+#     conda activate qfrag-env && \
+#     pip install --no-cache-dir \
+#         basis-set-exchange \
+#         ase \
+#         mpi4py \
+#         tqdm \
+#         py3Dmol"
+
 
 # ============================================================================
-# PHASE 5: Clone and Install Vayesta
+# PHASE 6: Clone and Install Vayesta
 # Clone Vayesta and install without building pyscf (use conda version)
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
@@ -142,7 +176,7 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     pip install --no-build-isolation --no-deps ."
 
 # ============================================================================
-# PHASE 6: Clone PyCI (compilation will be done interactively)
+# PHASE 7: Clone PyCI (compilation will be done interactively)
 # Clone PyCI repository
 RUN git clone https://github.com/theochem/pyci.git /workspace/pyci
 
@@ -154,7 +188,7 @@ ENV CXX=g++
 # Users should run: cd /workspace/pyci && make && pip install .
 
 # ============================================================================
-# PHASE 7: Clone SBD Solver (compilation will be done interactively)
+# PHASE 8: Clone SBD Solver (compilation will be done interactively)
 # Clone SBD repository
 RUN git clone https://github.com/r-ccs-cms/sbd.git /workspace/sbd
 
@@ -162,7 +196,7 @@ RUN git clone https://github.com/r-ccs-cms/sbd.git /workspace/sbd
 # This includes fixing header paths and creating Configuration file
 
 # ============================================================================
-# PHASE 8: Install quantum-fragment-methods Package
+# PHASE 9: Install quantum-fragment-methods Package
 # Copy the quantum-fragment-methods package into the container
 COPY . /workspace/quantum-fragment-methods
 
@@ -173,7 +207,7 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     pip install -e ."
 
 # ============================================================================
-# PHASE 9: Setup Environment Variables
+# PHASE 10: Setup Environment Variables
 # Set MPI environment variables
 ENV OMPI_CXX=g++
 ENV OMP_NUM_THREADS=1
@@ -182,13 +216,13 @@ ENV OMP_NUM_THREADS=1
 ENV PYTHONPATH="/workspace:${PYTHONPATH}"
 
 # ============================================================================
-# PHASE 10: Create Helper Directories
+# PHASE 11: Create Helper Directories
 RUN mkdir -p /workspace/executable && \
     mkdir -p /workspace/data
     #mkdir -p /workspace/results
 
 # ============================================================================
-# PHASE 11: Setup Conda Activation in bashrc
+# PHASE 12: Setup Conda Activation in bashrc
 RUN echo "source /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
     echo "conda activate qfrag-env" >> ~/.bashrc && \
     echo "echo ''" >> ~/.bashrc && \
