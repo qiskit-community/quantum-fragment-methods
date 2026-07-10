@@ -102,9 +102,6 @@ class IBMQuantumBackend(QPUBackend):
             )
             logger.info("Successfully connected to IBM Quantum service")
         except Exception as e:
-            import pdb
-
-            pdb.set_trace()
             raise ConnectionError(f"Failed to connect to IBM Quantum service: {e}") from e
 
     def get_backend(self, backend_name: Optional[str] = None) -> Any:
