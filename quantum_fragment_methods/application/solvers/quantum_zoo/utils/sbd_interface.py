@@ -258,7 +258,7 @@ class SBDInterface:
 
         # User-defined options
         sbd_user_options = (
-            f"mpirun --allow-run-as-root -np {cpus_per_batch} "
+            f"mpirun --allow-run-as-root --oversubscribe -np {cpus_per_batch} "
             f"-x OMP_NUM_THREADS={omp_threads} {self.sbd_exe_path} "
             f"--fcidump {fci_dump_path} --adetfile {adet_file_path}"
         )
@@ -290,7 +290,17 @@ class SBDInterface:
             )
 
         if process.returncode != 0:
-            logger.warning(f"SBD solver returned non-zero exit code: {process.returncode}")
+            log_tail = ""
+            try:
+                with open(sbd_log_path) as logfile:
+                    log_tail = logfile.read()[-2000:]
+            except OSError:
+                pass
+            raise RuntimeError(
+                f"SBD solver failed with exit code {process.returncode}.\n"
+                f"Command: {sbd_call}\n"
+                f"Log ({sbd_log_path}):\n{log_tail}"
+            )
 
         # Extract results
         rdm1, rdm2 = self.get_rdm1_and_rdm2(work_dir)
