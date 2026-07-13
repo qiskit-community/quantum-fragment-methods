@@ -609,7 +609,9 @@ class SQDSolver(BaseSolver):
             diagonalize_fermionic_hamiltonian,
         )
 
-        logger.info("Running SQD post-processing with custom HPC-integrated algorithm...")
+        logger.info(
+            "Running SQD post-processing via qiskit-addon-sqd with SBD sci_solver..."
+        )
 
         # Get SQD algorithm parameters
         iterations = self.sqd_config.get("iterations", 5)
@@ -629,12 +631,12 @@ class SQDSolver(BaseSolver):
         sqd_workflow_path = workflow_path / "sqd_diagonalizer"
         sqd_workflow_path.mkdir(parents=True, exist_ok=True)
 
-        # Run the SQD algorithm with HPC integration
+        # Run SQD: recovery/subsampling from qiskit-addon-sqd, diagonalization via SBD
         result = diagonalize_fermionic_hamiltonian(
             h1e,
             h2e,
             counts,
-            symmetrize_spin = symmetrize_spin,
+            symmetrize_spin=symmetrize_spin,
             samples_per_batch=samples_per_batch,
             norb=norb,
             nelec=nelec,
@@ -647,16 +649,19 @@ class SQDSolver(BaseSolver):
             sbd_config=self.sbd_config,
         )
 
-        # Convert to SolverResult
+        # Prefer SBD-provided RDMs when present; otherwise rebuild from the SCI state
+        rdm1 = result.rdm1 if result.rdm1 is not None else result.sci_state.rdm(rank=1)
+        rdm2 = result.rdm2 if result.rdm2 is not None else result.sci_state.rdm(rank=2)
+
         solver_result = SolverResult(
             energy=result.energy,
             wavefunction=result.sci_state.amplitudes,
-            rdm1=result.sci_state.rdm(rank=1),
-            rdm2=result.sci_state.rdm(rank=2),
+            rdm1=rdm1,
+            rdm2=rdm2,
             metadata={
                 "ci_strs_a": result.sci_state.ci_strs_a,
                 "ci_strs_b": result.sci_state.ci_strs_b,
-                "occupancies": result.occupancies,
+                "occupancies": result.orbital_occupancies,
                 "norb": norb,
                 "nelec": nelec,
             },

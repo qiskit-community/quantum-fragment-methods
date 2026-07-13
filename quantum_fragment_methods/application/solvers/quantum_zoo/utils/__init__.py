@@ -22,16 +22,20 @@ from quantum_fragment_methods.application.solvers.quantum_zoo.utils.sbd_interfac
     SBDInterface,
 )
 from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
-    diagonalize_fermionic_hamiltonian,
-    SCIState,
     SCIResult,
+    SCIState,
+    counts_to_bit_array,
+    diagonalize_fermionic_hamiltonian,
+    make_sbd_sci_solver,
 )
 
 __all__ = [
     "SBDInterface",
-    "build_lucj_circuit",
-    "get_zigzag_physical_layout",
-    "diagonalize_fermionic_hamiltonian",
-    "SCIState",
     "SCIResult",
+    "SCIState",
+    "build_lucj_circuit",
+    "counts_to_bit_array",
+    "diagonalize_fermionic_hamiltonian",
+    "get_zigzag_physical_layout",
+    "make_sbd_sci_solver",
 ]
