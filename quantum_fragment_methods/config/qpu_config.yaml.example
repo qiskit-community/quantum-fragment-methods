@@ -48,6 +48,9 @@ sqd:
     seed_transpiler: 0  # Seed for reproducibility
   
   # SQD algorithm parameters
+  # classical_backend: python uses stock qiskit-addon-sqd; hpc uses C++ bindings
+  classical_backend: hpc
+  symmetrize_spin: True  # Identical alpha/beta CI strings (required for current SBD)
   n_batches: 10  # Number of batches to run in parallel (10 usually best)
   iterations: 5  # Number of self-consistent iterations (5 usually best)
   samples_per_batch: 3000  # Number of measurement outcomes per batch (3000 usually best)

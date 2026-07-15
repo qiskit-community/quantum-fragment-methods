@@ -13,19 +13,22 @@
 """SQD diagonalization with SBD as the selected-CI solver.
 
 This module wraps :func:`qiskit_addon_sqd.fermion.diagonalize_fermionic_hamiltonian`
-and injects an SBD-backed ``sci_solver``. The configuration-recovery loop itself
-comes from ``qiskit-addon-sqd``; only the eigensolver integration is QFM-specific.
+and injects an SBD-backed ``sci_solver``. Classical configuration recovery /
+subsampling can use stock ``qiskit-addon-sqd`` (``classical_backend=\"python\"``)
+or the C++ bindings from ``qiskit-addon-sqd-hpc`` (``classical_backend=\"hpc\"``).
 """
 
 from __future__ import annotations
 
 import logging
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Mapping, Sequence
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 
 import numpy as np
 from qiskit.primitives import BitArray
+from qiskit_addon_sqd import fermion as sqd_fermion
 from qiskit_addon_sqd.fermion import (
     SCIResult,
     SCIState,
@@ -45,6 +48,119 @@ __all__ = [
     "diagonalize_fermionic_hamiltonian",
     "make_sbd_sci_solver",
 ]
+
+_VALID_CLASSICAL_BACKENDS = frozenset({"python", "hpc"})
+
+
+def _seed_to_int(rand_seed: Any) -> int | None:
+    """Map a numpy Generator / int / None to an integer seed for HPC RNG."""
+    if rand_seed is None:
+        return None
+    if isinstance(rand_seed, np.random.Generator):
+        return int(rand_seed.integers(0, 2**63 - 1))
+    return int(rand_seed)
+
+
+def _as_contig_bool(matrix: np.ndarray) -> np.ndarray:
+    return np.ascontiguousarray(matrix, dtype=bool)
+
+
+def _as_contig_f64(vector: np.ndarray | Sequence[float]) -> np.ndarray:
+    return np.ascontiguousarray(vector, dtype=np.float64)
+
+
+def _hpc_postselect(
+    bitstring_matrix: np.ndarray,
+    probabilities: np.ndarray,
+    *,
+    hamming_right: int,
+    hamming_left: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    import qiskit_addon_sqd_hpc as hpc
+
+    out_bs, out_p = hpc.postselect_by_hamming_right_and_left(
+        _as_contig_bool(bitstring_matrix),
+        _as_contig_f64(probabilities),
+        int(hamming_right),
+        int(hamming_left),
+    )
+    return np.asarray(out_bs, dtype=bool), np.asarray(out_p, dtype=np.float64)
+
+
+def _hpc_recover(
+    bitstring_matrix: np.ndarray,
+    probabilities: Sequence[float] | np.ndarray,
+    avg_occupancies: tuple[np.ndarray, np.ndarray],
+    num_elec_a: int,
+    num_elec_b: int,
+    rand_seed: np.random.Generator | int | None = None,
+) -> tuple[np.ndarray, np.ndarray]:
+    import qiskit_addon_sqd_hpc as hpc
+
+    occ_a, occ_b = avg_occupancies
+    out_bs, out_p = hpc.recover_configurations(
+        _as_contig_bool(bitstring_matrix),
+        _as_contig_f64(probabilities),
+        _as_contig_f64(occ_a),
+        _as_contig_f64(occ_b),
+        int(num_elec_a),
+        int(num_elec_b),
+        _seed_to_int(rand_seed),
+    )
+    return np.asarray(out_bs, dtype=bool), np.asarray(out_p, dtype=np.float64)
+
+
+def _hpc_subsample(
+    bitstring_matrix: np.ndarray,
+    probabilities: np.ndarray,
+    samples_per_batch: int,
+    num_batches: int,
+    rand_seed: np.random.Generator | int | None = None,
+) -> list[np.ndarray]:
+    import qiskit_addon_sqd_hpc as hpc
+
+    batches = hpc.subsample(
+        _as_contig_bool(bitstring_matrix),
+        _as_contig_f64(probabilities),
+        int(samples_per_batch),
+        int(num_batches),
+        _seed_to_int(rand_seed),
+    )
+    return [np.asarray(batch, dtype=bool) for batch in batches]
+
+
+@contextmanager
+def _use_hpc_classical_preprocess() -> Iterator[None]:
+    """Temporarily route addon preprocess helpers to C++ HPC bindings."""
+    try:
+        import qiskit_addon_sqd_hpc  # noqa: F401
+    except ImportError as exc:
+        raise ImportError(
+            "classical_backend='hpc' requires the qiskit-addon-sqd-hpc package. "
+            "Install it in the container (pip install -e /workspace/qiskit-addon-sqd-hpc) "
+            "or set classical_backend='python'."
+        ) from exc
+
+    originals = {
+        "postselect_by_hamming_right_and_left": (
+            sqd_fermion.postselect_by_hamming_right_and_left
+        ),
+        "recover_configurations": sqd_fermion.recover_configurations,
+        "subsample": sqd_fermion.subsample,
+    }
+    sqd_fermion.postselect_by_hamming_right_and_left = _hpc_postselect
+    sqd_fermion.recover_configurations = _hpc_recover
+    sqd_fermion.subsample = _hpc_subsample
+    logger.info("Using qiskit-addon-sqd-hpc for classical SQD preprocessing")
+    try:
+        yield
+    finally:
+        sqd_fermion.postselect_by_hamming_right_and_left = originals[
+            "postselect_by_hamming_right_and_left"
+        ]
+        sqd_fermion.recover_configurations = originals["recover_configurations"]
+        sqd_fermion.subsample = originals["subsample"]
+
 
 
 def counts_to_bit_array(
@@ -206,6 +322,7 @@ def diagonalize_fermionic_hamiltonian(
     workflow_path: str = "",
     sbd_config: dict[str, Any] | None = None,
     seed: int | np.random.Generator | None = None,
+    classical_backend: str = "python",
 ) -> SCIResult:
     """Run SQD using ``qiskit-addon-sqd`` with SBD as the SCI solver.
 
@@ -229,6 +346,8 @@ def diagonalize_fermionic_hamiltonian(
         workflow_path: Directory for SBD scratch files.
         sbd_config: SBD configuration (must include ``exe_path``).
         seed: RNG seed for recovery/subsampling.
+        classical_backend: ``\"python\"`` for stock ``qiskit-addon-sqd``
+            preprocessing, or ``\"hpc\"`` for ``qiskit-addon-sqd-hpc``.
 
     Returns:
         Best :class:`~qiskit_addon_sqd.fermion.SCIResult` found by SQD.
@@ -236,16 +355,23 @@ def diagonalize_fermionic_hamiltonian(
     if sbd_config is None:
         raise ValueError("sbd_config must be provided for SBD solver integration")
 
+    backend = classical_backend.lower().strip()
+    if backend not in _VALID_CLASSICAL_BACKENDS:
+        raise ValueError(
+            f"classical_backend must be one of {sorted(_VALID_CLASSICAL_BACKENDS)}, "
+            f"got {classical_backend!r}"
+        )
+
     bit_array = counts_to_bit_array(counts, num_bits=2 * norb)
     sci_solver = make_sbd_sci_solver(sbd_config, workflow_path or ".")
 
-    return _addon_diagonalize_fermionic_hamiltonian(
-        one_body_tensor,
-        two_body_tensor,
-        bit_array,
-        samples_per_batch,
-        norb,
-        nelec,
+    kwargs = dict(
+        one_body_tensor=one_body_tensor,
+        two_body_tensor=two_body_tensor,
+        bit_array=bit_array,
+        samples_per_batch=samples_per_batch,
+        norb=norb,
+        nelec=nelec,
         num_batches=num_batches,
         energy_tol=energy_tol,
         occupancies_tol=occupancies_tol,
@@ -259,3 +385,10 @@ def diagonalize_fermionic_hamiltonian(
         callback=callback,
         seed=seed,
     )
+
+    if backend == "hpc":
+        with _use_hpc_classical_preprocess():
+            return _addon_diagonalize_fermionic_hamiltonian(**kwargs)
+
+    logger.info("Using qiskit-addon-sqd (Python) for classical SQD preprocessing")
+    return _addon_diagonalize_fermionic_hamiltonian(**kwargs)

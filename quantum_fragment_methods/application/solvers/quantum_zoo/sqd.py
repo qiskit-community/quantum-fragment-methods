@@ -621,17 +621,19 @@ class SQDSolver(BaseSolver):
         occupancies_tol = self.sqd_config.get("occupancies_tol", 1.0e-5)
         carryover_threshold = self.sqd_config.get("carryover_threshold", 1.0e-4)
         symmetrize_spin = self.sqd_config.get("symmetrize_spin", True)
+        classical_backend = self.sqd_config.get("classical_backend", "python")
 
         logger.info(
             f"SQD parameters: iterations={iterations}, n_batches={n_batches}, "
-            f"samples_per_batch={samples_per_batch}"
+            f"samples_per_batch={samples_per_batch}, "
+            f"classical_backend={classical_backend}"
         )
 
         # Create workflow directory for SQD
         sqd_workflow_path = workflow_path / "sqd_diagonalizer"
         sqd_workflow_path.mkdir(parents=True, exist_ok=True)
 
-        # Run SQD: recovery/subsampling from qiskit-addon-sqd, diagonalization via SBD
+        # Run SQD: classical preprocess (python|hpc), diagonalization via SBD
         result = diagonalize_fermionic_hamiltonian(
             h1e,
             h2e,
@@ -647,6 +649,7 @@ class SQDSolver(BaseSolver):
             carryover_threshold=carryover_threshold,
             workflow_path=str(sqd_workflow_path),
             sbd_config=self.sbd_config,
+            classical_backend=classical_backend,
         )
 
         # Prefer SBD-provided RDMs when present; otherwise rebuild from the SCI state

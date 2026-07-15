@@ -60,6 +60,8 @@ sqd:
     seed_transpiler: 42  # Seed for reproducibility
   
   # SQD algorithm parameters
+  # classical_backend: python uses stock qiskit-addon-sqd; hpc uses C++ bindings
+  classical_backend: hpc
   symmetrize_spin: True # Usage of identical alpha and beta strings. Right now only "true" is supported
   n_batches: 1  # Number of batches to run in parallel (10 usually best)
   iterations: 5  # Number of self-consistent iterations (5 usually best)

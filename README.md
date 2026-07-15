@@ -20,15 +20,25 @@ The Quantum Fragment Methods framework enables scalable, high-accuracy quantum s
 
 ## Documentation
 
-- **[Build Guide](docs/BUILD-GUIDE.md)** - Installation instructions using Podman/Docker
-- **[Tutorial](examples/local_demo/tutorial.ipynb)** - Interactive Jupyter notebook with usage examples
-- **[Contributing Guide](docs/contributing.md)** - Guidelines for contributors
-- **[Examples](examples/)** - Additional example guides
+- **[Local Build Guide](docs/BUILD-GUIDE.md)** — laptop / workstation setup with Podman or Docker
+- **[HPC Build Guide](docs/HPC-BUILD-GUIDE.md)** — cluster deploy (Slurm, transferring images, native SBD/PyCI)
+- **[Tutorial](examples/local_demo/tutorial.ipynb)** — interactive Jupyter notebook with usage examples
+- **[Contributing Guide](docs/contributing.md)** — guidelines for contributors
+- **[Examples](examples/)** — additional example guides
 
 ## Quick Start
 
-1. **Install**: Follow the [Build Guide](docs/BUILD-GUIDE.md) for complete setup instructions
-2. **Configure**: Create a `config.yaml` file to define your workflow parameters (see below)
+### Local vs HPC
+
+| Target | Guide | Typical use |
+|--------|--------|-------------|
+| **Local** | [BUILD-GUIDE.md](docs/BUILD-GUIDE.md) | Interactive demos (e.g. H₂ / N₂ notebooks), Jupyter on a laptop/workstation |
+| **HPC** | [HPC-BUILD-GUIDE.md](docs/HPC-BUILD-GUIDE.md) | Larger fragments / MPI SBD, container transferred to the cluster |
+
+Both paths share the same package and YAML configs. Prefer local for development and small demos; use HPC when walltime, cores, or memory exceed a single workstation.
+
+1. **Install**: Follow the [Local Build Guide](docs/BUILD-GUIDE.md) or [HPC Build Guide](docs/HPC-BUILD-GUIDE.md)
+2. **Configure**: Create a `config.yaml` (copy from the template below) and set QPU credentials
 3. **Learn**: Work through the [Tutorial](examples/local_demo/tutorial.ipynb) notebook
 4. **Explore**: Check out [Examples](examples/) for more use cases
 
@@ -41,7 +51,26 @@ The `config.yaml` file is the main entry point for configuring your quantum frag
 - **QPU configuration**: Backend selection, credentials, and sampler options
 - **Solver settings**: Algorithm-specific parameters for SQD, ext-SQD, and classical solvers
 
-See [examples/local_demo/config.yaml](examples/local_demo/config.yaml) for a complete template with detailed comments.
+See [quantum_fragment_methods/config/qpu_config.yaml.example](quantum_fragment_methods/config/qpu_config.yaml.example) for the full template, or the demos under [examples/local_demo/](examples/local_demo/).
+
+### SQD classical backend (`classical_backend`)
+
+SQD uses a quantum sampler (LUCJ + IBM Runtime) and a classical preprocess step (postselect / configuration recovery / subsample), then diagonalizes selected CI subspaces with SBD.
+
+Under `sqd:` in your config, set:
+
+```yaml
+sqd:
+  # python = stock qiskit-addon-sqd; hpc = C++ qiskit-addon-sqd-hpc bindings
+  classical_backend: hpc   # or: python
+```
+
+| Value | Preprocessing | When to use |
+|-------|----------------|-------------|
+| `python` | `qiskit-addon-sqd` (pure Python) | Default if HPC bindings are not installed; good for debugging |
+| `hpc` | `qiskit-addon-sqd-hpc` (C++ via nanobind) | Preferred for production / larger batches; requires the HPC extension in the environment |
+
+SBD remains the eigensolver in both cases. For local containers, install and compile SBD as described in the [Local Build Guide](docs/BUILD-GUIDE.md); on clusters, follow the [HPC Build Guide](docs/HPC-BUILD-GUIDE.md).
 
 ### System Requirements
 
