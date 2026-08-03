@@ -1,0 +1,47 @@
+# N2 / STO-3G SQD demo configuration
+#
+# QPU credentials are NOT stored here.
+# They are read from environment variables set by the Slurm SPANK plugin on SCC,
+# or exported manually for local testing. See 02_run_sqd.py for details.
+
+# ============================================================================
+# QPU Configuration
+# ============================================================================
+qpu:
+  provider: "qrmi"
+  backend_name: "ibm_torino"  # must match QRMI_JOB_QPU_RESOURCES
+
+  sampler_options:
+    default_shots: 1000
+
+# ============================================================================
+# SQD Solver Configuration
+# ============================================================================
+sqd:
+  # LUCJ ansatz parameters
+  lucj:
+    n_reps: 1
+    max_connection: 12
+    connect_every_n: 4
+
+  # Transpilation options
+  transpilation:
+    optimization_level: 0
+    seed_transpiler: 42
+
+  # SQD algorithm parameters
+  # classical_backend: python uses stock qiskit-addon-sqd; hpc uses C++ bindings
+  classical_backend: hpc
+  symmetrize_spin: true
+  n_batches: 1
+  iterations: 3
+  samples_per_batch: 200
+  energy_tol: 1.e-8
+  occupancies_tol: 1.e-5
+  carryover_threshold: 1.e-4
+  add_hf_string: true
+
+  # SBD solver options
+  sbd:
+    exe_path: '/workspace/executable/diag'
+    cpus_per_batch: 8

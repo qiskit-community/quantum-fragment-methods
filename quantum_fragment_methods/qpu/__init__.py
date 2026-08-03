@@ -22,5 +22,6 @@ Available backends:
 
 from quantum_fragment_methods.qpu.base import QPUBackend
 from quantum_fragment_methods.qpu.qiskit_ibm_runtime import IBMQuantumBackend
+from quantum_fragment_methods.qpu.qrmi import QRMIBackend
 
-__all__ = ["QPUBackend", "IBMQuantumBackend"]
+__all__ = ["QPUBackend", "IBMQuantumBackend", "QRMIBackend"]
