@@ -11,11 +11,18 @@ Usage:
 
 import argparse
 import json
+import logging
 import pickle
 from pathlib import Path
 
 import yaml
 from pyscf import fci, gto, scf
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)-8s %(name)s — %(message)s",
+    datefmt="%H:%M:%S",
+)
 
 from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import SQDSolver
 from quantum_fragment_methods.qpu import QRMIBackend
@@ -37,6 +44,12 @@ parser.add_argument(
     action="store_true",
     help="Poll until QPU job completes (may take hours in queue)",
 )
+parser.add_argument(
+    "--max-wait-time",
+    type=int,
+    default=300,
+    help="Maximum time in seconds to wait for QPU job completion (default: 300)",
+)
 args = parser.parse_args()
 
 # ---------------------------------------------------------------------------
@@ -54,17 +67,23 @@ nuc_energy = data["nuc_energy"]
 
 print(f"Loaded molecule data: {norb} orbitals, {nelec} electrons")
 
-# Reconstruct mf object for CCSD amplitude computation in SQDSolver
+# Reconstruct mf object for CCSD amplitude computation in SQDSolver.
+# We restore the converged MO coefficients from step 1 to avoid re-running
+# the SCF from scratch (which would be redundant and slow).
 mol = gto.Mole()
 mol.atom = """
 N 0.0 0.0 0.0
 N 1.0 0.0 0.0
 """
 mol.basis = "sto-3g"
+mol.verbose = 0
 mol.build()
-mf = scf.RHF(mol).to_gpu()
-mf.kernel()
-mf = mf.to_cpu()  # SQDSolver's CCSD uses PySCF CPU objects
+mf = scf.RHF(mol)
+mf.mo_coeff = data["mo_coeff"]
+mf.mo_occ = data["mo_occ"]
+mf.mo_energy = data["mo_energy"]
+mf.e_tot = data["hf_energy"]
+mf.converged = True
 
 # ---------------------------------------------------------------------------
 # Load config
@@ -115,6 +134,7 @@ result = solver.solve(
     workflow_path=str(results_dir),
     force_resubmit=args.force_resubmit,
     wait_for_completion=args.wait,
+    max_wait_time=args.max_wait_time,
 )
 
 print(f"\nSQD Results:")
@@ -122,9 +142,10 @@ print(f"  Electronic energy: {result.energy:.8f} Ha")
 print(f"  Total energy:      {result.energy + nuc_energy:.8f} Ha")
 
 # ---------------------------------------------------------------------------
-# FCI comparison
+# FCI comparison (verbose=0 suppresses the "converged SCF energy" stdout line)
 # ---------------------------------------------------------------------------
 fci_solver = fci.FCI(mf)
+fci_solver.verbose = 0
 fci_solver.kernel()
 
 sqd_total = result.energy + nuc_energy

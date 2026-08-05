@@ -31,7 +31,32 @@ See: https://github.com/qiskit-community/qrmi
 from __future__ import annotations
 
 import logging
+import sys
+import types
 from typing import Any, Dict, List, Optional
+
+
+def _patch_qrmi_decoders_import() -> None:
+    """Shim for qrmi bug: runtime_job_v2.py imports from the non-existent
+    qiskit_ibm_runtime.decoders subpackage. The module actually lives at
+    qiskit_ibm_runtime.utils.result_decoder. Inject the alias before qrmi
+    is imported so the module-level import in runtime_job_v2.py resolves.
+
+    Tracked upstream: https://github.com/qiskit-community/qrmi/issues/<n>
+    Remove this shim once a fixed qrmi release is available.
+    """
+    try:
+        import qiskit_ibm_runtime.utils.result_decoder as _rd
+        if "qiskit_ibm_runtime.decoders" not in sys.modules:
+            _pkg = types.ModuleType("qiskit_ibm_runtime.decoders")
+            _pkg.result_decoder = _rd  # type: ignore[attr-defined]
+            sys.modules["qiskit_ibm_runtime.decoders"] = _pkg
+            sys.modules["qiskit_ibm_runtime.decoders.result_decoder"] = _rd
+    except Exception:
+        pass  # let qrmi raise its own ImportError if the shim fails
+
+
+_patch_qrmi_decoders_import()
 
 from quantum_fragment_methods.qpu.base import QPUBackend
 
@@ -220,12 +245,11 @@ class QRMIBackend(QPUBackend):
             raise RuntimeError("QRMI not initialized. Call initialize() first.")
 
         try:
-            from qrmi.primitives.ibm import SamplerV2
+            from qrmi.primitives.runtime_job_v2 import RuntimeJobV2
         except ImportError as e:
             raise ImportError("qrmi[ibm] is required.") from e
 
-        sampler = SamplerV2(self._qrmi)
-        return sampler.job(job_id)
+        return RuntimeJobV2(self._qrmi, job_id)
 
     def get_job_status(self, job_id: str) -> str:
         """Get the status of a QRMI job.
@@ -234,7 +258,9 @@ class QRMIBackend(QPUBackend):
             Uppercase status string (QUEUED, RUNNING, COMPLETED, FAILED, etc.)
         """
         job = self.retrieve_job(job_id)
-        status = str(job.status()).upper()
+        raw = job.status()
+        # JobStatus enum stringifies as "JobStatus.DONE" — extract just the name
+        status = raw.name.upper() if hasattr(raw, "name") else str(raw).upper()
         logger.info(f"QRMI job {job_id} status: {status}")
         return status
 

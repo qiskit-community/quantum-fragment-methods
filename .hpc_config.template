@@ -1,24 +1,30 @@
 # HPC Configuration Template
-# Copy to .hpc_config and customize for your cluster
-# This file is gitignored and will not be committed
-# Usage: source .hpc_config
+# Copy to .hpc_config and fill in values for your cluster.
+# This file is gitignored and will never be committed.
+# Usage: source .hpc_config  (from the repo root)
 
-# HPC Login Information
+# ============================================================================
+# Login
+# ============================================================================
 export HPC_USERNAME=your_username
 export HPC_LOGIN_HOST=login.hpc.example.edu
-export HPC_PROJECT_DIR=/path/to/your/project
+export HPC_PROJECT=/path/to/your/project   # e.g. /gpfs/cluster/proj/mygroup/myname
 
-# Slurm Configuration
-export SLURM_PARTITION=gpu
-export SLURM_ACCOUNT=your_account  # Optional, if required by cluster
-export SLURM_QOS=normal            # Optional, if required by cluster
+# ============================================================================
+# Container image
+# Store the .sqsh on a shared filesystem (GPFS / Lustre) so every compute
+# node can read it without re-pulling. See README for build instructions.
+# ============================================================================
+export CONTAINER_IMAGE=$HPC_PROJECT/qfm-hpc-py312-v3.sqsh
 
-# Container Configuration
-export CONTAINER_IMAGE=$HOME/qfm-hpc-py312.sqsh
+# ============================================================================
+# Slurm
+# ============================================================================
+export SLURM_PARTITION=gpu           # partition that has GPUs
+export SLURM_ACCOUNT=your_account    # leave blank if your cluster doesn't require it
 
-# Jupyter Configuration (for interactive sessions)
-export JUPYTER_PORT=8899
-export JUPYTER_TOKEN=              # Leave empty to auto-generate
-
-# Conda Environment (if not using containers)
-export CONDA_ENV_NAME=qfm-hpc
+# ============================================================================
+# QRMI credentials file (on the shared filesystem, never committed to git)
+# See examples/hpc_sqd_demo/README.md § "QRMI credentials" for the format.
+# ============================================================================
+export QRMI_CREDS=$HPC_PROJECT/.qrmi_config

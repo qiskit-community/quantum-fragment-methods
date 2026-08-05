@@ -196,6 +196,11 @@ class SQDSolver(BaseSolver):
             logger.info("=" * 60)
             job_id = self._qpu_sampling(t1, t2, norb, nelec, workflow_path)
             logger.info(f"✓ Job submitted: {job_id}")
+            print(f"\n{'='*60}", flush=True)
+            print(f"  Qiskit job ID : {job_id}", flush=True)
+            print(f"  Backend       : {self.qpu_backend.config.get('backend_name', 'unknown')}", flush=True)
+            print(f"  Checkpoint    : {workflow_path}/job_id.txt", flush=True)
+            print(f"{'='*60}\n", flush=True)
 
             # Try to retrieve counts (with optional waiting)
             counts = self._retrieve_counts_with_wait(
@@ -322,14 +327,14 @@ class SQDSolver(BaseSolver):
         optimization_level = self.transpilation_config.get("optimization_level", 0)
         seed = self.transpilation_config.get("seed_transpiler", 0)
 
-        # Get backend from QPU
-        backend = self.qpu_backend.backend
-        if backend is None:
+        # Get backend from QPU — QRMIBackend.get_backend() returns a Target directly
+        target = self.qpu_backend.backend
+        if target is None:
             raise RuntimeError("Backend not initialized. Call qpu_backend.get_backend() first.")
 
-        # Generate pass manager
+        # Generate pass manager — pass target= not backend= since we have a Target object
         pm = generate_preset_pass_manager(
-            optimization_level=optimization_level, backend=backend, seed_transpiler=seed
+            optimization_level=optimization_level, target=target, seed_transpiler=seed
         )
 
         # Add custom passes
@@ -338,7 +343,7 @@ class SQDSolver(BaseSolver):
         pm.post_optimization = PassManager(
             [
                 FoldRzzAngle(),
-                RemoveIdentityEquivalent(target=backend.target),
+                RemoveIdentityEquivalent(target=target),
             ]
         )
 
@@ -485,7 +490,7 @@ class SQDSolver(BaseSolver):
             status = self.qpu_backend.get_job_status(job_id)
             logger.info(f"Job status: {status}")
         except Exception as e:
-            logger.error(f"Failed to get job status: {e}")
+            logger.error(f"Failed to get job status: {e}", exc_info=True)
             raise RuntimeError(
                 f"Failed to retrieve job status for {job_id}. "
                 "Please check your QPU connection and try again."
@@ -518,6 +523,7 @@ class SQDSolver(BaseSolver):
         logger.info(
             f"Waiting for job completion (max {max_wait_time}s, checking every {poll_interval}s)..."
         )
+        print(f"  Polling job {job_id} every {poll_interval}s (max {max_wait_time}s) ...", flush=True)
         start_time = time.time()
 
         while True:
@@ -538,7 +544,9 @@ class SQDSolver(BaseSolver):
             # Check status again
             try:
                 status = self.qpu_backend.get_job_status(job_id)
-                logger.info(f"[{int(elapsed)}s] Job status: {status}")
+                elapsed_str = f"{int(elapsed // 60)}m{int(elapsed % 60):02d}s"
+                logger.info(f"[{elapsed_str}] Job {job_id} — {status}")
+                print(f"  [{elapsed_str}] {job_id} — {status}", flush=True)
             except Exception as e:
                 logger.warning(f"Failed to check status: {e}")
                 continue
@@ -546,6 +554,7 @@ class SQDSolver(BaseSolver):
             # Check if complete
             if status in ["COMPLETED", "DONE"]:
                 logger.info(f"✓ Job completed after {int(elapsed)} seconds")
+                print(f"\n  ✓ Job completed after {int(elapsed)}s", flush=True)
                 return self._retrieve_completed_job(job_id, workflow_path)
 
             # Check if failed

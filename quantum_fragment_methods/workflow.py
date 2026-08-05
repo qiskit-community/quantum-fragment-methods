@@ -164,7 +164,7 @@ class QFWorkflow:
         mol.atom = atom_data
         mol.unit = "Angstrom"
         mol.basis = self.basis
-        mol.verbose = 4
+        mol.verbose = 3
         mol.build()
 
         # Run Hartree-Fock with density fitting

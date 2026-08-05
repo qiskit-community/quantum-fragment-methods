@@ -56,6 +56,6 @@ This example demonstrates the complete quantum fragment workflow for an alanine 
 
 ## References
 
-This example is based on the workflow demonstrated in `examples/local_demo/sqd_N2_sto-3g_demo.ipynb`.
+This example is based on the workflow demonstrated in `examples/local_ewf_sqd_demo/sqd_N2_sto-3g_demo.ipynb`.
 
-For detailed HPC setup instructions, see `docs/HPC-BUILD-GUIDE.md`.
+For detailed HPC setup instructions, see `docs/IBM-SCC-BUILD-GUIDE.md`.

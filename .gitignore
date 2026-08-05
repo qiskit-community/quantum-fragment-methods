@@ -206,12 +206,12 @@ examples/local_demo/config_local.yaml
 *_local.yaml
 
 # Temporal files of SQD calculations. Too heavy in terms of disk storage
-examples/local_demo/sqd_results
+examples/local_ewf_sqd_demo/sqd_results
 
-# Simple HPC demo outputs
-examples/simple_hpc_demo/logs/
-examples/simple_hpc_demo/results/
-examples/simple_hpc_demo/config_local.yaml
+# HPC SQD demo outputs — logs, results, compiled binaries
+examples/hpc_sqd_demo/logs/
+examples/hpc_sqd_demo/results/
+examples/hpc_sqd_demo/config_local.yaml
 
 # macOS
 .DS_Store
@@ -224,3 +224,7 @@ examples/simple_hpc_demo/config_local.yaml
 *.swp
 *.swo
 *~
+
+executable/
+# SBD source cloned onto GPFS for native compile (not part of the repo)
+sbd_src/

@@ -9,7 +9,7 @@
 # ============================================================================
 qpu:
   provider: "qrmi"
-  backend_name: "ibm_torino"  # must match QRMI_JOB_QPU_RESOURCES
+  backend_name: "ibm_pittsburgh"  # must match QRMI_JOB_QPU_RESOURCES in .qrmi_config
 
   sampler_options:
     default_shots: 1000
@@ -31,7 +31,7 @@ sqd:
 
   # SQD algorithm parameters
   # classical_backend: python uses stock qiskit-addon-sqd; hpc uses C++ bindings
-  classical_backend: hpc
+  classical_backend: python
   symmetrize_spin: true
   n_batches: 1
   iterations: 3
@@ -42,6 +42,9 @@ sqd:
   add_hf_string: true
 
   # SBD solver options
+  # exe_path: /opt/executable/diag is baked into the container image (v3.0+).
+  #           Falls back to /workspace/executable/diag if running with the old image
+  #           (binary compiled natively on GPFS).
   sbd:
-    exe_path: '/workspace/executable/diag'
+    exe_path: '/opt/executable/diag'
     cpus_per_batch: 8

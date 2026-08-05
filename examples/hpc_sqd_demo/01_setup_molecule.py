@@ -31,6 +31,7 @@ N 0.0 0.0 0.0
 N 1.0 0.0 0.0
 """
 mol.basis = "sto-3g"
+mol.verbose = 3
 mol.build()
 
 print(f"Number of orbitals: {mol.nao}")
