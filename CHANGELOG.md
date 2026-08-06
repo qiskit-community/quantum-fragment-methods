@@ -23,4 +23,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fragment-level CCSD amplitude computation
 - Vayesta DUMP solver compatibility
 
-[Unreleased]: https://ibm.github.com/thaddeus-pellegrini/quantum-fragment-methods/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/qiskit-community/quantum-fragment-methods/compare/v0.1.0...HEAD

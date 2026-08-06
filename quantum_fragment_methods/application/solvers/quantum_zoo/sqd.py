@@ -65,6 +65,7 @@ class SQDSolver(BaseSolver):
         self.sqd_config = self.config
         self.sbd_config = self.config.get("sbd", {})
         self.transpilation_config = self.config.get("transpilation", {})
+        self.circuit_save_dir = self.config.get("circuit_save_dir", None)
 
         logger.info(f"Initialized SQDSolver with backend: {qpu_backend}")
 
@@ -262,6 +263,9 @@ class SQDSolver(BaseSolver):
         logger.info("Transpiling circuit for hardware...")
         isa_circuit = self._transpile_circuit(circuit)
 
+        # Save circuits to disk if circuit_save_dir is configured
+        self._save_circuits(circuit, isa_circuit, workflow_path)
+
         # Submit to QPU
         logger.info("Submitting job to QPU...")
         job_id = self._submit_to_qpu(isa_circuit)
@@ -354,6 +358,47 @@ class SQDSolver(BaseSolver):
         logger.info(f"Circuit depth: {isa_circuit.depth()}")
 
         return isa_circuit
+
+    def _save_circuits(self, circuit: Any, isa_circuit: Any, workflow_path: Path) -> None:
+        """Save abstract and ISA circuits to disk in QPY format.
+
+        Files written (only when circuit_save_dir is set in config):
+            <circuit_save_dir>/circuit_abstract.qpy  — pre-transpile LUCJ circuit
+            <circuit_save_dir>/circuit_isa.qpy        — post-transpile ISA circuit
+
+        The save directory is resolved relative to workflow_path so each fragment
+        gets its own sub-folder when running multi-fragment EWF workflows.
+
+        Args:
+            circuit: Abstract LUCJ circuit (pre-transpile)
+            isa_circuit: Transpiled ISA circuit (post-transpile)
+            workflow_path: Per-fragment working directory (checkpoints live here)
+        """
+        save_dir_name = self.circuit_save_dir
+        if not save_dir_name:
+            return
+
+        try:
+            from qiskit.qpy import dump as qpy_dump
+        except ImportError:
+            logger.warning("qiskit.qpy not available — skipping circuit save")
+            return
+
+        save_dir = workflow_path / save_dir_name
+        save_dir.mkdir(parents=True, exist_ok=True)
+
+        abstract_path = save_dir / "circuit_abstract.qpy"
+        isa_path = save_dir / "circuit_isa.qpy"
+
+        with open(abstract_path, "wb") as f:
+            qpy_dump(circuit, f)
+        logger.info(f"Abstract circuit saved: {abstract_path}")
+
+        with open(isa_path, "wb") as f:
+            qpy_dump(isa_circuit, f)
+        logger.info(f"ISA circuit saved: {isa_path}")
+
+        print(f"  Circuits saved to: {save_dir}", flush=True)
 
     def _submit_to_qpu(self, circuit: Any) -> str:
         """Submit circuit to QPU and return job ID.

@@ -1,0 +1,85 @@
+# Alanine / STO-3G  EWF+SQD demo configuration
+#
+# All molecular and algorithmic parameters are set here.
+# QPU credentials are NOT stored in this file — they are injected via
+# environment variables by run_workflow.sh (sourced from .qrmi_config on the
+# shared filesystem). See README.md for details.
+
+# ============================================================================
+# Workflow / Molecule
+# ============================================================================
+workflow:
+  xyz_file: system.xyz        # path relative to this config file
+  basis: sto-3g               # basis set — change here to affect all 4 stages
+
+# ============================================================================
+# Embedder Configuration
+# ============================================================================
+embedder:
+  ewf:
+    bath_type: mp2            # bath orbital type: mp2 | dmet | full
+    truncation: 1.0e-5        # bath orbital truncation threshold
+    fragmentation: iao        # fragmentation scheme: iao | atomic
+
+# ============================================================================
+# Solver Selection
+# ============================================================================
+# strategy: adaptive — FCI for small fragments, SQD for larger ones
+# strategy: sqd_all  — SQD for every fragment unconditionally
+#
+# orbital_threshold controls the FCI/SQD boundary when strategy=adaptive.
+# Fragments with n_orbitals < orbital_threshold use FCI; others use SQD.
+solver_selection:
+  strategy: adaptive
+  orbital_threshold: 15       # fragments with n_orbitals < 15 → FCI
+
+# ============================================================================
+# QPU Configuration
+# ============================================================================
+qpu:
+  provider: qrmi
+  backend_name: ibm_pittsburgh   # must match QRMI_JOB_QPU_RESOURCES in .qrmi_config
+
+  sampler_options:
+    default_shots: 1000
+
+# ============================================================================
+# SQD Solver Configuration
+# ============================================================================
+sqd:
+  # LUCJ ansatz parameters
+  lucj:
+    n_reps: 1
+    max_connection: 12
+    connect_every_n: 4
+
+  # Transpilation options
+  transpilation:
+    optimization_level: 0
+    seed_transpiler: 42
+
+  # SQD algorithm parameters
+  # classical_backend: python uses stock qiskit-addon-sqd
+  #                    hpc     uses C++ SBD bindings (recommended on HPC)
+  classical_backend: hpc
+  symmetrize_spin: true
+  n_batches: 1
+  iterations: 3
+  samples_per_batch: 200
+  energy_tol: 1.0e-8
+  occupancies_tol: 1.0e-5
+  carryover_threshold: 1.0e-4
+  add_hf_string: true
+
+  # SBD solver options
+  # exe_path: /opt/executable/diag is baked into the container image (v3.0+).
+  #           Falls back to /workspace/executable/diag if running with an older image.
+  sbd:
+    exe_path: /opt/executable/diag
+    cpus_per_batch: 8
+
+  # Circuit persistence
+  # Both the abstract (pre-transpile) and ISA (post-transpile) circuits are saved
+  # in QPY format under this directory, one sub-folder per fragment.
+  # Set to null or remove this key to skip circuit saving.
+  circuit_save_dir: circuits
