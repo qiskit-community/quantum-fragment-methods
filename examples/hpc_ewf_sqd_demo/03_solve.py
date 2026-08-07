@@ -32,7 +32,6 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 
-from quantum_fragment_methods.application.embedding import EWF
 from quantum_fragment_methods.application.embedding.base import EmbeddingResult, Fragment
 from quantum_fragment_methods.application.solvers.classical_zoo.fci import FCI
 from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import SQDSolver
@@ -134,10 +133,10 @@ mf.e_tot = mf_data["hf_energy"]
 mf.converged = True
 
 # ---------------------------------------------------------------------------
-# Reconstruct EmbeddingResult from saved metadata
-# Vayesta objects are not serializable, so we rebuild Fragment shells here.
-# The dumpfile (HDF5) written in step 2 remains on disk and is read by
-# QFWorkflow.solve_fragments() to extract cluster Hamiltonians.
+# Reconstruct EmbeddingResult directly from saved pkl metadata.
+# Step 2 already ran the full Vayesta EWF kernel and wrote the HDF5 dumpfile.
+# There is no need to re-run EWF here — we just restore the Fragment objects
+# from the serialised metadata so the solve loop below can look up n_orbitals.
 # ---------------------------------------------------------------------------
 fragment_meta = emb_data["fragment_meta"]
 
@@ -148,21 +147,16 @@ for frag_id, meta in fragment_meta.items():
         atom_indices=meta["atom_indices"],
         orbital_indices=meta["orbital_indices"],
         n_electrons=meta["n_electrons"],
-        metadata={},   # vayesta_fragment filled in after re-running EWF below
+        metadata={},
     )
     fragments[frag_id] = frag
 
-# Re-run EWF on the existing dumpfile so we get live Vayesta fragment objects.
-# Pass the dumpfile explicitly so Vayesta reads/appends rather than creating a new one.
-print("\nRebuilding Vayesta EWF object (reading existing dumpfile)...")
-ewf_embedder = EWF(
-    bath_type=emb_data["bath_type"],
-    truncation=emb_data["truncation"],
-    dumpfile=emb_data["dumpfile"],
+embedding_result = EmbeddingResult(
+    fragments=fragments,
+    mean_field_energy=mf_data["hf_energy"],
+    metadata={"dumpfile": emb_data["dumpfile"]},
 )
-embedding_result = ewf_embedder.create_fragments(
-    mf, fragmentation=emb_data["fragmentation"]
-)
+print(f"Reconstructed {len(fragments)} fragments from pkl (no Vayesta re-kernel).")
 
 # ---------------------------------------------------------------------------
 # Determine whether any fragment needs SQD (requires QRMI credentials).
@@ -189,11 +183,13 @@ else:
 # Build QFWorkflow with solver rules, then solve fragments
 # ---------------------------------------------------------------------------
 from quantum_fragment_methods.workflow import QFWorkflow
+from quantum_fragment_methods.application.embedding import EWF
 
+_embedder_stub = EWF(bath_type=emb_data["bath_type"], truncation=emb_data["truncation"])
 workflow = QFWorkflow(
     geometry=emb_data["xyz_path"],
     basis=emb_data["basis"],
-    embedder=ewf_embedder,
+    embedder=_embedder_stub,
 )
 # Inject the already-computed embedding result so workflow skips mean-field + fragmentation
 workflow.mf = mf

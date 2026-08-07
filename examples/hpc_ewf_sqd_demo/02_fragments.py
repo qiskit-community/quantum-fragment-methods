@@ -109,7 +109,15 @@ print(f"\nRunning EWF fragmentation ({fragmentation} scheme)...")
 print(f"  Fragments to build: {mol.natm} (one per atom, IAO scheme)")
 sys.stdout.flush()
 
-ewf_embedder = EWF(bath_type=bath_type, truncation=truncation)
+# Write the HDF5 dumpfile to the persistent data directory (GPFS), NOT /tmp.
+# /tmp is local to each compute node and is lost when the job ends — any
+# downstream step running on a different node (or a resubmission) would not
+# find the file.  Placing it on GPFS makes it durable across job boundaries.
+output_dir = Path(args.output_dir)
+output_dir.mkdir(parents=True, exist_ok=True)
+dumpfile_path = str(output_dir / "ewf_dumpfile.h5")
+
+ewf_embedder = EWF(bath_type=bath_type, truncation=truncation, dumpfile=dumpfile_path)
 embedding_result = ewf_embedder.create_fragments(mf, fragmentation=fragmentation)
 
 fragments = embedding_result.fragments
@@ -127,8 +135,6 @@ for frag_id, frag in fragments.items():
 # ---------------------------------------------------------------------------
 # Save embedding metadata
 # ---------------------------------------------------------------------------
-output_dir = Path(args.output_dir)
-output_dir.mkdir(parents=True, exist_ok=True)
 
 # Serialize only the lightweight metadata — not the live Vayesta objects.
 # 04_reconstruct.py will re-run create_fragments on the existing dumpfile to

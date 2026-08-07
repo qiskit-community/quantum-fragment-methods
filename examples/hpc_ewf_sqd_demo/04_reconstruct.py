@@ -98,25 +98,43 @@ mf.e_tot = hf_energy
 mf.converged = True
 
 # ---------------------------------------------------------------------------
-# Re-build Vayesta EWF object
-# EWF.reconstruct_energy() requires a live Vayesta EWF object (to call
-# mf.get_ovlp() and mf.get_fock()).  Pass the existing dumpfile so Vayesta
-# reads cluster data from disk instead of recomputing it.
+# Build EmbeddingResult directly from pkl — no Vayesta re-kernel needed.
+# reconstruct_energy() only needs vayesta_ewf.mf for get_ovlp()/get_fock(),
+# which we already have from the pkl.  Inject a lightweight shim.
 # ---------------------------------------------------------------------------
-print("\nRebuilding Vayesta EWF object for energy reconstruction...")
-ewf_embedder = EWF(
-    bath_type=emb_data["bath_type"],
-    truncation=emb_data["truncation"],
-    dumpfile=emb_data["dumpfile"],
+from quantum_fragment_methods.application.embedding.base import EmbeddingResult, Fragment
+
+fragment_meta = emb_data["fragment_meta"]
+fragments = {}
+for frag_id, meta in fragment_meta.items():
+    fragments[frag_id] = Fragment(
+        fragment_id=frag_id,
+        atom_indices=meta["atom_indices"],
+        orbital_indices=meta["orbital_indices"],
+        n_electrons=meta["n_electrons"],
+        metadata={},
+    )
+
+class _VayestaShim:
+    """Minimal shim so EWF.reconstruct_energy() can call self.mf.get_ovlp/get_fock."""
+    def __init__(self, mf):
+        self.mf = mf
+
+embedding_result = EmbeddingResult(
+    fragments=fragments,
+    mean_field_energy=hf_energy,
+    metadata={
+        "dumpfile": emb_data["dumpfile"],
+        "vayesta_ewf": _VayestaShim(mf),
+    },
 )
-embedding_result = ewf_embedder.create_fragments(
-    mf, fragmentation=emb_data["fragmentation"]
-)
+print(f"Reconstructed {len(fragments)} fragments from pkl (no Vayesta re-kernel).")
 
 # ---------------------------------------------------------------------------
 # Reconstruct total energy
 # ---------------------------------------------------------------------------
 print("\nRunning partitioned cumulant energy reconstruction...")
+ewf_embedder = EWF(bath_type=emb_data["bath_type"], truncation=emb_data["truncation"])
 workflow = QFWorkflow(
     geometry=emb_data["xyz_path"],
     basis=emb_data["basis"],
