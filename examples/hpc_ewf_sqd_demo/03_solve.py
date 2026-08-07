@@ -34,8 +34,6 @@ logging.basicConfig(
 
 from quantum_fragment_methods.application.embedding.base import EmbeddingResult, Fragment
 from quantum_fragment_methods.application.solvers.classical_zoo.fci import FCI
-from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import SQDSolver
-from quantum_fragment_methods.qpu import QRMIBackend
 
 # ---------------------------------------------------------------------------
 # Args
@@ -170,6 +168,10 @@ n_sqd_fragments = sum(
 
 backend = None
 if n_sqd_fragments > 0:
+    # Defer QPU imports to here — qiskit_ibm_runtime does network/SSL work on
+    # import that hangs the job in FCI-only (trial) mode.
+    from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import SQDSolver
+    from quantum_fragment_methods.qpu import QRMIBackend
     print(f"\nInitializing QRMI backend ({n_sqd_fragments} SQD fragments)...")
     backend = QRMIBackend(qpu_config)
     backend.initialize()
