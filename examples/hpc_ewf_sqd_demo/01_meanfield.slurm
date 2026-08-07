@@ -13,20 +13,32 @@
 
 set -euo pipefail
 
-DEMO_DIR=/workspace/quantum-fragment-methods/examples/hpc_ewf_sqd_demo
+# Pyxis does not forward image-baked ENV into the job environment automatically.
+# Re-declare PYTHONPATH so /workspace/quantum_fragment_methods (live GPFS copy)
+# takes precedence over the baked-in /opt copy.
+export PYTHONPATH=/workspace${PYTHONPATH:+:$PYTHONPATH}
+
+source /opt/conda/etc/profile.d/conda.sh
+conda activate qfrag-env
+
+export CUPY_CACHE_DIR=/tmp/cupy_cache
+mkdir -p $CUPY_CACHE_DIR
+
+DEMO_DIR=/workspace/examples/hpc_ewf_sqd_demo
+
+# Use trial config if set by trial_run.sh, otherwise use the production config
+CONFIG="${QFM_TRIAL_CONFIG:-$DEMO_DIR/config_alanine_sto-3g.yaml}"
 
 echo "============================================================"
 echo "Step 1: Mean-Field Calculation (Hartree-Fock)"
 echo "Job ID:  $SLURM_JOB_ID"
 echo "Node:    $SLURMD_NODENAME"
+echo "Config:  $CONFIG"
 echo "Started: $(date)"
 echo "============================================================"
 
-mkdir -p "$DEMO_DIR/data"
-
 python "$DEMO_DIR/01_meanfield.py" \
-    --config "$DEMO_DIR/config_alanine_sto-3g.yaml" \
-    --output-dir "$DEMO_DIR/data"
+    --config "$CONFIG"
 
 echo "============================================================"
 echo "Step 1 complete: $(date)"

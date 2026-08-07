@@ -42,6 +42,7 @@ mkdir -p "$SCRIPT_DIR/logs" "$SCRIPT_DIR/data" "$SCRIPT_DIR/results"
 # Container mount and base env flags
 # ---------------------------------------------------------------------------
 MOUNT="$REPO_ROOT:/workspace"
+
 BASE_ENV="--container-env=NVIDIA_DRIVER_CAPABILITIES=compute,utility"
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,27 @@
+# Exclude large binary artifacts from the build context.
+# These are not needed inside the container image.
+*.tar
+*.sqsh
+*.log
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Dev / editor
+.git/
+.github/
+*.egg-info/
+dist/
+build/
+.venv/
+.env
+
+# Local config (never bake into image)
+.hpc_config
+push_v4.sh
+hpc-ewf-sqd-demo-plan.md

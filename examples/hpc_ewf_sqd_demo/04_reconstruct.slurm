@@ -13,19 +13,28 @@
 
 set -euo pipefail
 
-DEMO_DIR=/workspace/quantum-fragment-methods/examples/hpc_ewf_sqd_demo
+export PYTHONPATH=/workspace${PYTHONPATH:+:$PYTHONPATH}
+
+source /opt/conda/etc/profile.d/conda.sh
+conda activate qfrag-env
+
+export CUPY_CACHE_DIR=/tmp/cupy_cache
+mkdir -p $CUPY_CACHE_DIR
+
+DEMO_DIR=/workspace/examples/hpc_ewf_sqd_demo
+
+CONFIG="${QFM_TRIAL_CONFIG:-$DEMO_DIR/config_alanine_sto-3g.yaml}"
 
 echo "============================================================"
 echo "Step 4: Energy Reconstruction"
 echo "Job ID:  $SLURM_JOB_ID"
 echo "Node:    $SLURMD_NODENAME"
+echo "Config:  $CONFIG"
 echo "Started: $(date)"
 echo "============================================================"
 
 python "$DEMO_DIR/04_reconstruct.py" \
-    --config      "$DEMO_DIR/config_alanine_sto-3g.yaml" \
-    --data-dir    "$DEMO_DIR/data" \
-    --results-dir "$DEMO_DIR/results"
+    --config "$CONFIG"
 
 echo "============================================================"
 echo "Step 4 complete: $(date)"

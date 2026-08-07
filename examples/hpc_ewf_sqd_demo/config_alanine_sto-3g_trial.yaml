@@ -1,0 +1,77 @@
+# Alanine / STO-3G  — TRIAL RUN configuration
+#
+# This config is identical to config_alanine_sto-3g.yaml except:
+#   - solver_selection.orbital_threshold is set to 999 so ALL fragments
+#     are solved with FCI (no QPU submission).
+#   - sqd.circuit_save_dir is disabled (null) since no circuits are built.
+#
+# Use this to validate the full 4-stage pipeline (steps 1–4) end-to-end
+# without touching the QPU queue.  Once steps 1–2 pass and fragment sizes
+# are known, adjust orbital_threshold in config_alanine_sto-3g.yaml to the
+# desired FCI/SQD boundary before the production run.
+#
+# Usage:
+#   bash trial_run.sh
+
+# ============================================================================
+# Workflow / Molecule
+# ============================================================================
+workflow:
+  xyz_file: system.xyz
+  basis: sto-3g
+
+# ============================================================================
+# Embedder Configuration
+# ============================================================================
+embedder:
+  ewf:
+    bath_type: mp2
+    truncation: 1.0e-5
+    fragmentation: iao
+
+# ============================================================================
+# Solver Selection — FCI for ALL fragments (no QPU)
+# ============================================================================
+solver_selection:
+  strategy: adaptive
+  orbital_threshold: 999    # all fragments have n_orbitals < 999 → all use FCI
+
+# ============================================================================
+# QPU Configuration (unused in trial — kept for schema completeness)
+# ============================================================================
+qpu:
+  provider: qrmi
+  backend_name: ibm_pittsburgh
+
+  sampler_options:
+    default_shots: 1000
+
+# ============================================================================
+# SQD Solver Configuration (unused in trial)
+# ============================================================================
+sqd:
+  lucj:
+    n_reps: 1
+    max_connection: 12
+    connect_every_n: 4
+
+  transpilation:
+    optimization_level: 0
+    seed_transpiler: 42
+
+  classical_backend: hpc
+  symmetrize_spin: true
+  n_batches: 1
+  iterations: 3
+  samples_per_batch: 200
+  energy_tol: 1.0e-8
+  occupancies_tol: 1.0e-5
+  carryover_threshold: 1.0e-4
+  add_hf_string: true
+
+  sbd:
+    exe_path: /opt/executable/diag
+    cpus_per_batch: 8
+
+  # Circuit saving disabled for trial (no SQD circuits produced)
+  circuit_save_dir: null

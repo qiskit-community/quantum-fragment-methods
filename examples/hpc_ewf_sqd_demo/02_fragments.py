@@ -8,6 +8,8 @@ All embedder parameters (bath_type, truncation, fragmentation) are read from
 the config YAML. The dumpfile path (HDF5, written by Vayesta) is persisted in
 embedding_data.pkl so downstream steps can access cluster Hamiltonians.
 
+Outputs are namespaced under data/<run_name>/ derived from the config filename.
+
 Usage:
     python 02_fragments.py --config config_alanine_sto-3g.yaml
 """
@@ -24,17 +26,23 @@ from quantum_fragment_methods.application.embedding import EWF
 # ---------------------------------------------------------------------------
 # Args
 # ---------------------------------------------------------------------------
+_pre = argparse.ArgumentParser(add_help=False)
+_pre.add_argument("--config", required=True)
+_known, _ = _pre.parse_known_args()
+_run_name = Path(_known.config).stem.removeprefix("config_")
+_demo_dir = Path(__file__).parent
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--config", required=True, help="Path to config YAML")
 parser.add_argument(
     "--data-dir",
-    default="data",
-    help="Directory containing mf_data.pkl from step 1 (default: data/)",
+    default=str(_demo_dir / "data" / _run_name),
+    help=f"Directory containing mf_data.pkl from step 1 (default: <demo_dir>/data/{_run_name}/)",
 )
 parser.add_argument(
     "--output-dir",
-    default="data",
-    help="Directory to save embedding_data.pkl (default: data/)",
+    default=str(_demo_dir / "data" / _run_name),
+    help=f"Directory to save embedding_data.pkl (default: <demo_dir>/data/{_run_name}/)",
 )
 args = parser.parse_args()
 
@@ -81,7 +89,7 @@ mol = gto.Mole()
 mol.atom = atom_data
 mol.unit = "Angstrom"
 mol.basis = basis
-mol.verbose = 0
+mol.verbose = 4   # Vayesta inherits mol.verbose — set to 4 for per-fragment progress
 mol.build()
 
 mf = scf.RHF(mol).density_fit()
@@ -96,7 +104,10 @@ print(f"\nReconstructed PySCF mol: {mol.natm} atoms, {mol.nao} AOs")
 # ---------------------------------------------------------------------------
 # Run EWF fragmentation
 # ---------------------------------------------------------------------------
+import sys
 print(f"\nRunning EWF fragmentation ({fragmentation} scheme)...")
+print(f"  Fragments to build: {mol.natm} (one per atom, IAO scheme)")
+sys.stdout.flush()
 
 ewf_embedder = EWF(bath_type=bath_type, truncation=truncation)
 embedding_result = ewf_embedder.create_fragments(mf, fragmentation=fragmentation)

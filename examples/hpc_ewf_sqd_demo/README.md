@@ -143,7 +143,7 @@ rsync -avP --partial qfm-hpc-py312-v3.tar \
 ### 3. Convert tar → sqsh on a compute node
 
 ```bash
-srun --partition=$SLURM_PARTITION --time=01:00:00 --cpus-per-task=4 --mem=32G --pty bash
+srun --partition=$SLURM_PARTITION --time=01:00:00 --cpus-per-task=4 --mem=64G --pty bash
 
 # IBM SCC:
 /gpfs/scc6000/setup/scripts/docker-tar-to-sqsh.sh \

@@ -8,6 +8,8 @@ cumulant energy formula) and calls EWF.reconstruct_energy().
 Saves a JSON summary with HF energy, total EWF+SQD energy, and per-fragment
 correlation energies.
 
+Outputs are namespaced under results/<run_name>/ derived from the config filename.
+
 Usage:
     python 04_reconstruct.py --config config_alanine_sto-3g.yaml
 """
@@ -26,17 +28,23 @@ from quantum_fragment_methods.workflow import QFWorkflow
 # ---------------------------------------------------------------------------
 # Args
 # ---------------------------------------------------------------------------
+_pre = argparse.ArgumentParser(add_help=False)
+_pre.add_argument("--config", required=True)
+_known, _ = _pre.parse_known_args()
+_run_name = Path(_known.config).stem.removeprefix("config_")
+_demo_dir = Path(__file__).parent
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--config", required=True, help="Path to config YAML")
 parser.add_argument(
     "--data-dir",
-    default="data",
-    help="Directory containing pkl files from steps 1–3 (default: data/)",
+    default=str(_demo_dir / "data" / _run_name),
+    help=f"Directory containing pkl files from steps 1–3 (default: <demo_dir>/data/{_run_name}/)",
 )
 parser.add_argument(
     "--results-dir",
-    default="results",
-    help="Directory to save summary.json (default: results/)",
+    default=str(_demo_dir / "results" / _run_name),
+    help=f"Directory to save summary.json (default: <demo_dir>/results/{_run_name}/)",
 )
 args = parser.parse_args()
 

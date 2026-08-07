@@ -147,42 +147,31 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
     pip install --no-cache-dir qiskit-addon-sqd==0.12.1"
 
-# Install Fulqrum (Full Quantum Resource Utilization Manager)
-# CRITICAL: Must clone with --recurse-submodules to get qiskit-addon-sqd-hpc as a Git submodule
-# NOTE: Cloned to /opt/fulqrum, NOT /workspace — the /workspace mount point is overridden
-#       at runtime by the Pyxis bind-mount of the GPFS repo directory, so anything baked
-#       into /workspace during image build will be shadowed and unreachable on the cluster.
-RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
-    conda activate qfrag-env && \
-    git clone --recurse-submodules https://github.com/qiskit-community/fulqrum.git /opt/fulqrum && \
-    cd /opt/fulqrum && \
-    pip install . && \
-    pip install -e /opt/fulqrum/qiskit-addon-sqd-hpc"
-
-# Install block2 from preview repository (x86_64 wheel)
-RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
-    conda activate qfrag-env && \
-    pip install --no-cache-dir block2 --extra-index-url=https://block-hczhai.github.io/block2-preview/pypi/"
-# Install high-priority additional libraries (commented out for current build)
-# Uncomment to include in future builds:
-# RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
-#     conda activate qfrag-env && \
-#     pip install --no-cache-dir \
-#         basis-set-exchange \
-#         ase \
-#         mpi4py \
-#         tqdm \
-#         py3Dmol"
-
-
 # ============================================================================
 # PHASE 6: Clone and Install Vayesta
+# Placed BEFORE Fulqrum so a Fulqrum build failure cannot block Vayesta.
 # NOTE: Cloned to /opt/Vayesta — NOT /workspace (see Fulqrum note above).
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
     git clone https://github.com/BoothGroup/Vayesta.git /opt/Vayesta && \
     cd /opt/Vayesta && \
     pip install --no-build-isolation --no-deps ."
+
+# Install Fulqrum (Full Quantum Resource Utilization Manager)
+# NOTE: Cloned to /opt/fulqrum, NOT /workspace (see Fulqrum note above).
+# The qiskit-addon-sqd-hpc submodule ships no pyproject.toml in the checked-out
+# commit, so we only install the top-level fulqrum package and skip the submodule
+# pip install.  The submodule sources are still present on disk for reference.
+RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
+    conda activate qfrag-env && \
+    git clone --recurse-submodules https://github.com/qiskit-community/fulqrum.git /opt/fulqrum && \
+    cd /opt/fulqrum && \
+    pip install ."
+
+# Install block2 from preview repository (x86_64 wheel)
+RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
+    conda activate qfrag-env && \
+    pip install --no-cache-dir block2 --extra-index-url=https://block-hczhai.github.io/block2-preview/pypi/"
 
 # ============================================================================
 # PHASE 7: Clone and install PyCI

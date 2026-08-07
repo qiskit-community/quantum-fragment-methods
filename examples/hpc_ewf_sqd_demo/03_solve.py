@@ -10,6 +10,9 @@ without resubmitting to the QPU.  Pass --force-resubmit to clear checkpoints.
 
 Circuits are saved to disk (QPY format) if sqd.circuit_save_dir is set in config.
 
+Outputs are namespaced under data/<run_name>/ and results/<run_name>/ derived from
+the config filename (e.g. config_alanine_sto-3g.yaml → alanine_sto-3g).
+
 Usage:
     python 03_solve.py --config config_alanine_sto-3g.yaml --wait
     python 03_solve.py --config config_alanine_sto-3g.yaml --force-resubmit
@@ -38,22 +41,28 @@ from quantum_fragment_methods.qpu import QRMIBackend
 # ---------------------------------------------------------------------------
 # Args
 # ---------------------------------------------------------------------------
+_pre = argparse.ArgumentParser(add_help=False)
+_pre.add_argument("--config", required=True)
+_known, _ = _pre.parse_known_args()
+_run_name = Path(_known.config).stem.removeprefix("config_")
+_demo_dir = Path(__file__).parent
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--config", required=True, help="Path to config YAML")
 parser.add_argument(
     "--data-dir",
-    default="data",
-    help="Directory containing mf_data.pkl and embedding_data.pkl (default: data/)",
+    default=str(_demo_dir / "data" / _run_name),
+    help=f"Directory containing mf_data.pkl and embedding_data.pkl (default: <demo_dir>/data/{_run_name}/)",
 )
 parser.add_argument(
     "--output-dir",
-    default="data",
-    help="Directory to save solver_results.pkl (default: data/)",
+    default=str(_demo_dir / "data" / _run_name),
+    help=f"Directory to save solver_results.pkl (default: <demo_dir>/data/{_run_name}/)",
 )
 parser.add_argument(
     "--results-dir",
-    default="results",
-    help="Base directory for SQD workflow checkpoints and circuit files (default: results/)",
+    default=str(_demo_dir / "results" / _run_name),
+    help=f"Base directory for SQD workflow checkpoints and circuit files (default: <demo_dir>/results/{_run_name}/)",
 )
 parser.add_argument(
     "--force-resubmit",
@@ -156,15 +165,25 @@ embedding_result = ewf_embedder.create_fragments(
 )
 
 # ---------------------------------------------------------------------------
-# Initialize QRMI backend (credentials from env vars — no secrets here)
+# Determine whether any fragment needs SQD (requires QRMI credentials).
+# In adaptive mode with orbital_threshold=999, every fragment uses FCI and
+# the QPU backend is never needed — skip initialization entirely.
 # ---------------------------------------------------------------------------
-print("\nInitializing QRMI backend...")
-backend = QRMIBackend(qpu_config)
-backend.initialize()
-backend.get_backend()
+n_sqd_fragments = sum(
+    1 for frag in embedding_result.fragments.values()
+    if strategy != "adaptive" or frag.n_orbitals >= orbital_threshold
+)
 
-props = backend.get_backend_properties()
-print(f"QRMI resource: {props['backend_name']} ({props['resource_type']})")
+backend = None
+if n_sqd_fragments > 0:
+    print(f"\nInitializing QRMI backend ({n_sqd_fragments} SQD fragments)...")
+    backend = QRMIBackend(qpu_config)
+    backend.initialize()
+    backend.get_backend()
+    props = backend.get_backend_properties()
+    print(f"QRMI resource: {props['backend_name']} ({props['resource_type']})")
+else:
+    print(f"\nAll {len(embedding_result.fragments)} fragments use FCI — skipping QRMI init.")
 
 # ---------------------------------------------------------------------------
 # Build QFWorkflow with solver rules, then solve fragments
@@ -192,21 +211,22 @@ if strategy == "adaptive":
         priority=10,
     )
 
-# Solver rule: SQD for remaining fragments (or all, if sqd_all)
-def _make_sqd_solver(frag):
-    """Create an SQDSolver with a fragment-specific workflow path."""
-    frag_results_dir = results_base / f"fragment_{frag.fragment_id}"
-    frag_results_dir.mkdir(parents=True, exist_ok=True)
-    solver = SQDSolver(backend, config=sqd_config)
-    # Bind the per-fragment path so checkpoints/circuits land in separate dirs
-    solver._fragment_workflow_path = frag_results_dir
-    return solver
+# Solver rule: SQD for remaining fragments (or all, if sqd_all).
+# Only registered when a backend was initialized.
+if backend is not None:
+    def _make_sqd_solver(frag):
+        """Create an SQDSolver with a fragment-specific workflow path."""
+        frag_results_dir = results_base / f"fragment_{frag.fragment_id}"
+        frag_results_dir.mkdir(parents=True, exist_ok=True)
+        solver = SQDSolver(backend, config=sqd_config)
+        solver._fragment_workflow_path = frag_results_dir
+        return solver
 
-workflow.add_solver_rule(
-    solver_factory=_make_sqd_solver,
-    condition=None,   # fallback: applies to all fragments not matched above
-    priority=0,
-)
+    workflow.add_solver_rule(
+        solver_factory=_make_sqd_solver,
+        condition=None,
+        priority=0,
+    )
 
 # ---------------------------------------------------------------------------
 # Solve all fragments

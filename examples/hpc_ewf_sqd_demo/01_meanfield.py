@@ -2,7 +2,8 @@
 Step 1: Hartree-Fock mean-field calculation on the alanine molecule.
 
 Reads all parameters (basis set, XYZ file) from the config YAML.
-Saves mf_data.pkl for use by 02_fragments.py.
+Saves mf_data.pkl under data/<run_name>/ where run_name is derived from the
+config filename stem (e.g. config_alanine_sto-3g.yaml → alanine_sto-3g).
 
 Usage:
     python 01_meanfield.py --config config_alanine_sto-3g.yaml
@@ -20,6 +21,14 @@ from quantum_fragment_methods.workflow import QFWorkflow
 # ---------------------------------------------------------------------------
 # Args
 # ---------------------------------------------------------------------------
+# Parse config first so we can derive run_name for default paths.
+_pre = argparse.ArgumentParser(add_help=False)
+_pre.add_argument("--config", required=True)
+_known, _ = _pre.parse_known_args()
+_run_name = Path(_known.config).stem.removeprefix("config_")
+# Anchor defaults to the script's directory so they work regardless of CWD.
+_demo_dir = Path(__file__).parent
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--config", required=True, help="Path to config YAML")
 parser.add_argument(
@@ -28,7 +37,9 @@ parser.add_argument(
     help="Override XYZ file path (default: workflow.xyz_file from config)",
 )
 parser.add_argument(
-    "--output-dir", default="data", help="Directory to save mf_data.pkl (default: data/)"
+    "--output-dir",
+    default=str(_demo_dir / "data" / _run_name),
+    help=f"Directory to save mf_data.pkl (default: <demo_dir>/data/{_run_name}/)",
 )
 args = parser.parse_args()
 
