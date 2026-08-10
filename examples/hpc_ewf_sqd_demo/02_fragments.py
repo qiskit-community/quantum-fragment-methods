@@ -126,11 +126,12 @@ n_fragments = len(fragments)
 
 print(f"\nFragmentation complete: {n_fragments} fragments")
 print(f"  Dumpfile: {dumpfile}")
-print(f"\n{'Frag':>5}  {'n_orb':>6}  {'n_elec':>7}  {'atoms'}")
-print("-" * 40)
+print(f"\n{'Frag':>5}  {'n_orb':>6}  {'n_bath':>7}  {'n_elec':>7}  {'atoms'}")
+print("-" * 50)
 for frag_id, frag in fragments.items():
     atoms = frag.atom_indices
-    print(f"  {frag_id:>3}  {frag.n_orbitals:>6}  {frag.n_electrons:>7}  {atoms}")
+    n_bath = frag.metadata.get("bath_orbitals", "?")
+    print(f"  {frag_id:>3}  {frag.n_orbitals:>6}  {str(n_bath):>7}  {frag.n_electrons:>7.3f}  {atoms}")
 
 # ---------------------------------------------------------------------------
 # Save embedding metadata
@@ -142,6 +143,9 @@ for frag_id, frag in fragments.items():
 fragment_meta = {
     frag_id: {
         "n_orbitals": frag.n_orbitals,
+        "n_bath_orbitals": frag.metadata.get("bath_orbitals"),
+        "n_frag_orbitals": (frag.n_orbitals - frag.metadata["bath_orbitals"])
+                           if isinstance(frag.metadata.get("bath_orbitals"), int) else None,
         "n_electrons": frag.n_electrons,
         "atom_indices": frag.atom_indices,
         "orbital_indices": frag.orbital_indices,

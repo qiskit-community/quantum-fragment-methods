@@ -279,6 +279,8 @@ def _patched_solve_fragments():
 
     dumpfile = embedding_result.metadata.get("dumpfile")
 
+    timings = {}
+
     for frag_id, frag in embedding_result.fragments.items():
         solver = solvers[frag_id]
         print(f"\nSolving fragment {frag_id} with {solver.name}...")
@@ -290,6 +292,9 @@ def _patched_solve_fragments():
             h2e = frag_group["eris"][:]
             norb = int(frag_group.attrs["norb"])
             nocc = int(frag_group.attrs["nocc"])
+
+        import time as _time
+        _t0 = _time.time()
 
         if solver.name == "SQD":
             frag_path = getattr(solver, "_fragment_workflow_path", results_base / f"fragment_{frag_id}")
@@ -304,6 +309,8 @@ def _patched_solve_fragments():
         else:
             result = solver.solve_from_integrals(h1e, h2e, norb, nocc, compute_rdms=True)
 
+        timings[frag_id] = _time.time() - _t0
+
         # Attach c_frag / c_cluster for energy reconstruction
         with h5py.File(dumpfile, "r") as hf:
             frag_key = f"fragment_{int(frag_id)}"
@@ -316,25 +323,60 @@ def _patched_solve_fragments():
             result.metadata["nocc"] = nocc
 
         if "e_corr" in result.metadata:
-            print(f"  Fragment {frag_id} correlation energy: {result.metadata['e_corr']:.8f} Ha")
+            print(f"  Fragment {frag_id} correlation energy: {result.metadata['e_corr']:.8f} Ha  ({timings[frag_id]:.1f}s)")
         else:
-            print(f"  Fragment {frag_id} energy: {result.energy:.8f} Ha")
+            print(f"  Fragment {frag_id} energy: {result.energy:.8f} Ha  ({timings[frag_id]:.1f}s)")
 
         fragment_results[frag_id] = result
 
-    return fragment_results
+    return fragment_results, timings
 
-fragment_results = _patched_solve_fragments()
+fragment_results, fragment_timings = _patched_solve_fragments()
 
 # ---------------------------------------------------------------------------
 # Save solver results
 # ---------------------------------------------------------------------------
+import numpy as np
+
 output_dir = Path(args.output_dir)
 output_dir.mkdir(parents=True, exist_ok=True)
 
 output_file = output_dir / "solver_results.pkl"
 with open(output_file, "wb") as f:
     pickle.dump(fragment_results, f)
+
+# Save per-fragment RDMs, NOONs, and timing as flat files for easy
+# post-processing without unpickling the full result dict.
+rdm_dir = output_dir / "rdms"
+rdm_dir.mkdir(parents=True, exist_ok=True)
+
+import json as _json
+
+timing_data = {}
+for frag_id, result in fragment_results.items():
+    # RDMs
+    if result.rdm1 is not None:
+        np.save(rdm_dir / f"fragment_{frag_id}_rdm1.npy", result.rdm1)
+    if result.rdm2 is not None:
+        np.save(rdm_dir / f"fragment_{frag_id}_rdm2.npy", result.rdm2)
+    # NOONs (natural orbital occupation numbers) — eigenvalues of rdm1
+    # Values near 0.5 indicate strong correlation (good SQD candidates)
+    if result.rdm1 is not None:
+        noons = np.sort(np.linalg.eigvalsh(result.rdm1))[::-1]
+        np.save(rdm_dir / f"fragment_{frag_id}_noons.npy", noons)
+    # Timing
+    timing_data[str(frag_id)] = {
+        "solver": "SQD" if (backend is not None and frag_id in fragment_timings) else
+                  ("FCI" if embedding_result.fragments[frag_id].n_orbitals < orbital_threshold else "CCSD"),
+        "wall_time_s": round(fragment_timings.get(frag_id, 0.0), 3),
+        "n_orbitals": embedding_result.fragments[frag_id].n_orbitals,
+    }
+
+with open(output_dir / "timing.json", "w") as _f:
+    _json.dump(timing_data, _f, indent=2)
+
+print(f"Saved RDMs + NOONs to: {rdm_dir}/")
+print(f"Saved timing to:       {output_dir}/timing.json")
 
 print(f"\n{'=' * 60}")
 print(f"All fragments solved.")
