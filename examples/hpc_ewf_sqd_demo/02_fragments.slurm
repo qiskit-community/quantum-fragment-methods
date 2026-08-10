@@ -33,7 +33,7 @@ echo "Config:  $CONFIG"
 echo "Started: $(date)"
 echo "============================================================"
 
-python "$DEMO_DIR/02_fragments.py" \
+python -u "$DEMO_DIR/02_fragments.py" \
     --config "$CONFIG"
 
 echo "============================================================"

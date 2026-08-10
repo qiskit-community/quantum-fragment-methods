@@ -37,7 +37,7 @@ echo "Config:  $CONFIG"
 echo "Started: $(date)"
 echo "============================================================"
 
-python "$DEMO_DIR/01_meanfield.py" \
+python -u "$DEMO_DIR/01_meanfield.py" \
     --config "$CONFIG"
 
 echo "============================================================"

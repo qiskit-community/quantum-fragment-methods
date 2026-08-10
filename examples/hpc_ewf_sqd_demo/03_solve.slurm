@@ -34,7 +34,7 @@ echo "Config:  $CONFIG"
 echo "Started: $(date)"
 echo "============================================================"
 
-python "$DEMO_DIR/03_solve.py" \
+python -u "$DEMO_DIR/03_solve.py" \
     --config "$CONFIG" \
     --wait \
     --max-wait-time 14400
