@@ -34,6 +34,21 @@ echo "Config:  $CONFIG"
 echo "Started: $(date)"
 echo "============================================================"
 
+echo "[$(date +%T)] Probing imports..."
+python -u -c "
+import time, sys
+t = time.time()
+def ck(lbl):
+    print(f'  {lbl}: {time.time()-t:.1f}s', flush=True)
+import yaml; ck('yaml')
+from pyscf import gto, scf; ck('pyscf')
+from quantum_fragment_methods.application.embedding.base import EmbeddingResult, Fragment; ck('embedding.base')
+from quantum_fragment_methods.application.solvers.classical_zoo.fci import FCI; ck('fci')
+import pickle, h5py; ck('pickle+h5py')
+print('imports OK', flush=True)
+"
+echo "[$(date +%T)] Imports done. Starting solver..."
+
 python -u "$DEMO_DIR/03_solve.py" \
     --config "$CONFIG" \
     --wait \
