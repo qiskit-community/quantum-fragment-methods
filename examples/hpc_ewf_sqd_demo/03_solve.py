@@ -158,16 +158,23 @@ print(f"Reconstructed {len(fragments)} fragments from pkl (no Vayesta re-kernel)
 
 # ---------------------------------------------------------------------------
 # Determine whether any fragment needs SQD (requires QRMI credentials).
-# In adaptive mode with orbital_threshold=999, every fragment uses FCI and
-# the QPU backend is never needed — skip initialization entirely.
+# QRMI is only initialized when:
+#   1. At least one fragment exceeds orbital_threshold (would use SQD), AND
+#   2. QRMI_JOB_QPU_RESOURCES env var is set (i.e. a QPU resource was allocated)
+# In trial mode neither condition holds — large fragments fall back to CCSD.
 # ---------------------------------------------------------------------------
+import os
+
 n_sqd_fragments = sum(
     1 for frag in embedding_result.fragments.values()
     if strategy != "adaptive" or frag.n_orbitals >= orbital_threshold
 )
 
+qrmi_available = bool(os.environ.get("QRMI_JOB_QPU_RESOURCES") or
+                      os.environ.get("SLURM_JOB_QPU_RESOURCES"))
+
 backend = None
-if n_sqd_fragments > 0:
+if n_sqd_fragments > 0 and qrmi_available:
     # Defer QPU imports to here — qiskit_ibm_runtime does network/SSL work on
     # import that hangs the job in FCI-only (trial) mode.
     from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import SQDSolver
@@ -178,6 +185,9 @@ if n_sqd_fragments > 0:
     backend.get_backend()
     props = backend.get_backend_properties()
     print(f"QRMI resource: {props['backend_name']} ({props['resource_type']})")
+elif n_sqd_fragments > 0:
+    print(f"\n{n_sqd_fragments} fragment(s) exceed orbital_threshold but no QPU resource allocated.")
+    print(f"  → Large fragments will use CCSD fallback (trial mode).")
 else:
     print(f"\nAll {len(embedding_result.fragments)} fragments use FCI — skipping QRMI init.")
 
