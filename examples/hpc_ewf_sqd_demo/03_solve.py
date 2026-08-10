@@ -209,6 +209,17 @@ if strategy == "adaptive":
         priority=10,
     )
 
+# Solver rule: CCSD fallback for large fragments when no QPU backend is
+# available (trial mode).  Sits between FCI (priority 10) and SQD (priority 0)
+# so it only catches fragments that exceed orbital_threshold but have no backend.
+if backend is None and strategy == "adaptive":
+    from quantum_fragment_methods.application.solvers.classical_zoo.ccsd import CCSD
+    workflow.add_solver_rule(
+        solver_factory=lambda frag: CCSD(),
+        condition=lambda frag: frag.n_orbitals >= orbital_threshold,
+        priority=5,
+    )
+
 # Solver rule: SQD for remaining fragments (or all, if sqd_all).
 # Only registered when a backend was initialized.
 if backend is not None:
@@ -237,6 +248,8 @@ print("=" * 60)
 for frag_id, frag in embedding_result.fragments.items():
     if strategy == "adaptive" and frag.n_orbitals < orbital_threshold:
         solver_name = "FCI"
+    elif backend is None:
+        solver_name = "CCSD"
     else:
         solver_name = "SQD"
     print(f"  Fragment {frag_id}: n_orb={frag.n_orbitals}, n_elec={frag.n_electrons} → {solver_name}")
