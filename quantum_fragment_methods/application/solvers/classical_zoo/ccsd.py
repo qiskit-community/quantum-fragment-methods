@@ -159,13 +159,8 @@ class CCSD(BaseSolver):
         rdm1 = None
         rdm2 = None
         if compute_rdms:
-            try:
-                rdm1 = ccsd.make_rdm1()
-                rdm2 = ccsd.make_rdm2()
-            except Exception:
-                # Some CCSD implementations may not support RDM2
-                rdm1 = ccsd.make_rdm1()
-                rdm2 = None
+            rdm1 = ccsd.make_rdm1()
+            rdm2 = ccsd.make_rdm2()
 
         # Prepare metadata
         metadata = {

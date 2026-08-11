@@ -323,7 +323,8 @@ def _patched_solve_fragments():
             result.metadata["nocc"] = nocc
 
         if "e_corr" in result.metadata:
-            print(f"  Fragment {frag_id} correlation energy: {result.metadata['e_corr']:.8f} Ha  ({timings[frag_id]:.1f}s)")
+            print(f"  Fragment {frag_id} total energy: {result.energy:.8f} Ha  "
+                  f"(e_corr={result.metadata['e_corr']:.8f} Ha, {timings[frag_id]:.1f}s)")
         else:
             print(f"  Fragment {frag_id} energy: {result.energy:.8f} Ha  ({timings[frag_id]:.1f}s)")
 

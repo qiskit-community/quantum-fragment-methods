@@ -340,10 +340,15 @@ class EWF(BaseEmbedder):
             # Convert frag_id to int if needed
             frag_idx = int(frag_id) if isinstance(frag_id, str) else frag_id
 
-            # Check if result has RDMs (required for partitioned cumulant)
+            # RDMs are required for partitioned cumulant reconstruction.
+            # A missing RDM means the solver failed silently — raise rather
+            # than silently returning a wrong total energy.
             if result.rdm1 is None or result.rdm2 is None:
-                print(f"Warning: Fragment {frag_id} missing RDMs. Skipping energy contribution.")
-                continue
+                raise ValueError(
+                    f"Fragment {frag_id} is missing RDMs (rdm1={result.rdm1 is not None}, "
+                    f"rdm2={result.rdm2 is not None}). Cannot reconstruct energy. "
+                    f"Ensure compute_rdms=True was passed to the solver."
+                )
 
             # Load fragment data from HDF5
             try:
