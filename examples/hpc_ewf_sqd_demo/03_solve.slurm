@@ -2,8 +2,8 @@
 #SBATCH --job-name=ewf_03_solve
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=64G
+#SBATCH --cpus-per-task=192
+#SBATCH --mem=1800G
 #SBATCH --time=04:00:00
 #SBATCH --output=logs/03_solve_%j.out
 #SBATCH --error=logs/03_solve_%j.err
@@ -18,6 +18,10 @@ export PYTHONPATH=/workspace${PYTHONPATH:+:$PYTHONPATH}
 
 source /opt/conda/etc/profile.d/conda.sh
 conda activate qfrag-env
+
+# Use all allocated CPUs for PySCF FCI/CCSD parallelism
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+export MKL_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 export CUPY_CACHE_DIR=/tmp/cupy_cache
 mkdir -p $CUPY_CACHE_DIR
