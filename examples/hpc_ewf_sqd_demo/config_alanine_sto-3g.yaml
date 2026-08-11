@@ -61,7 +61,7 @@ sqd:
   # SQD algorithm parameters
   # classical_backend: python uses stock qiskit-addon-sqd
   #                    hpc     uses C++ SBD bindings (recommended on HPC)
-  classical_backend: hpc
+  classical_backend: python
   symmetrize_spin: true
   n_batches: 1
   iterations: 3
