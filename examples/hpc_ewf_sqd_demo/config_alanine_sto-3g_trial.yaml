@@ -34,7 +34,10 @@ embedder:
 # ============================================================================
 solver_selection:
   strategy: adaptive
-  orbital_threshold: 999    # all FCI — 1800G RAM + 192 CPUs allows full FCI on all 13 fragments
+  orbital_threshold: 15     # FCI for n_orb < 15 (hydrogen frags 6-12, 7-8 orb)
+                            # CCSD for n_orb >= 15 (heavy atom frags 0-5, 15-27 orb)
+                            # Fragment 3 @ 27 orb requires 2.15 PiB for FCI — physically impossible
+                            # In production these route to SQD on the QPU
 
 # ============================================================================
 # QPU Configuration (unused in trial — kept for schema completeness)
