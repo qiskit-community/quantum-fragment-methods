@@ -59,16 +59,15 @@ sqd:
     seed_transpiler: 42
 
   # SQD algorithm parameters
-  # classical_backend: python uses stock qiskit-addon-sqd
-  #                    hpc     uses C++ SBD bindings (recommended on HPC)
+  # classical_backend: python uses stock qiskit-addon-sqd; hpc uses C++ bindings
   classical_backend: python
   symmetrize_spin: true
-  n_batches: 1
-  iterations: 3
-  samples_per_batch: 200
-  energy_tol: 1.0e-8
-  occupancies_tol: 1.0e-5
-  carryover_threshold: 1.0e-4
+  n_batches: 5
+  iterations: 10
+  samples_per_batch: 3000
+  energy_tol: 1.e-8
+  occupancies_tol: 1.e-5
+  carryover_threshold: 1.e-4
   add_hf_string: true
 
   # SBD solver options
