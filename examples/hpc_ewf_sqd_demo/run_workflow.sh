@@ -81,7 +81,7 @@ JOB1=$(sbatch --parsable \
     --container-workdir=/workspace \
     $BASE_ENV \
     "$SCRIPT_DIR/01_meanfield.slurm")
-echo "Submitted step 1 (meanfield):    job $JOB1"
+echo "Submitted step 1 (meanfield):    job $JOB1  [$(date '+%Y-%m-%d %H:%M:%S')]"
 
 # ---------------------------------------------------------------------------
 # Submit job 2 — Fragment construction (no QRMI needed)
@@ -95,7 +95,7 @@ JOB2=$(sbatch --parsable \
     --container-workdir=/workspace \
     $BASE_ENV \
     "$SCRIPT_DIR/02_fragments.slurm")
-echo "Submitted step 2 (fragments):    job $JOB2 (depends on $JOB1)"
+echo "Submitted step 2 (fragments):    job $JOB2  [$(date '+%Y-%m-%d %H:%M:%S')] (depends on $JOB1)"
 
 # ---------------------------------------------------------------------------
 # Submit job 3 — Solve fragments (QRMI credentials injected)
@@ -110,7 +110,7 @@ JOB3=$(sbatch --parsable \
     $BASE_ENV \
     $QRMI_ENV_FLAGS \
     "$SCRIPT_DIR/03_solve.slurm")
-echo "Submitted step 3 (solve/QPU):    job $JOB3 (depends on $JOB2)"
+echo "Submitted step 3 (solve/QPU):    job $JOB3  [$(date '+%Y-%m-%d %H:%M:%S')] (depends on $JOB2)"
 
 # ---------------------------------------------------------------------------
 # Submit job 4 — Energy reconstruction (no QRMI needed)
@@ -124,15 +124,17 @@ JOB4=$(sbatch --parsable \
     --container-workdir=/workspace \
     $BASE_ENV \
     "$SCRIPT_DIR/04_reconstruct.slurm")
-echo "Submitted step 4 (reconstruct):  job $JOB4 (depends on $JOB3)"
+echo "Submitted step 4 (reconstruct):  job $JOB4  [$(date '+%Y-%m-%d %H:%M:%S')] (depends on $JOB3)"
 
 # ---------------------------------------------------------------------------
 # Summary
 # ---------------------------------------------------------------------------
 echo ""
 echo "Workflow submitted: $JOB1 → $JOB2 → $JOB3 → $JOB4"
+echo "Submitted at:       $(date '+%Y-%m-%d %H:%M:%S')"
 echo ""
 echo "Monitor with:  squeue -u \$USER"
+echo "Check logs:    tail -f logs/03_solve_${JOB3}.out"
 echo ""
 echo "Logs:"
 echo "  logs/01_meanfield_${JOB1}.out"
@@ -140,4 +142,4 @@ echo "  logs/02_fragments_${JOB2}.out"
 echo "  logs/03_solve_${JOB3}.out"
 echo "  logs/04_reconstruct_${JOB4}.out"
 echo ""
-echo "Results: examples/hpc_ewf_sqd_demo/results/summary.json"
+echo "Results: results/alanine_sto-3g/summary.json"

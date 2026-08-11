@@ -72,19 +72,20 @@ echo "Trial run using: $TRIAL_CONFIG"
 echo ""
 
 JOB1=$(submit "$SCRIPT_DIR/01_meanfield.slurm")
-echo "Submitted step 1 (meanfield):    job $JOB1"
+echo "Submitted step 1 (meanfield):    job $JOB1  [$(date '+%Y-%m-%d %H:%M:%S')]"
 
 JOB2=$(submit "$SCRIPT_DIR/02_fragments.slurm" "$JOB1")
-echo "Submitted step 2 (fragments):    job $JOB2 (depends on $JOB1)"
+echo "Submitted step 2 (fragments):    job $JOB2  [$(date '+%Y-%m-%d %H:%M:%S')] (depends on $JOB1)"
 
 JOB3=$(submit "$SCRIPT_DIR/03_solve.slurm" "$JOB2")
-echo "Submitted step 3 (solve/FCI):    job $JOB3 (depends on $JOB2)"
+echo "Submitted step 3 (solve/FCI):    job $JOB3  [$(date '+%Y-%m-%d %H:%M:%S')] (depends on $JOB2)"
 
 JOB4=$(submit "$SCRIPT_DIR/04_reconstruct.slurm" "$JOB3")
-echo "Submitted step 4 (reconstruct):  job $JOB4 (depends on $JOB3)"
+echo "Submitted step 4 (reconstruct):  job $JOB4  [$(date '+%Y-%m-%d %H:%M:%S')] (depends on $JOB3)"
 
 echo ""
 echo "Trial workflow submitted: $JOB1 → $JOB2 → $JOB3 → $JOB4"
+echo "Submitted at:             $(date '+%Y-%m-%d %H:%M:%S')"
 echo ""
 echo "Monitor with:  squeue -u \$USER"
 echo ""
