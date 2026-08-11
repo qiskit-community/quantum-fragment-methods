@@ -34,8 +34,8 @@ embedder:
 # ============================================================================
 solver_selection:
   strategy: adaptive
-  orbital_threshold: 20     # FCI for n_orb < 20; CCSD fallback for n_orb >= 20 in trial mode
-                            # (fragments 3 @ 27 orb and 5 @ 23 orb caused OOM with full FCI)
+  orbital_threshold: 10     # FCI for n_orb < 10; CCSD fallback for n_orb >= 10 in trial mode
+                            # (fragments >= 15 orb OOM at 64G — hydrogen frags 6-12 are 7-8 orb)
 
 # ============================================================================
 # QPU Configuration (unused in trial — kept for schema completeness)
