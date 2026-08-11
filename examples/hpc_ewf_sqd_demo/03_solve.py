@@ -254,6 +254,16 @@ print("\n" + "=" * 60)
 print("Solving fragments...")
 print("=" * 60)
 
+# Print SQD parameters if any fragments use SQD
+if backend is not None:
+    print(f"\nSQD parameters:")
+    print(f"  shots/fragment:   {qpu_config['sampler_options']['default_shots']}")
+    print(f"  iterations:       {sqd_config['iterations']}")
+    print(f"  n_batches:        {sqd_config['n_batches']}")
+    print(f"  samples_per_batch:{sqd_config['samples_per_batch']}")
+    print(f"  lucj n_reps:      {sqd_config['lucj']['n_reps']}")
+    print(f"  classical_backend:{sqd_config['classical_backend']}")
+
 # Print solver assignment before running
 for frag_id, frag in embedding_result.fragments.items():
     if strategy == "adaptive" and frag.n_orbitals < orbital_threshold:

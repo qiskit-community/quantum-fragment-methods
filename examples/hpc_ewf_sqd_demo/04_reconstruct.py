@@ -158,13 +158,16 @@ print(f"{'=' * 60}")
 # ---------------------------------------------------------------------------
 # Per-fragment summary
 # ---------------------------------------------------------------------------
-print(f"\nPer-fragment correlation energies:")
+print(f"\nPer-fragment results:")
+print(f"  {'Frag':>4}  {'Solver':>5}  {'n_orb':>6}  {'e_total':>16}  {'e_corr':>14}")
+print(f"  {'-'*4}  {'-'*5}  {'-'*6}  {'-'*16}  {'-'*14}")
 for frag_id, result in fragment_results.items():
-    if "e_corr" in result.metadata:
-        e_corr = result.metadata["e_corr"]
-    else:
-        e_corr = result.energy  # fallback: solver returned total cluster energy
-    print(f"  Fragment {frag_id}: {e_corr:.8f} Ha")
+    meta = emb_data["fragment_meta"].get(frag_id, {})
+    has_ecorr = "e_corr" in result.metadata
+    e_corr_str = f"{result.metadata['e_corr']:.8f}" if has_ecorr else "      (N/A)"
+    solver = "CCSD" if has_ecorr else "FCI"
+    print(f"  {frag_id:>4}  {solver:>5}  {meta.get('n_orbitals', '?'):>6}  "
+          f"{result.energy:>16.8f}  {e_corr_str:>14}")
 
 # ---------------------------------------------------------------------------
 # Save JSON summary
@@ -175,10 +178,13 @@ results_dir.mkdir(parents=True, exist_ok=True)
 per_fragment = {}
 for frag_id, result in fragment_results.items():
     meta = emb_data["fragment_meta"].get(frag_id, {})
+    has_ecorr = "e_corr" in result.metadata
     per_fragment[str(frag_id)] = {
+        "solver": "CCSD" if has_ecorr else "FCI",
         "n_orbitals": meta.get("n_orbitals"),
         "n_electrons": meta.get("n_electrons"),
-        "e_corr": float(result.metadata["e_corr"]) if "e_corr" in result.metadata else float(result.energy),
+        "e_total": float(result.energy),
+        "e_corr": float(result.metadata["e_corr"]) if has_ecorr else None,
     }
 
 summary = {
