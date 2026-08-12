@@ -207,6 +207,7 @@ def _write_fcidump(
 def make_sbd_sci_solver(
     sbd_config: dict[str, Any],
     workflow_path: str | Path,
+    max_iterations: int = 0,
 ) -> Callable[
     [list[tuple[np.ndarray, np.ndarray]], np.ndarray, np.ndarray, int, tuple[int, int]],
     list[SCIResult],
@@ -216,6 +217,7 @@ def make_sbd_sci_solver(
     Args:
         sbd_config: SBD configuration. Must include ``exe_path``.
         workflow_path: Directory for FCIDUMP files and per-batch SBD workdirs.
+        max_iterations: Total SBD iterations expected (used for progress display).
 
     Returns:
         Callable matching the ``sci_solver`` signature expected by
@@ -229,6 +231,7 @@ def make_sbd_sci_solver(
     work_root.mkdir(parents=True, exist_ok=True)
     sbd_interface = SBDInterface(sbd_exe_path=sbd_exe_path, config=sbd_config)
     call_count = {"n": 0}
+    best_energy = {"e": None}
 
     def sci_solver(
         ci_strings: list[tuple[np.ndarray, np.ndarray]],
@@ -245,7 +248,7 @@ def make_sbd_sci_solver(
         fcidump_path = iteration_dir / "fcidump.txt"
         _write_fcidump(one_body_tensor, two_body_tensor, norb, nelec, fcidump_path)
 
-        logger.info(
+        logger.debug(
             "SBD sci_solver iteration %s: diagonalizing %s batch(es)",
             iteration,
             len(ci_strings),
@@ -292,6 +295,18 @@ def make_sbd_sci_solver(
                     rdm2=sbd_result.get("rdm2"),
                 )
             )
+
+        # Print one concise line per SBD iteration: energy + delta from previous
+        iter_energy = min(r.energy for r in results)
+        prev = best_energy["e"]
+        delta_str = f"  Δ={iter_energy - prev:+.6f} Ha" if prev is not None else ""
+        total_str = f"/{max_iterations}" if max_iterations > 0 else ""
+        print(
+            f"    SBD iter {iteration:2d}{total_str}"
+            f"  E={iter_energy:.8f} Ha{delta_str}",
+            flush=True,
+        )
+        best_energy["e"] = iter_energy
 
         return results
 
@@ -363,7 +378,7 @@ def diagonalize_fermionic_hamiltonian(
         )
 
     bit_array = counts_to_bit_array(counts, num_bits=2 * norb)
-    sci_solver = make_sbd_sci_solver(sbd_config, workflow_path or ".")
+    sci_solver = make_sbd_sci_solver(sbd_config, workflow_path or ".", max_iterations=max_iterations)
 
     kwargs = dict(
         one_body_tensor=one_body_tensor,

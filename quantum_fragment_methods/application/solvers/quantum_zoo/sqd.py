@@ -137,7 +137,7 @@ class SQDSolver(BaseSolver):
 
             If a job fails, use force_resubmit=True to clear checkpoints and resubmit.
         """
-        logger.info(f"Starting SQD solve for system with {norb} orbitals, {nelec} electrons")
+        logger.debug(f"Starting SQD solve: norb={norb}, nelec={nelec}")
 
         # Setup workflow directory
         if workflow_path is None:
@@ -151,32 +151,23 @@ class SQDSolver(BaseSolver):
 
         # Clear checkpoints if force_resubmit
         if force_resubmit:
-            logger.info("=" * 60)
-            logger.info("FORCE RESUBMIT: Clearing existing checkpoints")
-            logger.info("=" * 60)
+            print("  [force-resubmit] Clearing existing checkpoints", flush=True)
             if job_id_file.exists():
                 job_id_file.unlink()
-                logger.info(f"Removed {job_id_file}")
             if counts_file.exists():
                 counts_file.unlink()
-                logger.info(f"Removed {counts_file}")
 
         # Determine workflow stage
         if counts_file.exists():
             # Stage 3: Post-processing (counts already retrieved)
-            logger.info("=" * 60)
-            logger.info("RESUMING: Counts already retrieved, running post-processing")
-            logger.info("=" * 60)
             counts = np.load(counts_file, allow_pickle=True).item()
-            logger.info(f"Loaded {sum(counts.values())} shots from {counts_file}")
+            print(f"  Resuming from checkpoint: {sum(counts.values())} shots loaded", flush=True)
 
         elif job_id_file.exists():
             # Stage 2: Job submitted, need to retrieve results
             with open(job_id_file, "r") as f:
                 job_id = f.read().strip()
-            logger.info("=" * 60)
-            logger.info(f"RESUMING: Found existing job {job_id}")
-            logger.info("=" * 60)
+            print(f"  Resuming QPU job {job_id} ...", flush=True)
 
             # Try to retrieve counts (with optional waiting)
             counts = self._retrieve_counts_with_wait(
@@ -189,35 +180,22 @@ class SQDSolver(BaseSolver):
             if t1 is None or t2 is None:
                 if mf is None:
                     raise ValueError("Either (t1, t2) or mf must be provided")
-                logger.info("Computing CCSD amplitudes from mean-field object...")
+                logger.debug("Computing CCSD amplitudes from mean-field object...")
                 t1, t2 = self._compute_ccsd_amplitudes(mf)
 
-            logger.info("=" * 60)
-            logger.info("STEP 1: Submitting QPU Job")
-            logger.info("=" * 60)
             job_id = self._qpu_sampling(t1, t2, norb, nelec, workflow_path)
-            logger.info(f"✓ Job submitted: {job_id}")
-            print(f"\n{'='*60}", flush=True)
-            print(f"  Qiskit job ID : {job_id}", flush=True)
-            print(f"  Backend       : {self.qpu_backend.config.get('backend_name', 'unknown')}", flush=True)
-            print(f"  Checkpoint    : {workflow_path}/job_id.txt", flush=True)
-            print(f"{'='*60}\n", flush=True)
+            print(f"  QPU job submitted: {job_id}", flush=True)
+            print(f"  Backend: {self.qpu_backend.config.get('backend_name', 'unknown')}"
+                  f"  checkpoint: {workflow_path}/job_id.txt", flush=True)
 
             # Try to retrieve counts (with optional waiting)
             counts = self._retrieve_counts_with_wait(
                 job_id, workflow_path, wait_for_completion, max_wait_time, poll_interval
             )
 
-        # Step 3: Classical Post-Processing
-        logger.info("=" * 60)
-        logger.info("STEP 3: Classical Post-Processing with SBD")
-        logger.info("=" * 60)
+        # Classical post-processing with SBD
         result = self._sbd_postprocessing(h1e, h2e, counts, norb, nelec, workflow_path)
-        logger.info(f"✓ SBD post-processing complete")
-
-        logger.info("=" * 60)
-        logger.info(f"SQD SOLVE COMPLETE - Final energy: {result.energy:.8f}")
-        logger.info("=" * 60)
+        print(f"  SBD complete — E = {result.energy:.8f} Ha", flush=True)
         return result
 
     def _compute_ccsd_amplitudes(self, mf: Any) -> Tuple[np.ndarray, np.ndarray]:
@@ -565,9 +543,6 @@ class SQDSolver(BaseSolver):
             )
 
         # Wait for completion with polling
-        logger.info(
-            f"Waiting for job completion (max {max_wait_time}s, checking every {poll_interval}s)..."
-        )
         print(f"  Polling job {job_id} every {poll_interval}s (max {max_wait_time}s) ...", flush=True)
         start_time = time.time()
 
@@ -590,7 +565,6 @@ class SQDSolver(BaseSolver):
             try:
                 status = self.qpu_backend.get_job_status(job_id)
                 elapsed_str = f"{int(elapsed // 60)}m{int(elapsed % 60):02d}s"
-                logger.info(f"[{elapsed_str}] Job {job_id} — {status}")
                 print(f"  [{elapsed_str}] {job_id} — {status}", flush=True)
             except Exception as e:
                 logger.warning(f"Failed to check status: {e}")
@@ -598,8 +572,9 @@ class SQDSolver(BaseSolver):
 
             # Check if complete
             if status in ["COMPLETED", "DONE"]:
-                logger.info(f"✓ Job completed after {int(elapsed)} seconds")
-                print(f"\n  ✓ Job completed after {int(elapsed)}s", flush=True)
+                elapsed_m = int(elapsed // 60)
+                elapsed_s = int(elapsed % 60)
+                print(f"  ✓ Job completed ({elapsed_m}m{elapsed_s:02d}s)", flush=True)
                 return self._retrieve_completed_job(job_id, workflow_path)
 
             # Check if failed
@@ -663,9 +638,7 @@ class SQDSolver(BaseSolver):
             diagonalize_fermionic_hamiltonian,
         )
 
-        logger.info(
-            "Running SQD post-processing via qiskit-addon-sqd with SBD sci_solver..."
-        )
+        logger.debug("Starting SBD post-processing via qiskit-addon-sqd")
 
         # Get SQD algorithm parameters
         iterations = self.sqd_config.get("iterations", 5)
@@ -677,10 +650,10 @@ class SQDSolver(BaseSolver):
         symmetrize_spin = self.sqd_config.get("symmetrize_spin", True)
         classical_backend = self.sqd_config.get("classical_backend", "python")
 
-        logger.info(
-            f"SQD parameters: iterations={iterations}, n_batches={n_batches}, "
-            f"samples_per_batch={samples_per_batch}, "
-            f"classical_backend={classical_backend}"
+        print(
+            f"  SBD: {iterations} iter × {n_batches} batches × {samples_per_batch} samples"
+            f"  backend={classical_backend}",
+            flush=True,
         )
 
         # Create workflow directory for SQD
@@ -724,7 +697,7 @@ class SQDSolver(BaseSolver):
             },
         )
 
-        logger.info(f"SQD post-processing complete. Energy: {solver_result.energy:.8f}")
+        logger.debug(f"SBD post-processing complete. Energy: {solver_result.energy:.8f}")
         return solver_result
 
     def solve_from_integrals(
