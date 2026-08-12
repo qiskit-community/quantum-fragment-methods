@@ -3,19 +3,19 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Status](https://img.shields.io/badge/status-alpha-orange.svg)](IMPLEMENTATION_STATUS.md)
+[![Status](https://img.shields.io/badge/status-alpha-orange.svg)](https://github.com/qiskit-community/quantum-fragment-methods)
 
 ## About
 
-A Python package for quantum chemistry tailored toward fragment-based embedding and quantum algorithms applied to macromolecule simulations. This codebase provides open access to the methodology from the paper *"Molecular Quantum Computations on a Protein"*, a collaborative effort between IBM Quantum and the Cleveland Clinic Foundation. 
+A Python package for quantum chemistry tailored toward fragment-based embedding and quantum algorithms applied to macromolecule simulations. This codebase provides open access to the methodology from the paper *"Molecular Quantum Computations on a Protein"*, a collaborative effort between IBM Quantum and the Cleveland Clinic Foundation.
 
 ## Overview
 
-The Quantum Fragment Methods framework enables scalable, high-accuracy quantum simulations of large molecular systems—such as peptides and proteins—by embedding them into quantum subspaces. The package features:
+The Quantum Fragment Methods framework enables scalable, high-accuracy quantum simulations of large molecular systems — such as peptides and proteins — by embedding them into quantum subspaces. The package features:
 
-- **Embedder objects**: EWF with configurable parameters
-- **Rule-based solver assignment**: Priority-based automatic solver selection  
-- **Quantum solvers**: SQD, ext-SQD (planned)
+- **Embedder objects**: EWF with configurable bath and truncation parameters
+- **Rule-based solver assignment**: Priority-based automatic solver selection per fragment
+- **Quantum solvers**: SQD (production), ext-SQD (planned)
 - **Classical solvers**: FCI, CCSD
 
 ## Documentation
@@ -44,14 +44,23 @@ Both paths share the same package and YAML configs. Prefer local for development
 
 ### Configuration File
 
-The `config.yaml` file is the main entry point for configuring your quantum fragment calculations. It defines:
+Each demo has its own self-contained YAML config. All tunable parameters live there — no credentials are ever stored in notebooks or scripts.
 
-- **Workflow settings**: Basis set and molecular geometry
-- **Embedder parameters**: Bath type, truncation thresholds, fragmentation scheme (EWF, DMET, MBE)
-- **QPU configuration**: Backend selection, credentials, and sampler options
-- **Solver settings**: Algorithm-specific parameters for SQD, ext-SQD, and classical solvers
+- **Workflow settings**: Basis set and molecular geometry (`xyz_file`, `basis`)
+- **Embedder parameters**: Bath type, truncation threshold, fragmentation scheme
+- **Solver selection**: `orbital_threshold` controls the FCI / SQD boundary
+- **QPU configuration**: Backend name, credentials, shots, DD / twirling options
+- **SQD settings**: LUCJ reps, iterations, batches, `classical_backend`
 
-See [quantum_fragment_methods/config/qpu_config.yaml.example](quantum_fragment_methods/config/qpu_config.yaml.example) for the full template, or the demos under [examples/local_demo/](examples/local_demo/).
+Starting points:
+
+| Demo | Config |
+|------|--------|
+| Glycine notebook (laptop) | [`examples/notebook_demos/ewf_sqd_demo/config_glycine_sto-3g.yaml`](examples/notebook_demos/ewf_sqd_demo/config_glycine_sto-3g.yaml) |
+| Alanine HPC pipeline | [`examples/hpc_demos/alanine_ewf_sqd_demo/config_alanine_sto-3g.yaml`](examples/hpc_demos/alanine_ewf_sqd_demo/config_alanine_sto-3g.yaml) |
+| N₂ SQD standalone | [`examples/notebook_demos/sqd_demos/config_N2_sto-3g_demo.yaml`](examples/notebook_demos/sqd_demos/config_N2_sto-3g_demo.yaml) |
+
+See [`quantum_fragment_methods/config/qpu_config.yaml.example`](quantum_fragment_methods/config/qpu_config.yaml.example) for the full annotated template.
 
 ### SQD classical backend (`classical_backend`)
 
@@ -83,22 +92,27 @@ SBD remains the eigensolver in both cases. For local containers, install and com
 
 ```
 quantum-fragment-methods/
-├── quantum_fragment_methods/     # Main package
-│   ├── application/              # Scientific application layer
-│   │   ├── embedding/            # Embedding methods (EWF, etc.)
-│   │   └── solvers/              # Quantum and classical solvers
-│   │       ├── quantum_zoo/      # Quantum solvers (SQD, ext-SQD, etc.)
-│   │       └── classical_zoo/    # Classical solvers (FCI, CCSD, etc.)
-│   ├── workflow.py               # Workflow orchestrator
-│   ├── qpu/                      # QPU backend abstraction
-│   │   ├── base.py               # Base QPU interface 
-│   │   └── qiskit_ibm_runtime.py # IBM Quantum backend 
-│   ├── config/                   # Configuration management
-│   └── tests/                    # Unit tests
-├── examples/                     # Example notebooks and workflows
-│   └──  local_demo/              # Alanine demo (works on laptop, MVP code)
-├── docs/                         # Documentation
-└── pyproject.toml                # Package configuration
+├── quantum_fragment_methods/        # Main package
+│   ├── application/
+│   │   ├── embedding/               # EWF embedder + base classes
+│   │   └── solvers/
+│   │       ├── quantum_zoo/         # SQD solver, LUCJ, SBD interface
+│   │       └── classical_zoo/       # FCI, CCSD solvers
+│   ├── workflow.py                  # QFWorkflow orchestrator
+│   ├── qpu/                         # QPU backend abstraction
+│   │   ├── qiskit_ibm_runtime.py    # IBMQuantumBackend (token/CRN auth)
+│   │   └── qrmi.py                  # QRMIBackend (HPC env-var auth)
+│   ├── config/                      # Config template
+│   └── tests/                       # Unit tests
+├── examples/
+│   ├── notebook_demos/
+│   │   ├── ewf_sqd_demo/            # Glycine EWF+SQD tutorial notebook
+│   │   └── sqd_demos/               # H₂, N₂ standalone SQD notebooks
+│   └── hpc_demos/
+│       ├── alanine_ewf_sqd_demo/    # 4-step Slurm pipeline (alanine, production)
+│       └── N2_hpc_sqd_demo/         # N₂ direct SQD reference workflow
+├── docs/                            # Build guides, contributing guide
+└── pyproject.toml
 ```
 
 ## Citation
