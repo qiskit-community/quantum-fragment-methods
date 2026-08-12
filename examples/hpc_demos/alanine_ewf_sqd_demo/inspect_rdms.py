@@ -2,8 +2,8 @@
 import pickle
 import numpy as np
 
-sqd  = pickle.load(open("examples/hpc_ewf_sqd_demo/data/alanine_sto-3g/solver_results.pkl", "rb"))
-ccsd = pickle.load(open("examples/hpc_ewf_sqd_demo/data/alanine_sto-3g_trial/solver_results.pkl", "rb"))
+sqd  = pickle.load(open("examples/hpc_demos/alanine_ewf_sqd_demo/data/alanine_sto-3g/solver_results.pkl", "rb"))
+ccsd = pickle.load(open("examples/hpc_demos/alanine_ewf_sqd_demo/data/alanine_sto-3g_trial/solver_results.pkl", "rb"))
 
 for fid in [0, 3]:
     print(f"\n=== Fragment {fid} ===")

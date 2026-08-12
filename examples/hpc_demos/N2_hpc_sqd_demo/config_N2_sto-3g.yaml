@@ -12,7 +12,7 @@ qpu:
   backend_name: "ibm_pittsburgh"  # must match QRMI_JOB_QPU_RESOURCES in .qrmi_config
 
   sampler_options:
-    default_shots: 1000
+    default_shots: 1000000
 
 # ============================================================================
 # SQD Solver Configuration
@@ -33,9 +33,9 @@ sqd:
   # classical_backend: python uses stock qiskit-addon-sqd; hpc uses C++ bindings
   classical_backend: python
   symmetrize_spin: true
-  n_batches: 1
-  iterations: 3
-  samples_per_batch: 200
+  n_batches: 5
+  iterations: 10
+  samples_per_batch: 3000
   energy_tol: 1.e-8
   occupancies_tol: 1.e-5
   carryover_threshold: 1.e-4

@@ -26,7 +26,7 @@ export MKL_NUM_THREADS=$SLURM_CPUS_PER_TASK
 export CUPY_CACHE_DIR=/tmp/cupy_cache
 mkdir -p $CUPY_CACHE_DIR
 
-DEMO_DIR=/workspace/examples/hpc_ewf_sqd_demo
+DEMO_DIR=/workspace/examples/hpc_demos/alanine_ewf_sqd_demo
 
 CONFIG="${QFM_TRIAL_CONFIG:-$DEMO_DIR/config_alanine_sto-3g.yaml}"
 

@@ -27,8 +27,8 @@ mkdir -p $CUPY_CACHE_DIR
 echo "Step 2: SQD Solve"
 echo "Job ID: $SLURM_JOB_ID"
 
-python examples/hpc_sqd_demo/02_run_sqd.py \
-  --config examples/hpc_sqd_demo/config_N2_sto-3g.yaml \
+python examples/hpc_demos/N2_hpc_sqd_demo/02_run_sqd.py \
+  --config examples/hpc_demos/N2_hpc_sqd_demo/config_N2_sto-3g.yaml \
   --data-dir /workspace/results \
   --results-dir /workspace/results/sqd_results \
   --wait \

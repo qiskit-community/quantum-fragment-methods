@@ -170,7 +170,7 @@ rsync -avP --partial \
 ### 5. Submit the workflow
 
 ```bash
-cd $HPC_PROJECT/quantum-fragment-methods/examples/hpc_sqd_demo
+cd $HPC_PROJECT/quantum-fragment-methods/examples/hpc_demos/N2_hpc_sqd_demo
 bash run_workflow.sh
 ```
 
@@ -219,7 +219,7 @@ and `counts.npy` without resubmitting to the QPU.
 # Resubmit step 2 only (reuses existing QPU counts)
 source .hpc_config
 source $QRMI_CREDS
-cd $HPC_PROJECT/quantum-fragment-methods/examples/hpc_sqd_demo
+cd $HPC_PROJECT/quantum-fragment-methods/examples/hpc_demos/N2_hpc_sqd_demo
 bash run_workflow.sh   # re-chains both steps safely, or sbatch directly:
 
 # --or-- submit step 2 alone:

@@ -22,7 +22,7 @@ The Quantum Fragment Methods framework enables scalable, high-accuracy quantum s
 
 - **[Local Build Guide](docs/BUILD-GUIDE.md)** — laptop / workstation setup with Podman or Docker
 - **[HPC Build Guide](docs/HPC-BUILD-GUIDE.md)** — cluster deploy (Slurm, transferring images, native SBD/PyCI)
-- **[Tutorial](examples/local_demo/tutorial.ipynb)** — interactive Jupyter notebook with usage examples
+- **[Tutorial](examples/notebook_demos/tutorial.ipynb)** — interactive Jupyter notebook with usage examples
 - **[Contributing Guide](docs/contributing.md)** — guidelines for contributors
 - **[Examples](examples/)** — additional example guides
 

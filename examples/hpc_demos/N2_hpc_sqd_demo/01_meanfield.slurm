@@ -26,4 +26,4 @@ mkdir -p $CUPY_CACHE_DIR
 echo "Step 1: Mean-Field Calculation"
 echo "Job ID: $SLURM_JOB_ID"
 
-python examples/hpc_sqd_demo/01_setup_molecule.py --output-dir /workspace/results
+python examples/hpc_demos/N2_hpc_sqd_demo/01_setup_molecule.py --output-dir /workspace/results

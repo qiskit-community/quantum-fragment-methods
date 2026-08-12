@@ -1,7 +1,7 @@
 # HPC EWF+SQD Demo — Alanine Workflow
 
 A 4-stage Slurm workflow reproducing the `tutorial.ipynb` notebook from
-`local_ewf_sqd_demo` on an HPC system. The system is alanine (13 atoms,
+`examples/notebook_demos/tutorial.ipynb` on an HPC system. The system is alanine (13 atoms,
 `system.xyz`) using Embedded Wave Function (EWF) theory with adaptive
 FCI/SQD fragment solvers.
 
@@ -165,7 +165,7 @@ rsync -avP --partial \
 ### 5. Submit the workflow
 
 ```bash
-cd $HPC_PROJECT/quantum-fragment-methods/examples/hpc_ewf_sqd_demo
+cd $HPC_PROJECT/quantum-fragment-methods/examples/hpc_demos/alanine_ewf_sqd_demo
 bash run_workflow.sh
 ```
 
@@ -197,7 +197,7 @@ Logs:
   logs/03_solve_81402.out
   logs/04_reconstruct_81403.out
 
-Results: examples/hpc_ewf_sqd_demo/results/summary.json
+Results: examples/hpc_demos/alanine_ewf_sqd_demo/results/summary.json
 ```
 
 ---
@@ -230,7 +230,7 @@ the Slurm wall time expires, resubmit step 3 — it resumes from the saved
 # Resubmit step 3 only (reuses existing QPU counts)
 source .hpc_config
 source $QRMI_CREDS
-cd $HPC_PROJECT/quantum-fragment-methods/examples/hpc_ewf_sqd_demo
+cd $HPC_PROJECT/quantum-fragment-methods/examples/hpc_demos/alanine_ewf_sqd_demo
 
 sbatch \
   --partition="$SLURM_PARTITION" \
@@ -325,6 +325,6 @@ results/
 
 ## References
 
-- Tutorial notebook: `examples/local_ewf_sqd_demo/tutorial.ipynb`
+- Tutorial notebook: `examples/notebook_demos/tutorial.ipynb`
 - HPC setup instructions: `docs/IBM-SCC-BUILD-GUIDE.md`
-- N2 SQD reference workflow: `examples/hpc_sqd_demo/README.md`
+- N2 SQD reference workflow: `examples/hpc_demos/N2_hpc_sqd_demo/README.md`
