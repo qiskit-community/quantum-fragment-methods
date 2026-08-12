@@ -1,0 +1,95 @@
+# Glycine / STO-3G  EWF+SQD notebook demo configuration
+#
+# System: glycine (H2N-CH2-COOH), 10 atoms, simplest amino acid
+# Basis:  STO-3G
+#
+# IAO fragmentation with MP2 bath (truncation=1e-4) produces 10 fragments:
+#   Fragment 0  — N   (~11 orb)  → SQD   ← the one QPU fragment
+#   Fragment 1  — Cα  (~10 orb)  → FCI
+#   Fragment 2  — C   (~9 orb)   → FCI
+#   Fragment 3  — O   (~8 orb)   → FCI
+#   Fragment 4  — O   (~8 orb)   → FCI
+#   Fragments 5–9 — H  (1–3 orb) → FCI
+#
+# orbital_threshold: 11  →  fragments with n_orb < 11 use FCI; N-fragment uses SQD.
+#
+# QPU credentials go in your local config.yaml (gitignored). Copy this file to
+# config_glycine_sto-3g.yaml and fill in token/instance, or pass credentials
+# via environment variables (see README.md).
+
+# ============================================================================
+# Workflow / Molecule
+# ============================================================================
+workflow:
+  xyz_file: system_glycine.xyz   # path relative to this config file
+  basis: sto-3g
+
+# ============================================================================
+# Embedder Configuration
+# ============================================================================
+embedder:
+  ewf:
+    bath_type: mp2
+    truncation: 1.0e-4            # looser than HPC (1e-5) to keep fragment sizes down
+    fragmentation: iao
+
+# ============================================================================
+# Solver Selection
+# ============================================================================
+# orbital_threshold: 11
+#   → N-fragment (~11 orb) → SQD  (1 QPU fragment, 22 qubits on hardware)
+#   → all others           → FCI  (fast, runs in seconds on a laptop)
+solver_selection:
+  strategy: adaptive
+  orbital_threshold: 11
+
+# ============================================================================
+# QPU Configuration — IBM Pittsburgh (real hardware)
+# ============================================================================
+qpu:
+  provider: ibm_quantum
+  backend_name: ibm_pittsburgh
+
+  credentials:
+    channel: ibm_cloud
+    # Get your token at: https://quantum.ibm.com/account
+    token: "<YOUR_TOKEN_HERE>"
+    # CRN format: crn:v1:bluemix:public:quantum-computing:REGION:a/ACCOUNT_ID:SERVICE_ID::
+    instance: "<YOUR_CRN_HERE>"
+
+  sampler_options:
+    default_shots: 10000          # enough for a good distribution; ~30 s on Pittsburgh
+    dynamical_decoupling:
+      enable: true
+      sequence_type: XY4
+    twirling:
+      enable_gates: false
+      enable_measure: false
+
+# ============================================================================
+# SQD Solver Configuration
+# ============================================================================
+sqd:
+  lucj:
+    n_reps: 1
+    max_connection: 10            # ≤ norb-1 = 10; caps alpha-beta interaction range
+    connect_every_n: 4
+
+  transpilation:
+    optimization_level: 0
+    seed_transpiler: 42
+
+  # classical_backend: python — stock qiskit-addon-sqd (no C++ needed on laptop)
+  classical_backend: python
+  symmetrize_spin: true
+  n_batches: 3                    # 3 batches × 500 samples = manageable on a laptop
+  iterations: 5
+  samples_per_batch: 500
+  energy_tol: 1.e-8
+  occupancies_tol: 1.e-5
+  carryover_threshold: 1.e-4
+  add_hf_string: true
+
+  sbd:
+    exe_path: /workspace/executable/diag   # local SBD binary (see BUILD-GUIDE.md)
+    cpus_per_batch: 4                       # 4 CPUs is fine for ~11-orbital problems
