@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=192
 #SBATCH --mem=1800G
-#SBATCH --time=24:00:00
+#SBATCH --time=72:00:00
 #SBATCH --output=logs/03_solve_%j.out
 #SBATCH --error=logs/03_solve_%j.err
 
@@ -56,7 +56,7 @@ echo "[$(date +%T)] Imports done. Starting solver..."
 python -u "$DEMO_DIR/03_solve.py" \
     --config "$CONFIG" \
     --wait \
-    --max-wait-time 14400
+    --max-wait-time 21600
 
 echo "============================================================"
 echo "Step 3 complete: $(date)"
