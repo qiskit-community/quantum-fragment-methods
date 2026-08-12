@@ -39,7 +39,7 @@ Both paths share the same package and YAML configs. Prefer local for development
 
 1. **Install**: Follow the [Local Build Guide](docs/BUILD-GUIDE.md) or [HPC Build Guide](docs/HPC-BUILD-GUIDE.md)
 2. **Configure**: Create a `config.yaml` (copy from the template below) and set QPU credentials
-3. **Learn**: Work through the [Tutorial](examples/local_demo/tutorial.ipynb) notebook
+3. **Learn**: Work through the [Tutorial](examples/notebook_demos/ewf_sqd_demo/ewf_sqd.ipynb) notebook
 4. **Explore**: Check out [Examples](examples/) for more use cases
 
 ### Configuration File

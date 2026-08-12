@@ -165,8 +165,15 @@ for frag_id, result in fragment_results.items():
     meta = emb_data["fragment_meta"].get(frag_id, {})
     has_ecorr = "e_corr" in result.metadata
     e_corr_str = f"{result.metadata['e_corr']:.8f}" if has_ecorr else "      (N/A)"
-    solver = "CCSD" if has_ecorr else "FCI"
-    print(f"  {frag_id:>4}  {solver:>5}  {meta.get('n_orbitals', '?'):>6}  "
+    n_orb = meta.get("n_orbitals", 0)
+    orbital_threshold = config.get("solver_selection", {}).get("orbital_threshold", 15)
+    if n_orb >= orbital_threshold and not has_ecorr:
+        solver = "SQD"
+    elif has_ecorr:
+        solver = "CCSD"
+    else:
+        solver = "FCI"
+    print(f"  {frag_id:>4}  {solver:>5}  {n_orb if n_orb else meta.get('n_orbitals', '?'):>6}  "
           f"{result.energy:>16.8f}  {e_corr_str:>14}")
 
 # ---------------------------------------------------------------------------
@@ -176,12 +183,20 @@ results_dir = Path(args.results_dir)
 results_dir.mkdir(parents=True, exist_ok=True)
 
 per_fragment = {}
+_orbital_threshold = config.get("solver_selection", {}).get("orbital_threshold", 15)
 for frag_id, result in fragment_results.items():
     meta = emb_data["fragment_meta"].get(frag_id, {})
     has_ecorr = "e_corr" in result.metadata
+    n_orb = meta.get("n_orbitals", 0)
+    if n_orb >= _orbital_threshold and not has_ecorr:
+        _solver_label = "SQD"
+    elif has_ecorr:
+        _solver_label = "CCSD"
+    else:
+        _solver_label = "FCI"
     per_fragment[str(frag_id)] = {
-        "solver": "CCSD" if has_ecorr else "FCI",
-        "n_orbitals": meta.get("n_orbitals"),
+        "solver": _solver_label,
+        "n_orbitals": n_orb,
         "n_electrons": meta.get("n_electrons"),
         "e_total": float(result.energy),
         "e_corr": float(result.metadata["e_corr"]) if has_ecorr else None,

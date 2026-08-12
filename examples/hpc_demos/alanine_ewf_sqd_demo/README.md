@@ -1,7 +1,7 @@
 # HPC EWF+SQD Demo — Alanine Workflow
 
-A 4-stage Slurm workflow reproducing the `tutorial.ipynb` notebook from
-`examples/notebook_demos/tutorial.ipynb` on an HPC system. The system is alanine (13 atoms,
+A 4-stage Slurm workflow reproducing the EWF+SQD tutorial notebook at
+`examples/notebook_demos/ewf_sqd_demo/ewf_sqd.ipynb` on an HPC system. The system is alanine (13 atoms,
 `system.xyz`) using Embedded Wave Function (EWF) theory with adaptive
 FCI/SQD fragment solvers.
 
@@ -325,6 +325,6 @@ results/
 
 ## References
 
-- Tutorial notebook: `examples/notebook_demos/tutorial.ipynb`
+- Tutorial notebook: `examples/notebook_demos/ewf_sqd_demo/ewf_sqd.ipynb`
 - HPC setup instructions: `docs/IBM-SCC-BUILD-GUIDE.md`
 - N2 SQD reference workflow: `examples/hpc_demos/N2_hpc_sqd_demo/README.md`
