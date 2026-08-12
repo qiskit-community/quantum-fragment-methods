@@ -76,9 +76,9 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.ibm.com/Thaddeus-Pellegrini/quantum-fragment-methods"
-Repository = "https://github.ibm.com/Thaddeus-Pellegrini/quantum-fragment-methods"
-"Bug Tracker" = "https://github.ibm.com/Thaddeus-Pellegrini/quantum-fragment-methods/issues"
+Homepage = "https://github.com/qiskit-community/quantum-fragment-methods"
+Repository = "https://github.com/qiskit-community/quantum-fragment-methods"
+"Bug Tracker" = "https://github.com/qiskit-community/quantum-fragment-methods/issues"
 
 [tool.setuptools]
 packages = ["quantum_fragment_methods"]
