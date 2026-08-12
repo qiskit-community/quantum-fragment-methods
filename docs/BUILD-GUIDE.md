@@ -183,7 +183,7 @@ print(f"✅ PySCF version: {pyscf.__version__}")
 print(f"✅ Qiskit version: {qiskit.__version__}")
 ```
 
-**For HPC/SSH workflows and remote execution, see [HPC-JUPYTER.md](HPC-JUPYTER.md)**
+**For HPC/cluster deployment, see [HPC Build Guide](IBM-SCC-BUILD-GUIDE.md)**
 
 ### Container Management
 
@@ -472,14 +472,14 @@ Then access at `http://127.0.0.1:8889`
 
 ## HPC Usage
 
-For running on HPC systems with SSH port forwarding, Slurm/PBS integration, and remote troubleshooting, see **[HPC.md](HPC.md)**.
+For running on HPC systems with Slurm integration and container deployment, see **[HPC Build Guide](IBM-SCC-BUILD-GUIDE.md)**.
 
 ## Next Steps
 
 - Try the example notebooks in `examples/`
 - Tackle a hard protein from the `suggestions` list
 - Read the main [README.md](../README.md) 
-- Check [HPC-JUPYTER.md](HPC-JUPYTER.md) for HPC workflows
+- Check [HPC Build Guide](IBM-SCC-BUILD-GUIDE.md) for HPC deployment
 
 ## Support
 

@@ -21,7 +21,7 @@ The Quantum Fragment Methods framework enables scalable, high-accuracy quantum s
 ## Documentation
 
 - **[Local Build Guide](docs/BUILD-GUIDE.md)** — laptop / workstation setup with Podman or Docker
-- **[HPC Build Guide](docs/HPC-BUILD-GUIDE.md)** — cluster deploy (Slurm, transferring images, native SBD/PyCI)
+- **[HPC Build Guide](docs/IBM-SCC-BUILD-GUIDE.md)** — cluster deploy (Slurm, transferring images, native SBD/PyCI)
 - **[Tutorial](examples/notebook_demos/ewf_sqd_demo/ewf_sqd.ipynb)** — interactive Jupyter notebook with usage examples
 - **[Contributing Guide](docs/contributing.md)** — guidelines for contributors
 - **[Examples](examples/)** — additional example guides
@@ -33,11 +33,11 @@ The Quantum Fragment Methods framework enables scalable, high-accuracy quantum s
 | Target | Guide | Typical use |
 |--------|--------|-------------|
 | **Local** | [BUILD-GUIDE.md](docs/BUILD-GUIDE.md) | Interactive demos (e.g. H₂ / N₂ notebooks), Jupyter on a laptop/workstation |
-| **HPC** | [HPC-BUILD-GUIDE.md](docs/HPC-BUILD-GUIDE.md) | Larger fragments / MPI SBD, container transferred to the cluster |
+| **HPC** | [IBM-SCC-BUILD-GUIDE.md](docs/IBM-SCC-BUILD-GUIDE.md) | Larger fragments / MPI SBD, container transferred to the cluster |
 
 Both paths share the same package and YAML configs. Prefer local for development and small demos; use HPC when walltime, cores, or memory exceed a single workstation.
 
-1. **Install**: Follow the [Local Build Guide](docs/BUILD-GUIDE.md) or [HPC Build Guide](docs/HPC-BUILD-GUIDE.md)
+1. **Install**: Follow the [Local Build Guide](docs/BUILD-GUIDE.md) or [HPC Build Guide](docs/IBM-SCC-BUILD-GUIDE.md)
 2. **Configure**: Create a `config.yaml` (copy from the template below) and set QPU credentials
 3. **Learn**: Work through the [Tutorial](examples/notebook_demos/ewf_sqd_demo/ewf_sqd.ipynb) notebook
 4. **Explore**: Check out [Examples](examples/) for more use cases
@@ -70,7 +70,7 @@ sqd:
 | `python` | `qiskit-addon-sqd` (pure Python) | Default if HPC bindings are not installed; good for debugging |
 | `hpc` | `qiskit-addon-sqd-hpc` (C++ via nanobind) | Preferred for production / larger batches; requires the HPC extension in the environment |
 
-SBD remains the eigensolver in both cases. For local containers, install and compile SBD as described in the [Local Build Guide](docs/BUILD-GUIDE.md); on clusters, follow the [HPC Build Guide](docs/HPC-BUILD-GUIDE.md).
+SBD remains the eigensolver in both cases. For local containers, install and compile SBD as described in the [Local Build Guide](docs/BUILD-GUIDE.md); on clusters, follow the [HPC Build Guide](docs/IBM-SCC-BUILD-GUIDE.md).
 
 ### System Requirements
 
