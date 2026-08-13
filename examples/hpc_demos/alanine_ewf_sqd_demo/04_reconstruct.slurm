@@ -4,8 +4,8 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=00:30:00
-#SBATCH --output=logs/04_reconstruct_%j.out
-#SBATCH --error=logs/04_reconstruct_%j.err
+#SBATCH --output=/workspace/examples/hpc_demos/alanine_ewf_sqd_demo/logs/04_reconstruct_%j.out
+#SBATCH --error=/workspace/examples/hpc_demos/alanine_ewf_sqd_demo/logs/04_reconstruct_%j.err
 
 # Partition, account, container image, and mount are passed by run_workflow.sh
 # at sbatch submission time — they are not hardcoded here.

@@ -5,8 +5,8 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --time=00:30:00
-#SBATCH --output=logs/02_fragments_%j.out
-#SBATCH --error=logs/02_fragments_%j.err
+#SBATCH --output=/workspace/examples/hpc_demos/alanine_ewf_sqd_demo/logs/02_fragments_%j.out
+#SBATCH --error=/workspace/examples/hpc_demos/alanine_ewf_sqd_demo/logs/02_fragments_%j.err
 
 # Partition, account, container image, and mount are passed by run_workflow.sh
 # at sbatch submission time — they are not hardcoded here.

@@ -6,8 +6,8 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=00:30:00
-#SBATCH --output=logs/01_meanfield_%j.out
-#SBATCH --error=logs/01_meanfield_%j.err
+#SBATCH --output=/workspace/examples/hpc_demos/N2_hpc_sqd_demo/logs/01_meanfield_%j.out
+#SBATCH --error=/workspace/examples/hpc_demos/N2_hpc_sqd_demo/logs/01_meanfield_%j.err
 #SBATCH --container-workdir=/workspace
 # NOTE: Submit via run_workflow.sh (not sbatch directly) — logs/ must exist
 # before submission or Slurm cannot open the --output file. run_workflow.sh

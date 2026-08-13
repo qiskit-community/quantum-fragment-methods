@@ -5,8 +5,8 @@
 #SBATCH --cpus-per-task=192
 #SBATCH --mem=1800G
 #SBATCH --time=72:00:00
-#SBATCH --output=logs/03_solve_%j.out
-#SBATCH --error=logs/03_solve_%j.err
+#SBATCH --output=/workspace/examples/hpc_demos/alanine_ewf_sqd_demo/logs/03_solve_%j.out
+#SBATCH --error=/workspace/examples/hpc_demos/alanine_ewf_sqd_demo/logs/03_solve_%j.err
 
 # Partition, account, container image, mount, and QRMI credential env vars
 # are all passed by run_workflow.sh at sbatch submission time.

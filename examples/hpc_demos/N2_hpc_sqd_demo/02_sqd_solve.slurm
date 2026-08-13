@@ -6,8 +6,8 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=37:00:00
-#SBATCH --output=logs/02_sqd_%j.out
-#SBATCH --error=logs/02_sqd_%j.err
+#SBATCH --output=/workspace/examples/hpc_demos/N2_hpc_sqd_demo/logs/02_sqd_%j.out
+#SBATCH --error=/workspace/examples/hpc_demos/N2_hpc_sqd_demo/logs/02_sqd_%j.err
 #SBATCH --container-workdir=/workspace
 #
 # QRMI credentials are injected as environment variables by run_workflow.sh,
