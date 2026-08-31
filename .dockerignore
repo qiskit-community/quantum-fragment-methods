@@ -25,3 +25,8 @@ build/
 .hpc_config
 push_v4.sh
 hpc-ewf-sqd-demo-plan.md
+
+# HPC demo data/results directories — large and not needed inside the image
+examples/hpc_demos/*/data/
+examples/hpc_demos/*/results/
+examples/hpc_demos/*/circuits/
