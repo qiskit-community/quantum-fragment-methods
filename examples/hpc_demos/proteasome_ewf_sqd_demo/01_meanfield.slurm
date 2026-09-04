@@ -5,8 +5,8 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --time=02:00:00
-#SBATCH --output=/workspace/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/01_meanfield_%j.out
-#SBATCH --error=/workspace/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/01_meanfield_%j.err
+#SBATCH --output=/gpfs/scc6000/proj/toffoli/thaddeus/quantum-fragment-methods/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/01_meanfield_%j.out
+#SBATCH --error=/gpfs/scc6000/proj/toffoli/thaddeus/quantum-fragment-methods/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/01_meanfield_%j.err
 
 # Partition, account, container image, mount, and QFM_PROTEASOME_CONFIG are all
 # passed by run_workflow.sh at sbatch submission time — not hardcoded here.

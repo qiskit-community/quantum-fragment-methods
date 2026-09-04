@@ -5,8 +5,8 @@
 #SBATCH --cpus-per-task=192
 #SBATCH --mem=1800G
 #SBATCH --time=72:00:00
-#SBATCH --output=/workspace/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/03_solve_%j.out
-#SBATCH --error=/workspace/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/03_solve_%j.err
+#SBATCH --output=/gpfs/scc6000/proj/toffoli/thaddeus/quantum-fragment-methods/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/03_solve_%j.out
+#SBATCH --error=/gpfs/scc6000/proj/toffoli/thaddeus/quantum-fragment-methods/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/03_solve_%j.err
 
 # QRMI credentials and QFM_PROTEASOME_CONFIG are passed by run_workflow.sh.
 

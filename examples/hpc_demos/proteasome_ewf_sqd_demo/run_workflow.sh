@@ -77,6 +77,10 @@ submit_system() {
     echo ""
     echo "─── Submitting system: $SYSTEM_NAME ───"
 
+    # Export config path into shell env so Pyxis can forward it with
+    # --container-env=VAR (no =value syntax — Pyxis reads from shell env).
+    export QFM_PROTEASOME_CONFIG="$CONFIG_FILE"
+
     # Step 1 — Mean-field
     JOB1=$(sbatch --parsable \
         --partition="$SLURM_PARTITION" \
@@ -85,7 +89,7 @@ submit_system() {
         --container-mounts="$MOUNT" \
         --container-workdir=/workspace \
         $BASE_ENV \
-        --container-env=QFM_PROTEASOME_CONFIG="$CONFIG_FILE" \
+        --container-env=QFM_PROTEASOME_CONFIG \
         "$SCRIPT_DIR/01_meanfield.slurm")
     echo "  Step 1 (meanfield):   job $JOB1"
 
@@ -98,7 +102,7 @@ submit_system() {
         --container-mounts="$MOUNT" \
         --container-workdir=/workspace \
         $BASE_ENV \
-        --container-env=QFM_PROTEASOME_CONFIG="$CONFIG_FILE" \
+        --container-env=QFM_PROTEASOME_CONFIG \
         "$SCRIPT_DIR/02_fragments.slurm")
     echo "  Step 2 (fragments):   job $JOB2  (depends on $JOB1)"
 
@@ -112,7 +116,7 @@ submit_system() {
         --container-workdir=/workspace \
         $BASE_ENV \
         $QRMI_ENV_FLAGS \
-        --container-env=QFM_PROTEASOME_CONFIG="$CONFIG_FILE" \
+        --container-env=QFM_PROTEASOME_CONFIG \
         "$SCRIPT_DIR/03_solve.slurm")
     echo "  Step 3 (solve/QPU):   job $JOB3  (depends on $JOB2)"
 
@@ -125,7 +129,7 @@ submit_system() {
         --container-mounts="$MOUNT" \
         --container-workdir=/workspace \
         $BASE_ENV \
-        --container-env=QFM_PROTEASOME_CONFIG="$CONFIG_FILE" \
+        --container-env=QFM_PROTEASOME_CONFIG \
         "$SCRIPT_DIR/04_reconstruct.slurm")
     echo "  Step 4 (reconstruct): job $JOB4  (depends on $JOB3)"
 

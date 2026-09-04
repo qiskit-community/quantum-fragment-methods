@@ -4,8 +4,8 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=8G
 #SBATCH --time=00:15:00
-#SBATCH --output=/workspace/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/05_binding_energy_%j.out
-#SBATCH --error=/workspace/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/05_binding_energy_%j.err
+#SBATCH --output=/gpfs/scc6000/proj/toffoli/thaddeus/quantum-fragment-methods/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/05_binding_energy_%j.out
+#SBATCH --error=/gpfs/scc6000/proj/toffoli/thaddeus/quantum-fragment-methods/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/05_binding_energy_%j.err
 
 # This step has no --dependency — it is submitted manually once all four
 # 04_reconstruct jobs (complex and ligand for each inhibitor) have completed.

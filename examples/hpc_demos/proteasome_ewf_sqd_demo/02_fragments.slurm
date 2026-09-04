@@ -5,8 +5,8 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=128G
 #SBATCH --time=02:00:00
-#SBATCH --output=/workspace/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/02_fragments_%j.out
-#SBATCH --error=/workspace/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/02_fragments_%j.err
+#SBATCH --output=/gpfs/scc6000/proj/toffoli/thaddeus/quantum-fragment-methods/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/02_fragments_%j.out
+#SBATCH --error=/gpfs/scc6000/proj/toffoli/thaddeus/quantum-fragment-methods/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/02_fragments_%j.err
 
 set -euo pipefail
 
