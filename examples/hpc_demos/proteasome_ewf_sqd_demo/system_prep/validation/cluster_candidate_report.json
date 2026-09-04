@@ -1,0 +1,856 @@
+{
+  "purpose": "Stage-6 common receptor-cluster candidate inventory; no capping/protonation/optimization",
+  "canonical_receptor": {
+    "entry_id": "5LF7",
+    "beta5_copy": "Y",
+    "sha256": "4f3b7016c8bb48287a850d22c499191bab13222ed136ba7774ccf41d105188f8"
+  },
+  "source_5LF3_sha256": "fa84bf0554bbc3dfb55ed97465c22a3098b9a671639fcb7e3030e2aba0922bb4",
+  "ligand_poses_in_canonical_frame": {
+    "6V8": "native deposited 5LF7 pose",
+    "BO2": "5LF3 pose rigidly transformed into the 5LF7 frame using the inverse Stage-4 alignment transform"
+  },
+  "definition": "Union of canonical 5LF7 protein residues contacting either ligand pose at each cutoff.",
+  "cutoff_summary": {
+    "3.0": {
+      "union_residue_count": 4,
+      "full_residue_heavy_atom_lower_bound": 23,
+      "residues": [
+        "Y:1:THR",
+        "Y:21:THR",
+        "Y:49:ALA",
+        "Y:47:GLY"
+      ]
+    },
+    "3.5": {
+      "union_residue_count": 6,
+      "full_residue_heavy_atom_lower_bound": 36,
+      "residues": [
+        "Y:1:THR",
+        "Y:21:THR",
+        "Y:49:ALA",
+        "Y:47:GLY",
+        "Y:20:ALA",
+        "Z:125:ASP"
+      ]
+    },
+    "4.0": {
+      "union_residue_count": 13,
+      "full_residue_heavy_atom_lower_bound": 86,
+      "residues": [
+        "Y:1:THR",
+        "Y:21:THR",
+        "Y:49:ALA",
+        "Y:47:GLY",
+        "Y:20:ALA",
+        "Z:125:ASP",
+        "Y:22:ALA",
+        "Y:169:TYR",
+        "Y:46:ALA",
+        "Y:33:LYS",
+        "Y:48:GLY",
+        "Y:45:MET",
+        "Y:31:VAL"
+      ]
+    },
+    "4.5": {
+      "union_residue_count": 18,
+      "full_residue_heavy_atom_lower_bound": 121,
+      "residues": [
+        "Y:1:THR",
+        "Y:21:THR",
+        "Y:49:ALA",
+        "Y:47:GLY",
+        "Y:20:ALA",
+        "Z:125:ASP",
+        "Y:22:ALA",
+        "Y:169:TYR",
+        "Y:46:ALA",
+        "Y:33:LYS",
+        "Y:48:GLY",
+        "Y:45:MET",
+        "Y:31:VAL",
+        "Y:19:ARG",
+        "Z:129:SER",
+        "Z:126:PRO",
+        "Y:27:ALA",
+        "Y:130:SER"
+      ]
+    },
+    "5.0": {
+      "union_residue_count": 20,
+      "full_residue_heavy_atom_lower_bound": 132,
+      "residues": [
+        "Y:1:THR",
+        "Y:21:THR",
+        "Y:49:ALA",
+        "Y:47:GLY",
+        "Y:20:ALA",
+        "Z:125:ASP",
+        "Y:22:ALA",
+        "Y:169:TYR",
+        "Y:46:ALA",
+        "Y:33:LYS",
+        "Y:48:GLY",
+        "Y:45:MET",
+        "Y:31:VAL",
+        "Y:19:ARG",
+        "Z:129:SER",
+        "Z:126:PRO",
+        "Y:27:ALA",
+        "Y:130:SER",
+        "Y:50:ALA",
+        "Y:52:CYS"
+      ]
+    }
+  },
+  "ranked_residue_candidates": [
+    {
+      "label_chain": "Y",
+      "label_seq": "1",
+      "auth_chain": "Y",
+      "auth_seq": "2",
+      "comp_id": "THR",
+      "full_residue_heavy_atoms": 7,
+      "min_to_native_6V8_A": 1.4567,
+      "min_to_transplanted_BO2_A": 1.4922,
+      "min_to_either_A": 1.4567,
+      "closest_native_6V8_pair": {
+        "distance_A": 1.4567,
+        "receptor_atom": "OG1",
+        "receptor_element": "O",
+        "ligand_atom": "B26",
+        "ligand_element": "B"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 1.4922,
+        "receptor_atom": "OG1",
+        "receptor_element": "O",
+        "ligand_atom": "B26",
+        "ligand_element": "B"
+      },
+      "contacts_both_within_4A": true,
+      "catalytic_thr": true,
+      "priority_tier": "0_catalytic"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "21",
+      "auth_chain": "Y",
+      "auth_seq": "22",
+      "comp_id": "THR",
+      "full_residue_heavy_atoms": 7,
+      "min_to_native_6V8_A": 2.8553,
+      "min_to_transplanted_BO2_A": 2.5949,
+      "min_to_either_A": 2.5949,
+      "closest_native_6V8_pair": {
+        "distance_A": 2.8553,
+        "receptor_atom": "O",
+        "receptor_element": "O",
+        "ligand_atom": "N9",
+        "ligand_element": "N"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 2.5949,
+        "receptor_atom": "O",
+        "receptor_element": "O",
+        "ligand_atom": "N9",
+        "ligand_element": "N"
+      },
+      "contacts_both_within_4A": true,
+      "catalytic_thr": false,
+      "priority_tier": "1_within_3.0A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "49",
+      "auth_chain": "Y",
+      "auth_seq": "50",
+      "comp_id": "ALA",
+      "full_residue_heavy_atoms": 5,
+      "min_to_native_6V8_A": 3.048,
+      "min_to_transplanted_BO2_A": 2.7835,
+      "min_to_either_A": 2.7835,
+      "closest_native_6V8_pair": {
+        "distance_A": 3.048,
+        "receptor_atom": "N",
+        "receptor_element": "N",
+        "ligand_atom": "O8",
+        "ligand_element": "O"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 2.7835,
+        "receptor_atom": "N",
+        "receptor_element": "N",
+        "ligand_atom": "O8",
+        "ligand_element": "O"
+      },
+      "contacts_both_within_4A": true,
+      "catalytic_thr": false,
+      "priority_tier": "1_within_3.0A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "47",
+      "auth_chain": "Y",
+      "auth_seq": "48",
+      "comp_id": "GLY",
+      "full_residue_heavy_atoms": 4,
+      "min_to_native_6V8_A": 2.7941,
+      "min_to_transplanted_BO2_A": 2.8509,
+      "min_to_either_A": 2.7941,
+      "closest_native_6V8_pair": {
+        "distance_A": 2.7941,
+        "receptor_atom": "O",
+        "receptor_element": "O",
+        "ligand_atom": "N20",
+        "ligand_element": "N"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 2.8509,
+        "receptor_atom": "O",
+        "receptor_element": "O",
+        "ligand_atom": "N20",
+        "ligand_element": "N"
+      },
+      "contacts_both_within_4A": true,
+      "catalytic_thr": false,
+      "priority_tier": "1_within_3.0A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "20",
+      "auth_chain": "Y",
+      "auth_seq": "21",
+      "comp_id": "ALA",
+      "full_residue_heavy_atoms": 5,
+      "min_to_native_6V8_A": 3.1881,
+      "min_to_transplanted_BO2_A": 3.4279,
+      "min_to_either_A": 3.1881,
+      "closest_native_6V8_pair": {
+        "distance_A": 3.1881,
+        "receptor_atom": "CA",
+        "receptor_element": "C",
+        "ligand_atom": "O19",
+        "ligand_element": "O"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 3.4279,
+        "receptor_atom": "CA",
+        "receptor_element": "C",
+        "ligand_atom": "O19",
+        "ligand_element": "O"
+      },
+      "contacts_both_within_4A": true,
+      "catalytic_thr": false,
+      "priority_tier": "2_within_3.5A"
+    },
+    {
+      "label_chain": "Z",
+      "label_seq": "125",
+      "auth_chain": "Z",
+      "auth_seq": "125",
+      "comp_id": "ASP",
+      "full_residue_heavy_atoms": 8,
+      "min_to_native_6V8_A": 3.5588,
+      "min_to_transplanted_BO2_A": 3.4084,
+      "min_to_either_A": 3.4084,
+      "closest_native_6V8_pair": {
+        "distance_A": 3.5588,
+        "receptor_atom": "CB",
+        "receptor_element": "C",
+        "ligand_atom": "C5",
+        "ligand_element": "C"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 3.4084,
+        "receptor_atom": "OD2",
+        "receptor_element": "O",
+        "ligand_atom": "C3",
+        "ligand_element": "C"
+      },
+      "contacts_both_within_4A": true,
+      "catalytic_thr": false,
+      "priority_tier": "2_within_3.5A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "22",
+      "auth_chain": "Y",
+      "auth_seq": "23",
+      "comp_id": "ALA",
+      "full_residue_heavy_atoms": 5,
+      "min_to_native_6V8_A": 3.875,
+      "min_to_transplanted_BO2_A": 3.6423,
+      "min_to_either_A": 3.6423,
+      "closest_native_6V8_pair": {
+        "distance_A": 3.875,
+        "receptor_atom": "CB",
+        "receptor_element": "C",
+        "ligand_atom": "C4",
+        "ligand_element": "C"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 3.6423,
+        "receptor_atom": "CB",
+        "receptor_element": "C",
+        "ligand_atom": "C6",
+        "ligand_element": "C"
+      },
+      "contacts_both_within_4A": true,
+      "catalytic_thr": false,
+      "priority_tier": "3_within_4.0A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "169",
+      "auth_chain": "Y",
+      "auth_seq": "170",
+      "comp_id": "TYR",
+      "full_residue_heavy_atoms": 12,
+      "min_to_native_6V8_A": 3.8708,
+      "min_to_transplanted_BO2_A": 3.7752,
+      "min_to_either_A": 3.7752,
+      "closest_native_6V8_pair": {
+        "distance_A": 3.8708,
+        "receptor_atom": "O",
+        "receptor_element": "O",
+        "ligand_atom": "O28",
+        "ligand_element": "O"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 3.7752,
+        "receptor_atom": "O",
+        "receptor_element": "O",
+        "ligand_atom": "O27",
+        "ligand_element": "O"
+      },
+      "contacts_both_within_4A": true,
+      "catalytic_thr": false,
+      "priority_tier": "3_within_4.0A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "46",
+      "auth_chain": "Y",
+      "auth_seq": "47",
+      "comp_id": "ALA",
+      "full_residue_heavy_atoms": 5,
+      "min_to_native_6V8_A": 3.7888,
+      "min_to_transplanted_BO2_A": 3.9366,
+      "min_to_either_A": 3.7888,
+      "closest_native_6V8_pair": {
+        "distance_A": 3.7888,
+        "receptor_atom": "CA",
+        "receptor_element": "C",
+        "ligand_atom": "O27",
+        "ligand_element": "O"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 3.9366,
+        "receptor_atom": "C",
+        "receptor_element": "C",
+        "ligand_atom": "O28",
+        "ligand_element": "O"
+      },
+      "contacts_both_within_4A": true,
+      "catalytic_thr": false,
+      "priority_tier": "3_within_4.0A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "33",
+      "auth_chain": "Y",
+      "auth_seq": "34",
+      "comp_id": "LYS",
+      "full_residue_heavy_atoms": 9,
+      "min_to_native_6V8_A": 3.8252,
+      "min_to_transplanted_BO2_A": 3.943,
+      "min_to_either_A": 3.8252,
+      "closest_native_6V8_pair": {
+        "distance_A": 3.8252,
+        "receptor_atom": "NZ",
+        "receptor_element": "N",
+        "ligand_atom": "B26",
+        "ligand_element": "B"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 3.943,
+        "receptor_atom": "CE",
+        "receptor_element": "C",
+        "ligand_atom": "C22",
+        "ligand_element": "C"
+      },
+      "contacts_both_within_4A": true,
+      "catalytic_thr": false,
+      "priority_tier": "3_within_4.0A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "48",
+      "auth_chain": "Y",
+      "auth_seq": "49",
+      "comp_id": "GLY",
+      "full_residue_heavy_atoms": 4,
+      "min_to_native_6V8_A": 3.8774,
+      "min_to_transplanted_BO2_A": 3.8694,
+      "min_to_either_A": 3.8694,
+      "closest_native_6V8_pair": {
+        "distance_A": 3.8774,
+        "receptor_atom": "CA",
+        "receptor_element": "C",
+        "ligand_atom": "O8",
+        "ligand_element": "O"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 3.8694,
+        "receptor_atom": "C",
+        "receptor_element": "C",
+        "ligand_atom": "O8",
+        "ligand_element": "O"
+      },
+      "contacts_both_within_4A": true,
+      "catalytic_thr": false,
+      "priority_tier": "3_within_4.0A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "45",
+      "auth_chain": "Y",
+      "auth_seq": "46",
+      "comp_id": "MET",
+      "full_residue_heavy_atoms": 8,
+      "min_to_native_6V8_A": 3.8766,
+      "min_to_transplanted_BO2_A": 4.0702,
+      "min_to_either_A": 3.8766,
+      "closest_native_6V8_pair": {
+        "distance_A": 3.8766,
+        "receptor_atom": "CB",
+        "receptor_element": "C",
+        "ligand_atom": "C24",
+        "ligand_element": "C"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 4.0702,
+        "receptor_atom": "CB",
+        "receptor_element": "C",
+        "ligand_atom": "C25",
+        "ligand_element": "C"
+      },
+      "contacts_both_within_4A": false,
+      "catalytic_thr": false,
+      "priority_tier": "3_within_4.0A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "31",
+      "auth_chain": "Y",
+      "auth_seq": "32",
+      "comp_id": "VAL",
+      "full_residue_heavy_atoms": 7,
+      "min_to_native_6V8_A": 3.9796,
+      "min_to_transplanted_BO2_A": 4.2454,
+      "min_to_either_A": 3.9796,
+      "closest_native_6V8_pair": {
+        "distance_A": 3.9796,
+        "receptor_atom": "CG1",
+        "receptor_element": "C",
+        "ligand_atom": "C25",
+        "ligand_element": "C"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 4.2454,
+        "receptor_atom": "CG1",
+        "receptor_element": "C",
+        "ligand_atom": "C24",
+        "ligand_element": "C"
+      },
+      "contacts_both_within_4A": false,
+      "catalytic_thr": false,
+      "priority_tier": "3_within_4.0A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "19",
+      "auth_chain": "Y",
+      "auth_seq": "20",
+      "comp_id": "ARG",
+      "full_residue_heavy_atoms": 11,
+      "min_to_native_6V8_A": 4.0042,
+      "min_to_transplanted_BO2_A": 4.0158,
+      "min_to_either_A": 4.0042,
+      "closest_native_6V8_pair": {
+        "distance_A": 4.0042,
+        "receptor_atom": "O",
+        "receptor_element": "O",
+        "ligand_atom": "C21",
+        "ligand_element": "C"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 4.0158,
+        "receptor_atom": "O",
+        "receptor_element": "O",
+        "ligand_atom": "C21",
+        "ligand_element": "C"
+      },
+      "contacts_both_within_4A": false,
+      "catalytic_thr": false,
+      "priority_tier": "4_within_4.5A"
+    },
+    {
+      "label_chain": "Z",
+      "label_seq": "129",
+      "auth_chain": "Z",
+      "auth_seq": "129",
+      "comp_id": "SER",
+      "full_residue_heavy_atoms": 6,
+      "min_to_native_6V8_A": 5.4074,
+      "min_to_transplanted_BO2_A": 4.0447,
+      "min_to_either_A": 4.0447,
+      "closest_native_6V8_pair": {
+        "distance_A": 5.4074,
+        "receptor_atom": "OG",
+        "receptor_element": "O",
+        "ligand_atom": "CL3",
+        "ligand_element": "CL"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 4.0447,
+        "receptor_atom": "OG",
+        "receptor_element": "O",
+        "ligand_atom": "C3",
+        "ligand_element": "C"
+      },
+      "contacts_both_within_4A": false,
+      "catalytic_thr": false,
+      "priority_tier": "4_within_4.5A"
+    },
+    {
+      "label_chain": "Z",
+      "label_seq": "126",
+      "auth_chain": "Z",
+      "auth_seq": "126",
+      "comp_id": "PRO",
+      "full_residue_heavy_atoms": 7,
+      "min_to_native_6V8_A": 4.1089,
+      "min_to_transplanted_BO2_A": 5.9444,
+      "min_to_either_A": 4.1089,
+      "closest_native_6V8_pair": {
+        "distance_A": 4.1089,
+        "receptor_atom": "CD",
+        "receptor_element": "C",
+        "ligand_atom": "CL6",
+        "ligand_element": "CL"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 5.9444,
+        "receptor_atom": "CD",
+        "receptor_element": "C",
+        "ligand_atom": "C5",
+        "ligand_element": "C"
+      },
+      "contacts_both_within_4A": false,
+      "catalytic_thr": false,
+      "priority_tier": "4_within_4.5A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "27",
+      "auth_chain": "Y",
+      "auth_seq": "28",
+      "comp_id": "ALA",
+      "full_residue_heavy_atoms": 5,
+      "min_to_native_6V8_A": 4.286,
+      "min_to_transplanted_BO2_A": 4.1299,
+      "min_to_either_A": 4.1299,
+      "closest_native_6V8_pair": {
+        "distance_A": 4.286,
+        "receptor_atom": "CB",
+        "receptor_element": "C",
+        "ligand_atom": "CL3",
+        "ligand_element": "CL"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 4.1299,
+        "receptor_atom": "CB",
+        "receptor_element": "C",
+        "ligand_atom": "C5",
+        "ligand_element": "C"
+      },
+      "contacts_both_within_4A": false,
+      "catalytic_thr": false,
+      "priority_tier": "4_within_4.5A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "130",
+      "auth_chain": "Y",
+      "auth_seq": "131",
+      "comp_id": "SER",
+      "full_residue_heavy_atoms": 6,
+      "min_to_native_6V8_A": 4.5619,
+      "min_to_transplanted_BO2_A": 4.2766,
+      "min_to_either_A": 4.2766,
+      "closest_native_6V8_pair": {
+        "distance_A": 4.5619,
+        "receptor_atom": "OG",
+        "receptor_element": "O",
+        "ligand_atom": "O28",
+        "ligand_element": "O"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 4.2766,
+        "receptor_atom": "CB",
+        "receptor_element": "C",
+        "ligand_atom": "C15",
+        "ligand_element": "C"
+      },
+      "contacts_both_within_4A": false,
+      "catalytic_thr": false,
+      "priority_tier": "4_within_4.5A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "50",
+      "auth_chain": "Y",
+      "auth_seq": "51",
+      "comp_id": "ALA",
+      "full_residue_heavy_atoms": 5,
+      "min_to_native_6V8_A": 4.6957,
+      "min_to_transplanted_BO2_A": 4.7099,
+      "min_to_either_A": 4.6957,
+      "closest_native_6V8_pair": {
+        "distance_A": 4.6957,
+        "receptor_atom": "N",
+        "receptor_element": "N",
+        "ligand_atom": "O8",
+        "ligand_element": "O"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 4.7099,
+        "receptor_atom": "N",
+        "receptor_element": "N",
+        "ligand_atom": "O8",
+        "ligand_element": "O"
+      },
+      "contacts_both_within_4A": false,
+      "catalytic_thr": false,
+      "priority_tier": "5_within_5.0A"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": "52",
+      "auth_chain": "Y",
+      "auth_seq": "53",
+      "comp_id": "CYS",
+      "full_residue_heavy_atoms": 6,
+      "min_to_native_6V8_A": 4.7851,
+      "min_to_transplanted_BO2_A": 5.0649,
+      "min_to_either_A": 4.7851,
+      "closest_native_6V8_pair": {
+        "distance_A": 4.7851,
+        "receptor_atom": "CB",
+        "receptor_element": "C",
+        "ligand_atom": "C24",
+        "ligand_element": "C"
+      },
+      "closest_transplanted_BO2_pair": {
+        "distance_A": 5.0649,
+        "receptor_atom": "CB",
+        "receptor_element": "C",
+        "ligand_atom": "C25",
+        "ligand_element": "C"
+      },
+      "contacts_both_within_4A": false,
+      "catalytic_thr": false,
+      "priority_tier": "5_within_5.0A"
+    }
+  ],
+  "water_candidates": {
+    "note": "Canonical 5LF7 crystallographic waters within 5 A of either ligand pose. Spatial conservation to transformed 5LF3 waters is a screening clue only, not a retention decision.",
+    "count": 10,
+    "rows": [
+      {
+        "5LF7_auth_chain": "Y",
+        "5LF7_auth_seq": "518",
+        "5LF7_label_chain": "EE",
+        "min_to_native_6V8_A": 3.1572,
+        "min_to_transplanted_BO2_A": 0.6826,
+        "min_to_either_A": 0.6826,
+        "nearest_5LF3_water": {
+          "nearest_5LF3_water_distance_A": 3.7331,
+          "5LF3_auth_chain": "Y",
+          "5LF3_auth_seq": "404",
+          "spatially_conserved_le_1.0A": false
+        }
+      },
+      {
+        "5LF7_auth_chain": "Y",
+        "5LF7_auth_seq": "437",
+        "5LF7_label_chain": "EE",
+        "min_to_native_6V8_A": 2.726,
+        "min_to_transplanted_BO2_A": 2.453,
+        "min_to_either_A": 2.453,
+        "nearest_5LF3_water": {
+          "nearest_5LF3_water_distance_A": 0.2468,
+          "5LF3_auth_chain": "Y",
+          "5LF3_auth_seq": "404",
+          "spatially_conserved_le_1.0A": true
+        }
+      },
+      {
+        "5LF7_auth_chain": "Z",
+        "5LF7_auth_seq": "406",
+        "5LF7_label_chain": "FE",
+        "min_to_native_6V8_A": 2.7534,
+        "min_to_transplanted_BO2_A": 3.427,
+        "min_to_either_A": 2.7534,
+        "nearest_5LF3_water": {
+          "nearest_5LF3_water_distance_A": 0.5228,
+          "5LF3_auth_chain": "Z",
+          "5LF3_auth_seq": "1412",
+          "spatially_conserved_le_1.0A": true
+        }
+      },
+      {
+        "5LF7_auth_chain": "Y",
+        "5LF7_auth_seq": "462",
+        "5LF7_label_chain": "EE",
+        "min_to_native_6V8_A": 2.8367,
+        "min_to_transplanted_BO2_A": 2.7885,
+        "min_to_either_A": 2.7885,
+        "nearest_5LF3_water": {
+          "nearest_5LF3_water_distance_A": 0.4819,
+          "5LF3_auth_chain": "Y",
+          "5LF3_auth_seq": "443",
+          "spatially_conserved_le_1.0A": true
+        }
+      },
+      {
+        "5LF7_auth_chain": "Y",
+        "5LF7_auth_seq": "512",
+        "5LF7_label_chain": "EE",
+        "min_to_native_6V8_A": 5.5336,
+        "min_to_transplanted_BO2_A": 3.252,
+        "min_to_either_A": 3.252,
+        "nearest_5LF3_water": {
+          "nearest_5LF3_water_distance_A": 0.9107,
+          "5LF3_auth_chain": "Y",
+          "5LF3_auth_seq": "414",
+          "spatially_conserved_le_1.0A": true
+        }
+      },
+      {
+        "5LF7_auth_chain": "Y",
+        "5LF7_auth_seq": "481",
+        "5LF7_label_chain": "EE",
+        "min_to_native_6V8_A": 4.1444,
+        "min_to_transplanted_BO2_A": 3.2665,
+        "min_to_either_A": 3.2665,
+        "nearest_5LF3_water": {
+          "nearest_5LF3_water_distance_A": 0.6352,
+          "5LF3_auth_chain": "Y",
+          "5LF3_auth_seq": "466",
+          "spatially_conserved_le_1.0A": true
+        }
+      },
+      {
+        "5LF7_auth_chain": "Y",
+        "5LF7_auth_seq": "540",
+        "5LF7_label_chain": "EE",
+        "min_to_native_6V8_A": 4.3616,
+        "min_to_transplanted_BO2_A": 3.6398,
+        "min_to_either_A": 3.6398,
+        "nearest_5LF3_water": {
+          "nearest_5LF3_water_distance_A": 4.0692,
+          "5LF3_auth_chain": "Z",
+          "5LF3_auth_seq": "1464",
+          "spatially_conserved_le_1.0A": false
+        }
+      },
+      {
+        "5LF7_auth_chain": "Z",
+        "5LF7_auth_seq": "538",
+        "5LF7_label_chain": "FE",
+        "min_to_native_6V8_A": 4.4065,
+        "min_to_transplanted_BO2_A": 3.6516,
+        "min_to_either_A": 3.6516,
+        "nearest_5LF3_water": {
+          "nearest_5LF3_water_distance_A": 4.5397,
+          "5LF3_auth_chain": "Z",
+          "5LF3_auth_seq": "1434",
+          "spatially_conserved_le_1.0A": false
+        }
+      },
+      {
+        "5LF7_auth_chain": "Z",
+        "5LF7_auth_seq": "545",
+        "5LF7_label_chain": "FE",
+        "min_to_native_6V8_A": 5.6717,
+        "min_to_transplanted_BO2_A": 4.2523,
+        "min_to_either_A": 4.2523,
+        "nearest_5LF3_water": {
+          "nearest_5LF3_water_distance_A": 4.4625,
+          "5LF3_auth_chain": "Z",
+          "5LF3_auth_seq": "1464",
+          "spatially_conserved_le_1.0A": false
+        }
+      },
+      {
+        "5LF7_auth_chain": "Y",
+        "5LF7_auth_seq": "513",
+        "5LF7_label_chain": "EE",
+        "min_to_native_6V8_A": 4.4222,
+        "min_to_transplanted_BO2_A": 5.1309,
+        "min_to_either_A": 4.4222,
+        "nearest_5LF3_water": {
+          "nearest_5LF3_water_distance_A": 0.2993,
+          "5LF3_auth_chain": "Y",
+          "5LF3_auth_seq": "502",
+          "spatially_conserved_le_1.0A": true
+        }
+      }
+    ]
+  },
+  "planning_atom_budget": {
+    "complex_atom_cap": 100,
+    "planning_bortezomib_total_atoms_estimate": 53,
+    "approximate_receptor_plus_caps_plus_waters_capacity": 47,
+    "warning": "The 47-ish atom capacity is a planning estimate, not a final count. Deposited CIFs omit hydrogens; final receptor fragments, caps, waters, protonation, and ligand chemistry must be counted explicitly later.",
+    "whole_residue_heavy_atom_test": {
+      "3.0": {
+        "heavy_atoms": 23,
+        "already_impossible_under_planning_all_atom_receptor_capacity": false
+      },
+      "3.5": {
+        "heavy_atoms": 36,
+        "already_impossible_under_planning_all_atom_receptor_capacity": false
+      },
+      "4.0": {
+        "heavy_atoms": 86,
+        "already_impossible_under_planning_all_atom_receptor_capacity": true
+      },
+      "4.5": {
+        "heavy_atoms": 121,
+        "already_impossible_under_planning_all_atom_receptor_capacity": true
+      },
+      "5.0": {
+        "heavy_atoms": 132,
+        "already_impossible_under_planning_all_atom_receptor_capacity": true
+      }
+    }
+  },
+  "selection_guidance": [
+    "Catalytic Thr must be represented with chemically correct N-terminal/covalent-boron chemistry.",
+    "Do not keep whole residues merely because they fall within a distance cutoff; whole-residue counts are lower-bound stress tests.",
+    "Prioritize contacts shared by both ligands and chemically specific polar/covalent interactions before distal hydrophobic shell atoms.",
+    "A conserved crystallographic water can be worth more than a distal residue fragment, but water hydrogens/orientation must be resolved later.",
+    "Every protein covalent cut will require an explicit, identical capping rule in both complexes.",
+    "Do not finalize the cluster until protonation, total charge, caps, and all-atom counts are explicit."
+  ],
+  "visualization_snapshots": {
+    "native_6V8": "intermediate/cluster_design/5LF7_Y_union5A_native_6V8.pdb",
+    "transplanted_BO2": "intermediate/cluster_design/5LF7_Y_union5A_transplanted_BO2.pdb",
+    "note": "The receptor residue and water sets are identical between these visualization snapshots; only the ligand differs."
+  }
+}

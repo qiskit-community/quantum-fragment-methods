@@ -1,0 +1,113 @@
+{
+  "stage": "9a_whole_cluster_gfn2_tblite_microstate_prescreen",
+  "scientific_role": "Diagnostic whole-cluster prescreen of A/B/C catalytic protonation microstates using GFN2-xTB through tblite. These energies are not final binding energies or benchmark truth.",
+  "comparison_rule": "Compare A/B/C only within the same ligand. BO2 and 6V8 have different compositions, so their absolute total energies must not be subtracted directly.",
+  "software": {
+    "python": "3.11.0",
+    "ase": "3.29.0",
+    "tblite": "unknown"
+  },
+  "settings": {
+    "method": "GFN2-xTB",
+    "charge": -1,
+    "multiplicity": 1,
+    "accuracy": 1.0,
+    "max_iterations": 500,
+    "electronic_temperature_K": 300.0
+  },
+  "results": [
+    {
+      "stem": "6V8_MS_A_THRN",
+      "status": "PASS",
+      "reason": null,
+      "n_atoms": 533,
+      "energy_eV": -23155.43219289012,
+      "energy_Eh": -850.9464377730524,
+      "mulliken_charge_sum_e": -1.000000012246531,
+      "delta_to_min_eV": 0.3134387037862325,
+      "delta_to_min_kcal_mol": 7.228068220629636,
+      "delta_to_A_eV": 0.0,
+      "delta_to_A_kcal_mol": 0.0
+    },
+    {
+      "stem": "6V8_MS_B_LYS33",
+      "status": "PASS",
+      "reason": null,
+      "n_atoms": 533,
+      "energy_eV": -23155.745631593905,
+      "energy_Eh": -850.9579564329601,
+      "mulliken_charge_sum_e": -1.0000000117351924,
+      "delta_to_min_eV": 0.0,
+      "delta_to_min_kcal_mol": 0.0,
+      "delta_to_A_eV": -0.3134387037862325,
+      "delta_to_A_kcal_mol": -7.228068220629636
+    },
+    {
+      "stem": "6V8_MS_C_ASP17",
+      "status": "PASS",
+      "reason": null,
+      "n_atoms": 533,
+      "energy_eV": -23153.542004014038,
+      "energy_Eh": -850.8769746130724,
+      "mulliken_charge_sum_e": -1.0000000000003801,
+      "delta_to_min_eV": 2.203627579867316,
+      "delta_to_min_kcal_mol": 50.81685920640143,
+      "delta_to_A_eV": 1.8901888760810834,
+      "delta_to_A_kcal_mol": 43.588790985771794
+    },
+    {
+      "stem": "BO2_MS_A_THRN",
+      "status": "PASS",
+      "reason": null,
+      "n_atoms": 544,
+      "energy_eV": -23441.40656362381,
+      "energy_Eh": -861.4558020571249,
+      "mulliken_charge_sum_e": -1.0000000000007638,
+      "delta_to_min_eV": 0.0,
+      "delta_to_min_kcal_mol": 0.0,
+      "delta_to_A_eV": 0.0,
+      "delta_to_A_kcal_mol": 0.0
+    },
+    {
+      "stem": "BO2_MS_B_LYS33",
+      "status": "PASS",
+      "reason": null,
+      "n_atoms": 544,
+      "energy_eV": -23440.313753917733,
+      "energy_Eh": -861.4156420411597,
+      "mulliken_charge_sum_e": -1.0000000000104698,
+      "delta_to_min_eV": 1.0928097060750588,
+      "delta_to_min_kcal_mol": 25.200790496708585,
+      "delta_to_A_eV": 1.0928097060750588,
+      "delta_to_A_kcal_mol": 25.200790496708585
+    },
+    {
+      "stem": "BO2_MS_C_ASP17",
+      "status": "PASS",
+      "reason": null,
+      "n_atoms": 544,
+      "energy_eV": -23439.094496842707,
+      "energy_Eh": -861.3708351700946,
+      "mulliken_charge_sum_e": -0.9999999999996874,
+      "delta_to_min_eV": 2.3120667811017483,
+      "delta_to_min_kcal_mol": 53.31752659318218,
+      "delta_to_A_eV": 2.3120667811017483,
+      "delta_to_A_kcal_mol": 53.31752659318218
+    }
+  ],
+  "ligand_differential_microstate_shifts": {
+    "MS_A_THRN": {
+      "delta_delta_eV": 0.0,
+      "delta_delta_kcal_mol": 0.0
+    },
+    "MS_B_LYS33": {
+      "delta_delta_eV": 1.4062484098612913,
+      "delta_delta_kcal_mol": 32.42885871733822
+    },
+    "MS_C_ASP17": {
+      "delta_delta_eV": 0.4218779050206649,
+      "delta_delta_kcal_mol": 9.728735607410384
+    }
+  },
+  "overall": "PASS"
+}

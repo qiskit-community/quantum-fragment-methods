@@ -1,0 +1,726 @@
+{
+  "purpose": "Stage-4 rigid alignment and active-site comparison; no chemistry modification",
+  "reference": {
+    "entry_id": "5LF3",
+    "ligand": "BO2",
+    "sha256": "fa84bf0554bbc3dfb55ed97465c22a3098b9a671639fcb7e3030e2aba0922bb4"
+  },
+  "mobile": {
+    "entry_id": "5LF7",
+    "ligand": "6V8",
+    "sha256": "4f3b7016c8bb48287a850d22c499191bab13222ed136ba7774ccf41d105188f8"
+  },
+  "important_numbering_rule": "Protein matching uses label_seq_id, never raw auth_seq_id.",
+  "chains": {
+    "K": {
+      "chain": "K",
+      "matching": {
+        "strategy": "label_seq_id + atom name; require matching label_comp_id",
+        "fit_atom_names": [
+          "N",
+          "CA",
+          "C"
+        ],
+        "matched_fit_atoms": 600,
+        "matched_fit_residues": 200,
+        "fit_identity_mismatches_excluded": []
+      },
+      "transform_5LF7_to_5LF3": {
+        "convention": "x_5LF3_frame = R @ x_5LF7 + t",
+        "rotation": [
+          [
+            0.99996447427,
+            0.007427709494,
+            0.003984887682
+          ],
+          [
+            -0.007419428386,
+            0.999970293844,
+            -0.002088902023
+          ],
+          [
+            -0.004000285064,
+            0.002059262225,
+            0.999989878528
+          ]
+        ],
+        "translation_A": [
+          -1.582574031113,
+          0.315706005025,
+          -0.229715621342
+        ],
+        "det_rotation": 0.9999999999999989
+      },
+      "rmsd_A": {
+        "global_beta5_backbone_fit": 0.1282,
+        "local_beta5_backbone_after_global_fit": 0.1977,
+        "local_beta5_backbone_best_local_fit": 0.1817,
+        "matched_local_environment_heavy_atoms_after_global_fit": 0.2023,
+        "matched_local_environment_heavy_atom_count": 132
+      },
+      "pocket_definition": {
+        "cutoff_A": 5.0,
+        "5LF3_residue_count": 18,
+        "5LF7_residue_count": 19,
+        "union_residue_count": 20,
+        "environment_identity_mismatches_excluded": []
+      },
+      "covalent_warhead_geometry": {
+        "5LF3_catalytic_thr": {
+          "label_seq": "1",
+          "auth_seq": "1",
+          "OG1_B26_A": 1.4472
+        },
+        "5LF7_catalytic_thr": {
+          "label_seq": "1",
+          "auth_seq": "2",
+          "OG1_B26_A": 1.4595
+        },
+        "aligned_catalytic_OG1_displacement_A": 0.1973,
+        "aligned_B26_displacement_A": 0.2657,
+        "ThrOG1_to_B26_vector_angle_deg": 6.461
+      },
+      "transplant_clashes": {
+        "6V8_aligned_into_5LF3_receptor": {
+          "counts": {
+            "lt_1.6A": 0,
+            "lt_1.8A": 0,
+            "lt_2.0A": 0,
+            "lt_2.2A": 0
+          },
+          "closest_nonbonded_heavy_pair": {
+            "distance_A": 2.299,
+            "ligand_atom": "O28",
+            "receptor": {
+              "label_chain": "K",
+              "label_seq": "1",
+              "auth_chain": "K",
+              "auth_seq": "1",
+              "comp": "THR",
+              "atom": "OG1"
+            }
+          },
+          "examples_lt_2A": []
+        },
+        "BO2_into_aligned_5LF7_receptor": {
+          "counts": {
+            "lt_1.6A": 0,
+            "lt_1.8A": 0,
+            "lt_2.0A": 0,
+            "lt_2.2A": 0
+          },
+          "closest_nonbonded_heavy_pair": {
+            "distance_A": 2.437,
+            "ligand_atom": "B26",
+            "receptor": {
+              "label_chain": "K",
+              "label_seq": "1",
+              "auth_chain": "K",
+              "auth_seq": "2",
+              "comp": "THR",
+              "atom": "CB"
+            }
+          },
+          "examples_lt_2A": []
+        },
+        "note": "Expected catalytic Thr-OG1--B26 covalent pair is excluded from clash counts."
+      },
+      "native_residue_contacts": [
+        {
+          "label_chain": "K",
+          "label_seq": "1",
+          "5LF3_auth_seq": "1",
+          "5LF7_auth_seq": "2",
+          "5LF3_comp": "THR",
+          "5LF7_comp": "THR",
+          "5LF3_native_min_distance_A": 1.447,
+          "5LF7_native_min_distance_A": 1.46,
+          "native_distance_delta_A": 0.012
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "47",
+          "5LF3_auth_seq": "47",
+          "5LF7_auth_seq": "48",
+          "5LF3_comp": "GLY",
+          "5LF7_comp": "GLY",
+          "5LF3_native_min_distance_A": 2.727,
+          "5LF7_native_min_distance_A": 2.779,
+          "native_distance_delta_A": 0.051
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "21",
+          "5LF3_auth_seq": "21",
+          "5LF7_auth_seq": "22",
+          "5LF3_comp": "THR",
+          "5LF7_comp": "THR",
+          "5LF3_native_min_distance_A": 2.864,
+          "5LF7_native_min_distance_A": 2.817,
+          "native_distance_delta_A": -0.047
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "49",
+          "5LF3_auth_seq": "49",
+          "5LF7_auth_seq": "50",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 2.979,
+          "5LF7_native_min_distance_A": 3.002,
+          "native_distance_delta_A": 0.023
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "20",
+          "5LF3_auth_seq": "20",
+          "5LF7_auth_seq": "21",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 3.348,
+          "5LF7_native_min_distance_A": 3.173,
+          "native_distance_delta_A": -0.175
+        },
+        {
+          "label_chain": "L",
+          "label_seq": "125",
+          "5LF3_auth_seq": "125",
+          "5LF7_auth_seq": "125",
+          "5LF3_comp": "ASP",
+          "5LF7_comp": "ASP",
+          "5LF3_native_min_distance_A": 3.566,
+          "5LF7_native_min_distance_A": 3.611,
+          "native_distance_delta_A": 0.045
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "169",
+          "5LF3_auth_seq": "169",
+          "5LF7_auth_seq": "170",
+          "5LF3_comp": "TYR",
+          "5LF7_comp": "TYR",
+          "5LF3_native_min_distance_A": 3.73,
+          "5LF7_native_min_distance_A": 3.851,
+          "native_distance_delta_A": 0.121
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "46",
+          "5LF3_auth_seq": "46",
+          "5LF7_auth_seq": "47",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 3.894,
+          "5LF7_native_min_distance_A": 3.792,
+          "native_distance_delta_A": -0.102
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "22",
+          "5LF3_auth_seq": "22",
+          "5LF7_auth_seq": "23",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 3.92,
+          "5LF7_native_min_distance_A": 3.814,
+          "native_distance_delta_A": -0.106
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "33",
+          "5LF3_auth_seq": "33",
+          "5LF7_auth_seq": "34",
+          "5LF3_comp": "LYS",
+          "5LF7_comp": "LYS",
+          "5LF3_native_min_distance_A": 3.903,
+          "5LF7_native_min_distance_A": 3.849,
+          "native_distance_delta_A": -0.054
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "45",
+          "5LF3_auth_seq": "45",
+          "5LF7_auth_seq": "46",
+          "5LF3_comp": "MET",
+          "5LF7_comp": "MET",
+          "5LF3_native_min_distance_A": 3.944,
+          "5LF7_native_min_distance_A": 3.859,
+          "native_distance_delta_A": -0.085
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "19",
+          "5LF3_auth_seq": "19",
+          "5LF7_auth_seq": "20",
+          "5LF3_comp": "ARG",
+          "5LF7_comp": "ARG",
+          "5LF3_native_min_distance_A": 3.895,
+          "5LF7_native_min_distance_A": 4.056,
+          "native_distance_delta_A": 0.161
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "48",
+          "5LF3_auth_seq": "48",
+          "5LF7_auth_seq": "49",
+          "5LF3_comp": "GLY",
+          "5LF7_comp": "GLY",
+          "5LF3_native_min_distance_A": 3.938,
+          "5LF7_native_min_distance_A": 3.895,
+          "native_distance_delta_A": -0.043
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "31",
+          "5LF3_auth_seq": "31",
+          "5LF7_auth_seq": "32",
+          "5LF3_comp": "VAL",
+          "5LF7_comp": "VAL",
+          "5LF3_native_min_distance_A": 4.076,
+          "5LF7_native_min_distance_A": 3.96,
+          "native_distance_delta_A": -0.117
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "27",
+          "5LF3_auth_seq": "27",
+          "5LF7_auth_seq": "28",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 4.116,
+          "5LF7_native_min_distance_A": 4.325,
+          "native_distance_delta_A": 0.208
+        },
+        {
+          "label_chain": "L",
+          "label_seq": "129",
+          "5LF3_auth_seq": "129",
+          "5LF7_auth_seq": "129",
+          "5LF3_comp": "SER",
+          "5LF7_comp": "SER",
+          "5LF3_native_min_distance_A": 4.148,
+          "5LF7_native_min_distance_A": 5.391,
+          "native_distance_delta_A": 1.243
+        },
+        {
+          "label_chain": "L",
+          "label_seq": "126",
+          "5LF3_auth_seq": "126",
+          "5LF7_auth_seq": "126",
+          "5LF3_comp": "PRO",
+          "5LF7_comp": "PRO",
+          "5LF3_native_min_distance_A": 6.032,
+          "5LF7_native_min_distance_A": 4.196,
+          "native_distance_delta_A": -1.835
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "130",
+          "5LF3_auth_seq": "130",
+          "5LF7_auth_seq": "131",
+          "5LF3_comp": "SER",
+          "5LF7_comp": "SER",
+          "5LF3_native_min_distance_A": 4.285,
+          "5LF7_native_min_distance_A": 4.572,
+          "native_distance_delta_A": 0.287
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "50",
+          "5LF3_auth_seq": "50",
+          "5LF7_auth_seq": "51",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 4.899,
+          "5LF7_native_min_distance_A": 4.7,
+          "native_distance_delta_A": -0.2
+        },
+        {
+          "label_chain": "K",
+          "label_seq": "52",
+          "5LF3_auth_seq": "52",
+          "5LF7_auth_seq": "53",
+          "5LF3_comp": "CYS",
+          "5LF7_comp": "CYS",
+          "5LF3_native_min_distance_A": 5.289,
+          "5LF7_native_min_distance_A": 4.769,
+          "native_distance_delta_A": -0.521
+        }
+      ],
+      "visualization_snapshots": {
+        "5LF3": "intermediate/alignment/5LF3_K_BO2_pocket.pdb",
+        "5LF7_aligned": "intermediate/alignment/5LF7_K_6V8_pocket_aligned_to_5LF3.pdb",
+        "snapshot_cutoff_A": 8.0
+      }
+    },
+    "Y": {
+      "chain": "Y",
+      "matching": {
+        "strategy": "label_seq_id + atom name; require matching label_comp_id",
+        "fit_atom_names": [
+          "N",
+          "CA",
+          "C"
+        ],
+        "matched_fit_atoms": 603,
+        "matched_fit_residues": 201,
+        "fit_identity_mismatches_excluded": []
+      },
+      "transform_5LF7_to_5LF3": {
+        "convention": "x_5LF3_frame = R @ x_5LF7 + t",
+        "rotation": [
+          [
+            0.999987242698,
+            -0.002433772617,
+            0.004426193933
+          ],
+          [
+            0.002437951414,
+            0.999996587372,
+            -0.000938955919
+          ],
+          [
+            -0.004423893623,
+            0.000949734787,
+            0.999989763532
+          ]
+        ],
+        "translation_A": [
+          0.051947943504,
+          -0.002245894924,
+          0.102567064791
+        ],
+        "det_rotation": 1.0
+      },
+      "rmsd_A": {
+        "global_beta5_backbone_fit": 0.1226,
+        "local_beta5_backbone_after_global_fit": 0.1964,
+        "local_beta5_backbone_best_local_fit": 0.1799,
+        "matched_local_environment_heavy_atoms_after_global_fit": 0.1987,
+        "matched_local_environment_heavy_atom_count": 132
+      },
+      "pocket_definition": {
+        "cutoff_A": 5.0,
+        "5LF3_residue_count": 18,
+        "5LF7_residue_count": 19,
+        "union_residue_count": 20,
+        "environment_identity_mismatches_excluded": []
+      },
+      "covalent_warhead_geometry": {
+        "5LF3_catalytic_thr": {
+          "label_seq": "1",
+          "auth_seq": "1",
+          "OG1_B26_A": 1.4401
+        },
+        "5LF7_catalytic_thr": {
+          "label_seq": "1",
+          "auth_seq": "2",
+          "OG1_B26_A": 1.4567
+        },
+        "aligned_catalytic_OG1_displacement_A": 0.1901,
+        "aligned_B26_displacement_A": 0.257,
+        "ThrOG1_to_B26_vector_angle_deg": 5.847
+      },
+      "transplant_clashes": {
+        "6V8_aligned_into_5LF3_receptor": {
+          "counts": {
+            "lt_1.6A": 0,
+            "lt_1.8A": 0,
+            "lt_2.0A": 0,
+            "lt_2.2A": 0
+          },
+          "closest_nonbonded_heavy_pair": {
+            "distance_A": 2.327,
+            "ligand_atom": "O27",
+            "receptor": {
+              "label_chain": "Y",
+              "label_seq": "1",
+              "auth_chain": "Y",
+              "auth_seq": "1",
+              "comp": "THR",
+              "atom": "OG1"
+            }
+          },
+          "examples_lt_2A": []
+        },
+        "BO2_into_aligned_5LF7_receptor": {
+          "counts": {
+            "lt_1.6A": 0,
+            "lt_1.8A": 0,
+            "lt_2.0A": 0,
+            "lt_2.2A": 0
+          },
+          "closest_nonbonded_heavy_pair": {
+            "distance_A": 2.416,
+            "ligand_atom": "B26",
+            "receptor": {
+              "label_chain": "Y",
+              "label_seq": "1",
+              "auth_chain": "Y",
+              "auth_seq": "2",
+              "comp": "THR",
+              "atom": "CB"
+            }
+          },
+          "examples_lt_2A": []
+        },
+        "note": "Expected catalytic Thr-OG1--B26 covalent pair is excluded from clash counts."
+      },
+      "native_residue_contacts": [
+        {
+          "label_chain": "Y",
+          "label_seq": "1",
+          "5LF3_auth_seq": "1",
+          "5LF7_auth_seq": "2",
+          "5LF3_comp": "THR",
+          "5LF7_comp": "THR",
+          "5LF3_native_min_distance_A": 1.44,
+          "5LF7_native_min_distance_A": 1.457,
+          "native_distance_delta_A": 0.017
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "47",
+          "5LF3_auth_seq": "47",
+          "5LF7_auth_seq": "48",
+          "5LF3_comp": "GLY",
+          "5LF7_comp": "GLY",
+          "5LF3_native_min_distance_A": 2.755,
+          "5LF7_native_min_distance_A": 2.794,
+          "native_distance_delta_A": 0.039
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "21",
+          "5LF3_auth_seq": "21",
+          "5LF7_auth_seq": "22",
+          "5LF3_comp": "THR",
+          "5LF7_comp": "THR",
+          "5LF3_native_min_distance_A": 2.875,
+          "5LF7_native_min_distance_A": 2.855,
+          "native_distance_delta_A": -0.02
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "49",
+          "5LF3_auth_seq": "49",
+          "5LF7_auth_seq": "50",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 2.992,
+          "5LF7_native_min_distance_A": 3.048,
+          "native_distance_delta_A": 0.056
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "20",
+          "5LF3_auth_seq": "20",
+          "5LF7_auth_seq": "21",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 3.36,
+          "5LF7_native_min_distance_A": 3.188,
+          "native_distance_delta_A": -0.172
+        },
+        {
+          "label_chain": "Z",
+          "label_seq": "125",
+          "5LF3_auth_seq": "125",
+          "5LF7_auth_seq": "125",
+          "5LF3_comp": "ASP",
+          "5LF7_comp": "ASP",
+          "5LF3_native_min_distance_A": 3.565,
+          "5LF7_native_min_distance_A": 3.559,
+          "native_distance_delta_A": -0.006
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "169",
+          "5LF3_auth_seq": "169",
+          "5LF7_auth_seq": "170",
+          "5LF3_comp": "TYR",
+          "5LF7_comp": "TYR",
+          "5LF3_native_min_distance_A": 3.733,
+          "5LF7_native_min_distance_A": 3.871,
+          "native_distance_delta_A": 0.138
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "46",
+          "5LF3_auth_seq": "46",
+          "5LF7_auth_seq": "47",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 3.872,
+          "5LF7_native_min_distance_A": 3.789,
+          "native_distance_delta_A": -0.083
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "33",
+          "5LF3_auth_seq": "33",
+          "5LF7_auth_seq": "34",
+          "5LF3_comp": "LYS",
+          "5LF7_comp": "LYS",
+          "5LF3_native_min_distance_A": 3.915,
+          "5LF7_native_min_distance_A": 3.825,
+          "native_distance_delta_A": -0.089
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "19",
+          "5LF3_auth_seq": "19",
+          "5LF7_auth_seq": "20",
+          "5LF3_comp": "ARG",
+          "5LF7_comp": "ARG",
+          "5LF3_native_min_distance_A": 3.869,
+          "5LF7_native_min_distance_A": 4.004,
+          "native_distance_delta_A": 0.135
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "22",
+          "5LF3_auth_seq": "22",
+          "5LF7_auth_seq": "23",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 3.94,
+          "5LF7_native_min_distance_A": 3.875,
+          "native_distance_delta_A": -0.065
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "45",
+          "5LF3_auth_seq": "45",
+          "5LF7_auth_seq": "46",
+          "5LF3_comp": "MET",
+          "5LF7_comp": "MET",
+          "5LF3_native_min_distance_A": 3.934,
+          "5LF7_native_min_distance_A": 3.877,
+          "native_distance_delta_A": -0.057
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "48",
+          "5LF3_auth_seq": "48",
+          "5LF7_auth_seq": "49",
+          "5LF3_comp": "GLY",
+          "5LF7_comp": "GLY",
+          "5LF3_native_min_distance_A": 3.933,
+          "5LF7_native_min_distance_A": 3.877,
+          "native_distance_delta_A": -0.055
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "31",
+          "5LF3_auth_seq": "31",
+          "5LF7_auth_seq": "32",
+          "5LF3_comp": "VAL",
+          "5LF7_comp": "VAL",
+          "5LF3_native_min_distance_A": 4.078,
+          "5LF7_native_min_distance_A": 3.98,
+          "native_distance_delta_A": -0.099
+        },
+        {
+          "label_chain": "Z",
+          "label_seq": "129",
+          "5LF3_auth_seq": "129",
+          "5LF7_auth_seq": "129",
+          "5LF3_comp": "SER",
+          "5LF7_comp": "SER",
+          "5LF3_native_min_distance_A": 4.088,
+          "5LF7_native_min_distance_A": 5.407,
+          "native_distance_delta_A": 1.319
+        },
+        {
+          "label_chain": "Z",
+          "label_seq": "126",
+          "5LF3_auth_seq": "126",
+          "5LF7_auth_seq": "126",
+          "5LF3_comp": "PRO",
+          "5LF7_comp": "PRO",
+          "5LF3_native_min_distance_A": 6.053,
+          "5LF7_native_min_distance_A": 4.109,
+          "native_distance_delta_A": -1.944
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "27",
+          "5LF3_auth_seq": "27",
+          "5LF7_auth_seq": "28",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 4.152,
+          "5LF7_native_min_distance_A": 4.286,
+          "native_distance_delta_A": 0.134
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "130",
+          "5LF3_auth_seq": "130",
+          "5LF7_auth_seq": "131",
+          "5LF3_comp": "SER",
+          "5LF7_comp": "SER",
+          "5LF3_native_min_distance_A": 4.308,
+          "5LF7_native_min_distance_A": 4.562,
+          "native_distance_delta_A": 0.254
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "50",
+          "5LF3_auth_seq": "50",
+          "5LF7_auth_seq": "51",
+          "5LF3_comp": "ALA",
+          "5LF7_comp": "ALA",
+          "5LF3_native_min_distance_A": 4.863,
+          "5LF7_native_min_distance_A": 4.696,
+          "native_distance_delta_A": -0.167
+        },
+        {
+          "label_chain": "Y",
+          "label_seq": "52",
+          "5LF3_auth_seq": "52",
+          "5LF7_auth_seq": "53",
+          "5LF3_comp": "CYS",
+          "5LF7_comp": "CYS",
+          "5LF3_native_min_distance_A": 5.295,
+          "5LF7_native_min_distance_A": 4.785,
+          "native_distance_delta_A": -0.509
+        }
+      ],
+      "visualization_snapshots": {
+        "5LF3": "intermediate/alignment/5LF3_Y_BO2_pocket.pdb",
+        "5LF7_aligned": "intermediate/alignment/5LF7_Y_6V8_pocket_aligned_to_5LF3.pdb",
+        "snapshot_cutoff_A": 8.0
+      }
+    }
+  },
+  "screening_summary": [
+    {
+      "chain": "K",
+      "global_backbone_rmsd_A": 0.1282,
+      "local_backbone_rmsd_A": 0.1977,
+      "local_environment_heavy_rmsd_A": 0.2023,
+      "B26_displacement_A": 0.2657,
+      "warhead_vector_angle_deg": 6.461,
+      "6V8_into_5LF3_clashes_lt_1.8A": 0,
+      "BO2_into_5LF7_clashes_lt_1.8A": 0
+    },
+    {
+      "chain": "Y",
+      "global_backbone_rmsd_A": 0.1226,
+      "local_backbone_rmsd_A": 0.1964,
+      "local_environment_heavy_rmsd_A": 0.1987,
+      "B26_displacement_A": 0.257,
+      "warhead_vector_angle_deg": 5.847,
+      "6V8_into_5LF3_clashes_lt_1.8A": 0,
+      "BO2_into_5LF7_clashes_lt_1.8A": 0
+    }
+  ],
+  "selection_guidance": [
+    "Do not choose K versus Y from a single RMSD alone.",
+    "First reject a copy if reciprocal transplantation creates severe nonbonded heavy-atom clashes.",
+    "Then prefer lower local environment RMSD and better conserved warhead geometry.",
+    "Inspect the paired PDB snapshots before freezing the canonical copy."
+  ]
+}

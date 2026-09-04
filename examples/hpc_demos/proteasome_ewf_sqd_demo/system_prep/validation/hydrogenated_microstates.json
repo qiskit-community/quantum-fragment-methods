@@ -1,0 +1,163 @@
+{
+  "stage": "8e_initial_hydrogenated_microstates",
+  "openbabel": "/Users/thaddeuspellegrini/Code/QuantumAlgorithmEngineering/QDC_2026/oncology_dev/bin/obabel",
+  "method": [
+    "merge capped receptor heavy scaffold with experimental ligand heavy atoms",
+    "Open Babel adds ordinary valence hydrogens",
+    "explicit script overrides catalytic/ionizable/water hydrogen counts",
+    "all heavy atoms remain fixed"
+  ],
+  "controlled_sites": [
+    "Thr1 N",
+    "Thr1 OG1",
+    "Asp17 OD1/OD2",
+    "Arg19",
+    "Lys32",
+    "Lys33",
+    "Asp167",
+    "Tyr169",
+    "Asp125",
+    "both B-bound ligand oxygens",
+    "three retained waters"
+  ],
+  "results": [
+    {
+      "ligand": "6V8",
+      "microstate": "MS_A_THRN",
+      "total_charge": -1,
+      "n_atoms": 533,
+      "n_heavy": 263,
+      "n_H": 270,
+      "pdb": "intermediate/hydrogenated_microstates/6V8_MS_A_THRN.pdb",
+      "xyz": "intermediate/hydrogenated_microstates/6V8_MS_A_THRN.xyz",
+      "special_H_counts": {
+        "Thr1_N": 3,
+        "Thr1_OG1": 0,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0,
+        "6V8_O_NTERM_O28": 1,
+        "6V8_O_OXY_O27": 1,
+        "water_Y:437": 2,
+        "water_Z:406": 2,
+        "water_Y:462": 2
+      }
+    },
+    {
+      "ligand": "6V8",
+      "microstate": "MS_B_LYS33",
+      "total_charge": -1,
+      "n_atoms": 533,
+      "n_heavy": 263,
+      "n_H": 270,
+      "pdb": "intermediate/hydrogenated_microstates/6V8_MS_B_LYS33.pdb",
+      "xyz": "intermediate/hydrogenated_microstates/6V8_MS_B_LYS33.xyz",
+      "special_H_counts": {
+        "Thr1_N": 2,
+        "Thr1_OG1": 0,
+        "Lys33_NZ": 3,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0,
+        "6V8_O_NTERM_O28": 1,
+        "6V8_O_OXY_O27": 1,
+        "water_Y:437": 2,
+        "water_Z:406": 2,
+        "water_Y:462": 2
+      }
+    },
+    {
+      "ligand": "6V8",
+      "microstate": "MS_C_ASP17",
+      "total_charge": -1,
+      "n_atoms": 533,
+      "n_heavy": 263,
+      "n_H": 270,
+      "pdb": "intermediate/hydrogenated_microstates/6V8_MS_C_ASP17.pdb",
+      "xyz": "intermediate/hydrogenated_microstates/6V8_MS_C_ASP17.xyz",
+      "special_H_counts": {
+        "Thr1_N": 2,
+        "Thr1_OG1": 0,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 1,
+        "Asp17_OD2": 0,
+        "6V8_O_NTERM_O28": 1,
+        "6V8_O_OXY_O27": 1,
+        "water_Y:437": 2,
+        "water_Z:406": 2,
+        "water_Y:462": 2
+      }
+    },
+    {
+      "ligand": "BO2",
+      "microstate": "MS_A_THRN",
+      "total_charge": -1,
+      "n_atoms": 544,
+      "n_heavy": 268,
+      "n_H": 276,
+      "pdb": "intermediate/hydrogenated_microstates/BO2_MS_A_THRN.pdb",
+      "xyz": "intermediate/hydrogenated_microstates/BO2_MS_A_THRN.xyz",
+      "special_H_counts": {
+        "Thr1_N": 3,
+        "Thr1_OG1": 0,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0,
+        "BO2_O_NTERM_O27": 1,
+        "BO2_O_OXY_O28": 1,
+        "water_Y:437": 2,
+        "water_Z:406": 2,
+        "water_Y:462": 2
+      }
+    },
+    {
+      "ligand": "BO2",
+      "microstate": "MS_B_LYS33",
+      "total_charge": -1,
+      "n_atoms": 544,
+      "n_heavy": 268,
+      "n_H": 276,
+      "pdb": "intermediate/hydrogenated_microstates/BO2_MS_B_LYS33.pdb",
+      "xyz": "intermediate/hydrogenated_microstates/BO2_MS_B_LYS33.xyz",
+      "special_H_counts": {
+        "Thr1_N": 2,
+        "Thr1_OG1": 0,
+        "Lys33_NZ": 3,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0,
+        "BO2_O_NTERM_O27": 1,
+        "BO2_O_OXY_O28": 1,
+        "water_Y:437": 2,
+        "water_Z:406": 2,
+        "water_Y:462": 2
+      }
+    },
+    {
+      "ligand": "BO2",
+      "microstate": "MS_C_ASP17",
+      "total_charge": -1,
+      "n_atoms": 544,
+      "n_heavy": 268,
+      "n_H": 276,
+      "pdb": "intermediate/hydrogenated_microstates/BO2_MS_C_ASP17.pdb",
+      "xyz": "intermediate/hydrogenated_microstates/BO2_MS_C_ASP17.xyz",
+      "special_H_counts": {
+        "Thr1_N": 2,
+        "Thr1_OG1": 0,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 1,
+        "Asp17_OD2": 0,
+        "BO2_O_NTERM_O27": 1,
+        "BO2_O_OXY_O28": 1,
+        "water_Y:437": 2,
+        "water_Z:406": 2,
+        "water_Y:462": 2
+      }
+    }
+  ],
+  "validation": {
+    "same_composition_across_microstates_per_ligand": true,
+    "same_total_charge_across_all_first_screen_states": -1
+  },
+  "important_warning": "These are starting hydrogen coordinates only. Do not compare quantum energies before performing the same hydrogen-only optimization protocol on every structure.",
+  "next_step": "Run geometry sanity checks, then perform hydrogen-only constrained optimization with all heavy atoms frozen."
+}

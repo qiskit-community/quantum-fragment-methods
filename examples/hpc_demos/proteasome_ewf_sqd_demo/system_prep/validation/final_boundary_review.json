@@ -1,0 +1,405 @@
+{
+  "purpose": "Final boundary-extension check before freezing peptide segment endpoints",
+  "candidate_segments": [
+    "Y:1-3",
+    "Y:17-22",
+    "Y:46-50",
+    "Y:129-131",
+    "Y:167-170",
+    "Z:124-126"
+  ],
+  "alignment": {
+    "5LF3_to_5LF7_chain": "Y",
+    "backbone_atoms": 804,
+    "rmsd_A": 0.1264
+  },
+  "retained_waters": [
+    "Y:437",
+    "Z:406",
+    "Y:462"
+  ],
+  "results": [
+    {
+      "segment": "Y:1-3",
+      "side": "C",
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 4,
+        "auth_chain": "Y",
+        "auth_seq": "5",
+        "comp_id": "LEU",
+        "ionizable_or_charge_sensitive_type": false
+      },
+      "recommendation": "STOP",
+      "reason": "no compelling first-/near-second-shell signal by this diagnostic",
+      "metrics": {
+        "whole_to_6V8_A": 11.018,
+        "whole_to_BO2_A": 11.073,
+        "whole_to_any_water_A": 10.949,
+        "whole_to_Thr1_A": 7.566,
+        "sidechain_to_6V8_A": 13.036,
+        "sidechain_to_BO2_A": 13.054,
+        "sidechain_to_any_water_A": 12.599,
+        "sidechain_to_Thr1_A": 9.293,
+        "water_distances_whole_A": {
+          "Y:437": 10.949,
+          "Z:406": 19.056,
+          "Y:462": 13.535
+        },
+        "water_distances_sidechain_A": {
+          "Y:437": 12.599,
+          "Z:406": 21.396,
+          "Y:462": 15.312
+        }
+      }
+    },
+    {
+      "segment": "Y:17-22",
+      "side": "N",
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 16,
+        "auth_chain": "Y",
+        "auth_seq": "17",
+        "comp_id": "ALA",
+        "ionizable_or_charge_sensitive_type": false
+      },
+      "recommendation": "STOP",
+      "reason": "no compelling first-/near-second-shell signal by this diagnostic",
+      "metrics": {
+        "whole_to_6V8_A": 8.672,
+        "whole_to_BO2_A": 8.674,
+        "whole_to_any_water_A": 10.71,
+        "whole_to_Thr1_A": 6.072,
+        "sidechain_to_6V8_A": 8.672,
+        "sidechain_to_BO2_A": 8.674,
+        "sidechain_to_any_water_A": 10.741,
+        "sidechain_to_Thr1_A": 6.072,
+        "water_distances_whole_A": {
+          "Y:437": 10.741,
+          "Z:406": 16.173,
+          "Y:462": 10.71
+        },
+        "water_distances_sidechain_A": {
+          "Y:437": 10.741,
+          "Z:406": 16.173,
+          "Y:462": 10.966
+        }
+      }
+    },
+    {
+      "segment": "Y:17-22",
+      "side": "C",
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 23,
+        "auth_chain": "Y",
+        "auth_seq": "24",
+        "comp_id": "GLY",
+        "ionizable_or_charge_sensitive_type": false
+      },
+      "recommendation": "STOP",
+      "reason": "no compelling first-/near-second-shell signal by this diagnostic",
+      "metrics": {
+        "whole_to_6V8_A": 6.296,
+        "whole_to_BO2_A": 5.693,
+        "whole_to_any_water_A": 6.726,
+        "whole_to_Thr1_A": 9.735,
+        "sidechain_to_6V8_A": null,
+        "sidechain_to_BO2_A": null,
+        "sidechain_to_any_water_A": null,
+        "sidechain_to_Thr1_A": null,
+        "water_distances_whole_A": {
+          "Y:437": 10.44,
+          "Z:406": 9.94,
+          "Y:462": 6.726
+        },
+        "water_distances_sidechain_A": {
+          "Y:437": null,
+          "Z:406": null,
+          "Y:462": null
+        }
+      }
+    },
+    {
+      "segment": "Y:46-50",
+      "side": "N",
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 45,
+        "auth_chain": "Y",
+        "auth_seq": "46",
+        "comp_id": "MET",
+        "ionizable_or_charge_sensitive_type": false
+      },
+      "recommendation": "REVIEW",
+      "reason": "whole residue within 5.0 A of modeled chemistry",
+      "metrics": {
+        "whole_to_6V8_A": 3.877,
+        "whole_to_BO2_A": 4.071,
+        "whole_to_any_water_A": 6.999,
+        "whole_to_Thr1_A": 3.618,
+        "sidechain_to_6V8_A": 3.877,
+        "sidechain_to_BO2_A": 4.071,
+        "sidechain_to_any_water_A": 9.233,
+        "sidechain_to_Thr1_A": 6.475,
+        "water_distances_whole_A": {
+          "Y:437": 6.999,
+          "Z:406": 9.818,
+          "Y:462": 8.99
+        },
+        "water_distances_sidechain_A": {
+          "Y:437": 9.233,
+          "Z:406": 9.818,
+          "Y:462": 10.755
+        }
+      }
+    },
+    {
+      "segment": "Y:46-50",
+      "side": "C",
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 51,
+        "auth_chain": "Y",
+        "auth_seq": "52",
+        "comp_id": "ASP",
+        "ionizable_or_charge_sensitive_type": true
+      },
+      "recommendation": "REVIEW",
+      "reason": "whole residue within 5.0 A of modeled chemistry",
+      "metrics": {
+        "whole_to_6V8_A": 6.583,
+        "whole_to_BO2_A": 6.822,
+        "whole_to_any_water_A": 4.873,
+        "whole_to_Thr1_A": 11.594,
+        "sidechain_to_6V8_A": 7.288,
+        "sidechain_to_BO2_A": 7.947,
+        "sidechain_to_any_water_A": 6.2,
+        "sidechain_to_Thr1_A": 11.872,
+        "water_distances_whole_A": {
+          "Y:437": 11.444,
+          "Z:406": 4.873,
+          "Y:462": 13.238
+        },
+        "water_distances_sidechain_A": {
+          "Y:437": 11.444,
+          "Z:406": 6.2,
+          "Y:462": 13.832
+        }
+      }
+    },
+    {
+      "segment": "Y:129-131",
+      "side": "N",
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 128,
+        "auth_chain": "Y",
+        "auth_seq": "129",
+        "comp_id": "VAL",
+        "ionizable_or_charge_sensitive_type": false
+      },
+      "recommendation": "REVIEW",
+      "reason": "whole residue within 5.0 A of modeled chemistry",
+      "metrics": {
+        "whole_to_6V8_A": 6.82,
+        "whole_to_BO2_A": 6.776,
+        "whole_to_any_water_A": 5.871,
+        "whole_to_Thr1_A": 4.043,
+        "sidechain_to_6V8_A": 7.645,
+        "sidechain_to_BO2_A": 7.621,
+        "sidechain_to_any_water_A": 6.751,
+        "sidechain_to_Thr1_A": 6.622,
+        "water_distances_whole_A": {
+          "Y:437": 5.871,
+          "Z:406": 14.983,
+          "Y:462": 10.147
+        },
+        "water_distances_sidechain_A": {
+          "Y:437": 6.751,
+          "Z:406": 14.983,
+          "Y:462": 12.194
+        }
+      }
+    },
+    {
+      "segment": "Y:129-131",
+      "side": "C",
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 132,
+        "auth_chain": "Y",
+        "auth_seq": "133",
+        "comp_id": "SER",
+        "ionizable_or_charge_sensitive_type": false
+      },
+      "recommendation": "REVIEW",
+      "reason": "whole residue within 5.0 A of modeled chemistry",
+      "metrics": {
+        "whole_to_6V8_A": 9.225,
+        "whole_to_BO2_A": 9.058,
+        "whole_to_any_water_A": 7.348,
+        "whole_to_Thr1_A": 4.523,
+        "sidechain_to_6V8_A": 9.865,
+        "sidechain_to_BO2_A": 9.7,
+        "sidechain_to_any_water_A": 7.708,
+        "sidechain_to_Thr1_A": 5.925,
+        "water_distances_whole_A": {
+          "Y:437": 7.348,
+          "Z:406": 18.395,
+          "Y:462": 10.928
+        },
+        "water_distances_sidechain_A": {
+          "Y:437": 7.708,
+          "Z:406": 18.641,
+          "Y:462": 12.517
+        }
+      }
+    },
+    {
+      "segment": "Y:167-170",
+      "side": "N",
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 166,
+        "auth_chain": "Y",
+        "auth_seq": "167",
+        "comp_id": "ARG",
+        "ionizable_or_charge_sensitive_type": true
+      },
+      "recommendation": "STOP",
+      "reason": "no compelling first-/near-second-shell signal by this diagnostic",
+      "metrics": {
+        "whole_to_6V8_A": 12.006,
+        "whole_to_BO2_A": 11.729,
+        "whole_to_any_water_A": 11.498,
+        "whole_to_Thr1_A": 9.71,
+        "sidechain_to_6V8_A": 13.65,
+        "sidechain_to_BO2_A": 13.532,
+        "sidechain_to_any_water_A": 13.473,
+        "sidechain_to_Thr1_A": 10.563,
+        "water_distances_whole_A": {
+          "Y:437": 12.361,
+          "Z:406": 21.638,
+          "Y:462": 11.498
+        },
+        "water_distances_sidechain_A": {
+          "Y:437": 13.579,
+          "Z:406": 23.484,
+          "Y:462": 13.473
+        }
+      }
+    },
+    {
+      "segment": "Y:167-170",
+      "side": "C",
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 171,
+        "auth_chain": "Y",
+        "auth_seq": "172",
+        "comp_id": "GLY",
+        "ionizable_or_charge_sensitive_type": false
+      },
+      "recommendation": "STOP",
+      "reason": "no compelling first-/near-second-shell signal by this diagnostic",
+      "metrics": {
+        "whole_to_6V8_A": 7.806,
+        "whole_to_BO2_A": 7.764,
+        "whole_to_any_water_A": 6.489,
+        "whole_to_Thr1_A": 6.239,
+        "sidechain_to_6V8_A": null,
+        "sidechain_to_BO2_A": null,
+        "sidechain_to_any_water_A": null,
+        "sidechain_to_Thr1_A": null,
+        "water_distances_whole_A": {
+          "Y:437": 10.172,
+          "Z:406": 16.408,
+          "Y:462": 6.489
+        },
+        "water_distances_sidechain_A": {
+          "Y:437": null,
+          "Z:406": null,
+          "Y:462": null
+        }
+      }
+    },
+    {
+      "segment": "Z:124-126",
+      "side": "N",
+      "outside_neighbor": {
+        "label_chain": "Z",
+        "label_seq": 123,
+        "auth_chain": "Z",
+        "auth_seq": "123",
+        "comp_id": "SER",
+        "ionizable_or_charge_sensitive_type": false
+      },
+      "recommendation": "STOP",
+      "reason": "no compelling first-/near-second-shell signal by this diagnostic",
+      "metrics": {
+        "whole_to_6V8_A": 8.83,
+        "whole_to_BO2_A": 7.247,
+        "whole_to_any_water_A": 10.178,
+        "whole_to_Thr1_A": 15.58,
+        "sidechain_to_6V8_A": 9.046,
+        "sidechain_to_BO2_A": 7.706,
+        "sidechain_to_any_water_A": 11.66,
+        "sidechain_to_Thr1_A": 15.58,
+        "water_distances_whole_A": {
+          "Y:437": 18.514,
+          "Z:406": 10.178,
+          "Y:462": 14.255
+        },
+        "water_distances_sidechain_A": {
+          "Y:437": 18.726,
+          "Z:406": 11.66,
+          "Y:462": 14.255
+        }
+      }
+    },
+    {
+      "segment": "Z:124-126",
+      "side": "C",
+      "outside_neighbor": {
+        "label_chain": "Z",
+        "label_seq": 127,
+        "auth_chain": "Z",
+        "auth_seq": "127",
+        "comp_id": "VAL",
+        "ionizable_or_charge_sensitive_type": false
+      },
+      "recommendation": "REVIEW",
+      "reason": "whole residue within 5.0 A of modeled chemistry",
+      "metrics": {
+        "whole_to_6V8_A": 5.552,
+        "whole_to_BO2_A": 7.417,
+        "whole_to_any_water_A": 4.093,
+        "whole_to_Thr1_A": 14.569,
+        "sidechain_to_6V8_A": 5.552,
+        "sidechain_to_BO2_A": 7.417,
+        "sidechain_to_any_water_A": 4.093,
+        "sidechain_to_Thr1_A": 14.569,
+        "water_distances_whole_A": {
+          "Y:437": 14.875,
+          "Z:406": 4.093,
+          "Y:462": 14.509
+        },
+        "water_distances_sidechain_A": {
+          "Y:437": 14.875,
+          "Z:406": 4.093,
+          "Y:462": 14.509
+        }
+      }
+    }
+  ],
+  "decision_rule_note": "EXPAND/REVIEW/STOP is a conservative geometry heuristic, not an energetic result.",
+  "important_caveats": [
+    "Charge effects may extend beyond simple distance thresholds.",
+    "Protonation states are not assigned.",
+    "No coordinates are modified.",
+    "A STOP recommendation means no compelling geometric reason to expand again; it does not prove zero energetic effect."
+  ],
+  "next_step": "If no new outside neighbor earns EXPAND, freeze the candidate spans and construct the first capped receptor topology."
+}

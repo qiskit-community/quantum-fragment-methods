@@ -1,0 +1,31 @@
+{
+  "stage": "9a_whole_cluster_gfn2_tblite_microstate_prescreen",
+  "scientific_role": "Diagnostic whole-cluster prescreen of A/B/C catalytic protonation microstates using GFN2-xTB through tblite. These energies are not final binding energies or benchmark truth.",
+  "comparison_rule": "Compare A/B/C only within the same ligand. BO2 and 6V8 have different compositions, so their absolute total energies must not be subtracted directly.",
+  "software": {
+    "python": "3.11.0",
+    "ase": "3.29.0",
+    "tblite": "unknown"
+  },
+  "settings": {
+    "method": "GFN2-xTB",
+    "charge": -1,
+    "multiplicity": 1,
+    "accuracy": 1.0,
+    "max_iterations": 500,
+    "electronic_temperature_K": 300.0
+  },
+  "results": [
+    {
+      "stem": "6V8_MS_A_THRN",
+      "status": "PASS",
+      "reason": null,
+      "n_atoms": 533,
+      "energy_eV": -23155.43219289012,
+      "energy_Eh": -850.9464377730524,
+      "mulliken_charge_sum_e": -1.0000000122466766
+    }
+  ],
+  "ligand_differential_microstate_shifts": {},
+  "overall": "PASS"
+}

@@ -1,0 +1,1147 @@
+{
+  "stage": "8h_post_relaxation_chemical_audit",
+  "role": "Validate H-only relaxed structures before protonation-state energetic screening; no GFN-FF energies are interpreted.",
+  "thresholds": {
+    "heavy_tolerance_A": 1e-10,
+    "min_HH_A": 1.2,
+    "min_nonparent_Hheavy_A": 1.2,
+    "XH_parent_range_A": [
+      0.8,
+      1.25
+    ]
+  },
+  "within_ligand_heavy_invariance": {
+    "6V8": {
+      "reference": "6V8_MS_A_THRN",
+      "comparisons": {
+        "6V8_MS_B_LYS33": {
+          "labels_match": true,
+          "max_heavy_delta_A": 0.0,
+          "status": "PASS"
+        },
+        "6V8_MS_C_ASP17": {
+          "labels_match": true,
+          "max_heavy_delta_A": 0.0,
+          "status": "PASS"
+        }
+      },
+      "status": "PASS"
+    },
+    "BO2": {
+      "reference": "BO2_MS_A_THRN",
+      "comparisons": {
+        "BO2_MS_B_LYS33": {
+          "labels_match": true,
+          "max_heavy_delta_A": 0.0,
+          "status": "PASS"
+        },
+        "BO2_MS_C_ASP17": {
+          "labels_match": true,
+          "max_heavy_delta_A": 0.0,
+          "status": "PASS"
+        }
+      },
+      "status": "PASS"
+    }
+  },
+  "matched_receptor_invariance_between_ligands": {
+    "MS_A_THRN": {
+      "n_receptor_heavy_A": 240,
+      "n_receptor_heavy_B": 240,
+      "labels_match": true,
+      "max_coordinate_delta_A": 0.0,
+      "status": "PASS"
+    },
+    "MS_B_LYS33": {
+      "n_receptor_heavy_A": 240,
+      "n_receptor_heavy_B": 240,
+      "labels_match": true,
+      "max_coordinate_delta_A": 0.0,
+      "status": "PASS"
+    },
+    "MS_C_ASP17": {
+      "n_receptor_heavy_A": 240,
+      "n_receptor_heavy_B": 240,
+      "labels_match": true,
+      "max_coordinate_delta_A": 0.0,
+      "status": "PASS"
+    }
+  },
+  "results": [
+    {
+      "stem": "6V8_MS_A_THRN",
+      "ligand": "6V8",
+      "status": "PASS",
+      "failures": [],
+      "warnings": [],
+      "n_atoms": 533,
+      "n_heavy": 263,
+      "n_H": 270,
+      "heavy_max_displacement_A": 0.0,
+      "heavy_rms_displacement_A": 0.0,
+      "min_HH_A": 1.538100384759995,
+      "min_HH_pair": [
+        "Z:952 HOH H1 (H) idx=529",
+        "Z:952 HOH H2 (H) idx=530"
+      ],
+      "min_nonparent_Hheavy_A": 1.580240481931452,
+      "min_nonparent_pair": [
+        "Z:952 HOH H1 (H) idx=529",
+        "Z:125 ASP OD2 (O) idx=197"
+      ],
+      "worst_XH_range_violations": [],
+      "microstate_expected_H_counts": {
+        "Thr1_N": 3,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0
+      },
+      "microstate_observed_H_counts": {
+        "Thr1_N": 3,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0
+      },
+      "Thr1_OG1_H_count": 0,
+      "Thr1_OG1_B26_A": 1.4567075890514163,
+      "B26_coordination": [
+        {
+          "distance_A": 1.4567075890514163,
+          "atom": "Y:1 THR OG1 (O) idx=5"
+        },
+        {
+          "distance_A": 1.5426140152351784,
+          "atom": "L:800 6V8 O27 (O) idx=251"
+        },
+        {
+          "distance_A": 1.5585438716956312,
+          "atom": "L:800 6V8 O28 (O) idx=250"
+        },
+        {
+          "distance_A": 1.6748665618490235,
+          "atom": "L:800 6V8 C21 (C) idx=248"
+        }
+      ],
+      "boronate_OH": {
+        "O_NTERM": {
+          "atom": "O28",
+          "B_O_A": 1.5585438716956312,
+          "n_H": 1,
+          "O_H_A": 0.9764563052102007
+        },
+        "O_OXY": {
+          "atom": "O27",
+          "B_O_A": 1.5426140152351784,
+          "n_H": 1,
+          "O_H_A": 0.9735443169993431
+        }
+      },
+      "Arg19_NEH": {
+        "n_NE_H": 1,
+        "NE_H_A": 1.0179036392824756,
+        "H_CD_A": 2.09233548502994,
+        "H_CZ_A": 2.0552683291599445,
+        "CD_NE_H_deg": 114.47211889438499,
+        "CZ_NE_H_deg": 120.47968355720667
+      },
+      "waters": [
+        {
+          "water": "Y:951",
+          "n_H": 2,
+          "OH1_A": 0.9779718447642487,
+          "OH2_A": 0.9694037989560126,
+          "HOH_deg": 105.47335123957374,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.7260148568927525,
+              "atom": "L:800 6V8 O27 (O) idx=251"
+            },
+            {
+              "distance_A": 3.188997961742836,
+              "atom": "Y:130 SER N (N) idx=138"
+            },
+            {
+              "distance_A": 3.5565294881386844,
+              "atom": "L:800 6V8 O28 (O) idx=250"
+            },
+            {
+              "distance_A": 3.922269368618126,
+              "atom": "Y:1 THR N (N) idx=0"
+            },
+            {
+              "distance_A": 3.932599394802373,
+              "atom": "Y:130 SER OG (O) idx=143"
+            }
+          ]
+        },
+        {
+          "water": "Z:952",
+          "n_H": 2,
+          "OH1_A": 0.9590412130477838,
+          "OH2_A": 0.9744900178027166,
+          "HOH_deg": 105.39990955024811,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.5379757682058344,
+              "atom": "Z:125 ASP OD2 (O) idx=197"
+            },
+            {
+              "distance_A": 2.7533621265645394,
+              "atom": "L:800 6V8 O8 (O) idx=258"
+            },
+            {
+              "distance_A": 2.9740168123263855,
+              "atom": "Y:50 ALA N (N) idx=129"
+            },
+            {
+              "distance_A": 3.401164653467992,
+              "atom": "Y:49 ALA N (N) idx=124"
+            },
+            {
+              "distance_A": 4.086070116872688,
+              "atom": "Z:125 ASP OD1 (O) idx=196"
+            }
+          ]
+        },
+        {
+          "water": "Y:953",
+          "n_H": 2,
+          "OH1_A": 0.9740913089001503,
+          "OH2_A": 0.9708824939126784,
+          "HOH_deg": 109.03877446081033,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.812253366963947,
+              "atom": "Y:169 TYR O (O) idx=164"
+            },
+            {
+              "distance_A": 2.8366913825793545,
+              "atom": "L:800 6V8 O28 (O) idx=250"
+            },
+            {
+              "distance_A": 2.8521516439348114,
+              "atom": "Y:21 THR OG1 (O) idx=56"
+            },
+            {
+              "distance_A": 3.3620060975554433,
+              "atom": "Y:19 ARG O (O) idx=38"
+            },
+            {
+              "distance_A": 3.5054195184028987,
+              "atom": "Y:21 THR N (N) idx=51"
+            }
+          ]
+        }
+      ],
+      "catalytic_network": {
+        "Lys33_NZ_Thr1_OG1_A": 2.738427651043561,
+        "Lys33_NZ_Asp17_OD1_A": 2.799917677361242,
+        "Lys33_NZ_Asp17_OD2_A": 3.2745778353858053,
+        "Thr1_N_Asp17_OD1_A": 4.636248699110083,
+        "Thr1_N_Asp17_OD2_A": 4.537959122777544,
+        "closest_Lys33H_to_Thr1_OG1_A": 1.728740957587616,
+        "closest_Lys33H_to_Asp17_OD1_A": 1.7842640205148963,
+        "closest_Lys33H_to_Asp17_OD2_A": 2.576033551168933,
+        "closest_Thr1NH_to_boronate_ONTERM_A": 1.9818067140103108,
+        "Asp17_OD1_H_A": null,
+        "Asp17_OD2_H_A": null
+      }
+    },
+    {
+      "stem": "6V8_MS_B_LYS33",
+      "ligand": "6V8",
+      "status": "PASS",
+      "failures": [],
+      "warnings": [],
+      "n_atoms": 533,
+      "n_heavy": 263,
+      "n_H": 270,
+      "heavy_max_displacement_A": 0.0,
+      "heavy_rms_displacement_A": 0.0,
+      "min_HH_A": 1.538397599857048,
+      "min_HH_pair": [
+        "Z:952 HOH H1 (H) idx=529",
+        "Z:952 HOH H2 (H) idx=530"
+      ],
+      "min_nonparent_Hheavy_A": 1.5801477881756898,
+      "min_nonparent_pair": [
+        "Z:952 HOH H1 (H) idx=529",
+        "Z:125 ASP OD2 (O) idx=197"
+      ],
+      "worst_XH_range_violations": [],
+      "microstate_expected_H_counts": {
+        "Thr1_N": 2,
+        "Lys33_NZ": 3,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0
+      },
+      "microstate_observed_H_counts": {
+        "Thr1_N": 2,
+        "Lys33_NZ": 3,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0
+      },
+      "Thr1_OG1_H_count": 0,
+      "Thr1_OG1_B26_A": 1.4567075890514163,
+      "B26_coordination": [
+        {
+          "distance_A": 1.4567075890514163,
+          "atom": "Y:1 THR OG1 (O) idx=5"
+        },
+        {
+          "distance_A": 1.5426140152351784,
+          "atom": "L:800 6V8 O27 (O) idx=251"
+        },
+        {
+          "distance_A": 1.5585438716956312,
+          "atom": "L:800 6V8 O28 (O) idx=250"
+        },
+        {
+          "distance_A": 1.6748665618490235,
+          "atom": "L:800 6V8 C21 (C) idx=248"
+        }
+      ],
+      "boronate_OH": {
+        "O_NTERM": {
+          "atom": "O28",
+          "B_O_A": 1.5585438716956312,
+          "n_H": 1,
+          "O_H_A": 0.9758213801585988
+        },
+        "O_OXY": {
+          "atom": "O27",
+          "B_O_A": 1.5426140152351784,
+          "n_H": 1,
+          "O_H_A": 0.9738231323407001
+        }
+      },
+      "Arg19_NEH": {
+        "n_NE_H": 1,
+        "NE_H_A": 1.0179108725580088,
+        "H_CD_A": 2.092522849714733,
+        "H_CZ_A": 2.055194671497336,
+        "CD_NE_H_deg": 114.48829229067532,
+        "CZ_NE_H_deg": 120.47172021460263
+      },
+      "waters": [
+        {
+          "water": "Y:951",
+          "n_H": 2,
+          "OH1_A": 0.9763865816004834,
+          "OH2_A": 0.9695576394042529,
+          "HOH_deg": 105.72283819359919,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.7260148568927525,
+              "atom": "L:800 6V8 O27 (O) idx=251"
+            },
+            {
+              "distance_A": 3.188997961742836,
+              "atom": "Y:130 SER N (N) idx=138"
+            },
+            {
+              "distance_A": 3.5565294881386844,
+              "atom": "L:800 6V8 O28 (O) idx=250"
+            },
+            {
+              "distance_A": 3.922269368618126,
+              "atom": "Y:1 THR N (N) idx=0"
+            },
+            {
+              "distance_A": 3.932599394802373,
+              "atom": "Y:130 SER OG (O) idx=143"
+            }
+          ]
+        },
+        {
+          "water": "Z:952",
+          "n_H": 2,
+          "OH1_A": 0.9590600730104448,
+          "OH2_A": 0.9745032485078844,
+          "HOH_deg": 105.4264883561247,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.5379757682058344,
+              "atom": "Z:125 ASP OD2 (O) idx=197"
+            },
+            {
+              "distance_A": 2.7533621265645394,
+              "atom": "L:800 6V8 O8 (O) idx=258"
+            },
+            {
+              "distance_A": 2.9740168123263855,
+              "atom": "Y:50 ALA N (N) idx=129"
+            },
+            {
+              "distance_A": 3.401164653467992,
+              "atom": "Y:49 ALA N (N) idx=124"
+            },
+            {
+              "distance_A": 4.086070116872688,
+              "atom": "Z:125 ASP OD1 (O) idx=196"
+            }
+          ]
+        },
+        {
+          "water": "Y:953",
+          "n_H": 2,
+          "OH1_A": 0.9733872914208017,
+          "OH2_A": 0.9715810038153241,
+          "HOH_deg": 108.2432780576222,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.812253366963947,
+              "atom": "Y:169 TYR O (O) idx=164"
+            },
+            {
+              "distance_A": 2.8366913825793545,
+              "atom": "L:800 6V8 O28 (O) idx=250"
+            },
+            {
+              "distance_A": 2.8521516439348114,
+              "atom": "Y:21 THR OG1 (O) idx=56"
+            },
+            {
+              "distance_A": 3.3620060975554433,
+              "atom": "Y:19 ARG O (O) idx=38"
+            },
+            {
+              "distance_A": 3.5054195184028987,
+              "atom": "Y:21 THR N (N) idx=51"
+            }
+          ]
+        }
+      ],
+      "catalytic_network": {
+        "Lys33_NZ_Thr1_OG1_A": 2.738427651043561,
+        "Lys33_NZ_Asp17_OD1_A": 2.799917677361242,
+        "Lys33_NZ_Asp17_OD2_A": 3.2745778353858053,
+        "Thr1_N_Asp17_OD1_A": 4.636248699110083,
+        "Thr1_N_Asp17_OD2_A": 4.537959122777544,
+        "closest_Lys33H_to_Thr1_OG1_A": 1.7213015555765094,
+        "closest_Lys33H_to_Asp17_OD1_A": 1.7764986460290288,
+        "closest_Lys33H_to_Asp17_OD2_A": 2.5341304561214,
+        "closest_Thr1NH_to_boronate_ONTERM_A": 1.823213471267613,
+        "Asp17_OD1_H_A": null,
+        "Asp17_OD2_H_A": null
+      }
+    },
+    {
+      "stem": "6V8_MS_C_ASP17",
+      "ligand": "6V8",
+      "status": "PASS",
+      "failures": [],
+      "warnings": [],
+      "n_atoms": 533,
+      "n_heavy": 263,
+      "n_H": 270,
+      "heavy_max_displacement_A": 0.0,
+      "heavy_rms_displacement_A": 0.0,
+      "min_HH_A": 1.5383684562255144,
+      "min_HH_pair": [
+        "Z:952 HOH H1 (H) idx=529",
+        "Z:952 HOH H2 (H) idx=530"
+      ],
+      "min_nonparent_Hheavy_A": 1.5802010439636236,
+      "min_nonparent_pair": [
+        "Z:952 HOH H1 (H) idx=529",
+        "Z:125 ASP OD2 (O) idx=197"
+      ],
+      "worst_XH_range_violations": [],
+      "microstate_expected_H_counts": {
+        "Thr1_N": 2,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 1
+      },
+      "microstate_observed_H_counts": {
+        "Thr1_N": 2,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 1
+      },
+      "Thr1_OG1_H_count": 0,
+      "Thr1_OG1_B26_A": 1.4567075890514163,
+      "B26_coordination": [
+        {
+          "distance_A": 1.4567075890514163,
+          "atom": "Y:1 THR OG1 (O) idx=5"
+        },
+        {
+          "distance_A": 1.5426140152351784,
+          "atom": "L:800 6V8 O27 (O) idx=251"
+        },
+        {
+          "distance_A": 1.5585438716956312,
+          "atom": "L:800 6V8 O28 (O) idx=250"
+        },
+        {
+          "distance_A": 1.6748665618490235,
+          "atom": "L:800 6V8 C21 (C) idx=248"
+        }
+      ],
+      "boronate_OH": {
+        "O_NTERM": {
+          "atom": "O28",
+          "B_O_A": 1.5585438716956312,
+          "n_H": 1,
+          "O_H_A": 0.9767518522575153
+        },
+        "O_OXY": {
+          "atom": "O27",
+          "B_O_A": 1.5426140152351784,
+          "n_H": 1,
+          "O_H_A": 0.9737353724638703
+        }
+      },
+      "Arg19_NEH": {
+        "n_NE_H": 1,
+        "NE_H_A": 1.0179400952329596,
+        "H_CD_A": 2.0921444108968936,
+        "H_CZ_A": 2.0554794756010133,
+        "CD_NE_H_deg": 114.4526097826647,
+        "CZ_NE_H_deg": 120.49778753311466
+      },
+      "waters": [
+        {
+          "water": "Y:951",
+          "n_H": 2,
+          "OH1_A": 0.9762650841189895,
+          "OH2_A": 0.9696553833900097,
+          "HOH_deg": 105.40604880480423,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.7260148568927525,
+              "atom": "L:800 6V8 O27 (O) idx=251"
+            },
+            {
+              "distance_A": 3.188997961742836,
+              "atom": "Y:130 SER N (N) idx=138"
+            },
+            {
+              "distance_A": 3.5565294881386844,
+              "atom": "L:800 6V8 O28 (O) idx=250"
+            },
+            {
+              "distance_A": 3.922269368618126,
+              "atom": "Y:1 THR N (N) idx=0"
+            },
+            {
+              "distance_A": 3.932599394802373,
+              "atom": "Y:130 SER OG (O) idx=143"
+            }
+          ]
+        },
+        {
+          "water": "Z:952",
+          "n_H": 2,
+          "OH1_A": 0.9590534878436138,
+          "OH2_A": 0.9745031499206261,
+          "HOH_deg": 105.42415500225036,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.5379757682058344,
+              "atom": "Z:125 ASP OD2 (O) idx=197"
+            },
+            {
+              "distance_A": 2.7533621265645394,
+              "atom": "L:800 6V8 O8 (O) idx=258"
+            },
+            {
+              "distance_A": 2.9740168123263855,
+              "atom": "Y:50 ALA N (N) idx=129"
+            },
+            {
+              "distance_A": 3.401164653467992,
+              "atom": "Y:49 ALA N (N) idx=124"
+            },
+            {
+              "distance_A": 4.086070116872688,
+              "atom": "Z:125 ASP OD1 (O) idx=196"
+            }
+          ]
+        },
+        {
+          "water": "Y:953",
+          "n_H": 2,
+          "OH1_A": 0.9735996064897312,
+          "OH2_A": 0.9713167879579976,
+          "HOH_deg": 108.27235737775733,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.812253366963947,
+              "atom": "Y:169 TYR O (O) idx=164"
+            },
+            {
+              "distance_A": 2.8366913825793545,
+              "atom": "L:800 6V8 O28 (O) idx=250"
+            },
+            {
+              "distance_A": 2.8521516439348114,
+              "atom": "Y:21 THR OG1 (O) idx=56"
+            },
+            {
+              "distance_A": 3.3620060975554433,
+              "atom": "Y:19 ARG O (O) idx=38"
+            },
+            {
+              "distance_A": 3.5054195184028987,
+              "atom": "Y:21 THR N (N) idx=51"
+            }
+          ]
+        }
+      ],
+      "catalytic_network": {
+        "Lys33_NZ_Thr1_OG1_A": 2.738427651043561,
+        "Lys33_NZ_Asp17_OD1_A": 2.799917677361242,
+        "Lys33_NZ_Asp17_OD2_A": 3.2745778353858053,
+        "Thr1_N_Asp17_OD1_A": 4.636248699110083,
+        "Thr1_N_Asp17_OD2_A": 4.537959122777544,
+        "closest_Lys33H_to_Thr1_OG1_A": 1.7305330302805124,
+        "closest_Lys33H_to_Asp17_OD1_A": 1.789536880626818,
+        "closest_Lys33H_to_Asp17_OD2_A": 2.64902766824164,
+        "closest_Thr1NH_to_boronate_ONTERM_A": 1.851946018207074,
+        "Asp17_OD1_H_A": null,
+        "Asp17_OD2_H_A": 0.9836630053047553
+      }
+    },
+    {
+      "stem": "BO2_MS_A_THRN",
+      "ligand": "BO2",
+      "status": "PASS",
+      "failures": [],
+      "warnings": [],
+      "n_atoms": 544,
+      "n_heavy": 268,
+      "n_H": 276,
+      "heavy_max_displacement_A": 0.0,
+      "heavy_rms_displacement_A": 0.0,
+      "min_HH_A": 1.5314416665728339,
+      "min_HH_pair": [
+        "Z:952 HOH H1 (H) idx=540",
+        "Z:952 HOH H2 (H) idx=541"
+      ],
+      "min_nonparent_Hheavy_A": 1.5823273267000035,
+      "min_nonparent_pair": [
+        "Z:952 HOH H1 (H) idx=540",
+        "Z:125 ASP OD2 (O) idx=197"
+      ],
+      "worst_XH_range_violations": [],
+      "microstate_expected_H_counts": {
+        "Thr1_N": 3,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0
+      },
+      "microstate_observed_H_counts": {
+        "Thr1_N": 3,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0
+      },
+      "Thr1_OG1_H_count": 0,
+      "Thr1_OG1_B26_A": 1.4911465387412388,
+      "B26_coordination": [
+        {
+          "distance_A": 1.4911465387412388,
+          "atom": "Y:1 THR OG1 (O) idx=5"
+        },
+        {
+          "distance_A": 1.5292073109948168,
+          "atom": "L:800 BO2 O28 (O) idx=267"
+        },
+        {
+          "distance_A": 1.5382655817510804,
+          "atom": "L:800 BO2 O27 (O) idx=266"
+        },
+        {
+          "distance_A": 1.6356219000734935,
+          "atom": "L:800 BO2 C21 (C) idx=260"
+        }
+      ],
+      "boronate_OH": {
+        "O_NTERM": {
+          "atom": "O27",
+          "B_O_A": 1.5382655817510804,
+          "n_H": 1,
+          "O_H_A": 0.9795028909962665
+        },
+        "O_OXY": {
+          "atom": "O28",
+          "B_O_A": 1.5292073109948168,
+          "n_H": 1,
+          "O_H_A": 0.979591403111352
+        }
+      },
+      "Arg19_NEH": {
+        "n_NE_H": 1,
+        "NE_H_A": 1.0179288882152908,
+        "H_CD_A": 2.091962364005343,
+        "H_CZ_A": 2.055389413702511,
+        "CD_NE_H_deg": 114.43719068801605,
+        "CZ_NE_H_deg": 120.48970595260612
+      },
+      "waters": [
+        {
+          "water": "Y:951",
+          "n_H": 2,
+          "OH1_A": 0.9809149474494774,
+          "OH2_A": 0.9691994427429957,
+          "HOH_deg": 106.55342520242965,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.4542145382993716,
+              "atom": "L:800 BO2 O28 (O) idx=267"
+            },
+            {
+              "distance_A": 3.188997961742836,
+              "atom": "Y:130 SER N (N) idx=138"
+            },
+            {
+              "distance_A": 3.5441937023814005,
+              "atom": "L:800 BO2 O27 (O) idx=266"
+            },
+            {
+              "distance_A": 3.922269368618126,
+              "atom": "Y:1 THR N (N) idx=0"
+            },
+            {
+              "distance_A": 3.932599394802373,
+              "atom": "Y:130 SER OG (O) idx=143"
+            }
+          ]
+        },
+        {
+          "water": "Z:952",
+          "n_H": 2,
+          "OH1_A": 0.9593959653679609,
+          "OH2_A": 0.9748655722534006,
+          "HOH_deg": 104.69491915677712,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.5379757682058344,
+              "atom": "Z:125 ASP OD2 (O) idx=197"
+            },
+            {
+              "distance_A": 2.9740168123263855,
+              "atom": "Y:50 ALA N (N) idx=129"
+            },
+            {
+              "distance_A": 3.401164653467992,
+              "atom": "Y:49 ALA N (N) idx=124"
+            },
+            {
+              "distance_A": 3.428196172916607,
+              "atom": "L:800 BO2 O8 (O) idx=247"
+            },
+            {
+              "distance_A": 4.086070116872688,
+              "atom": "Z:125 ASP OD1 (O) idx=196"
+            }
+          ]
+        },
+        {
+          "water": "Y:953",
+          "n_H": 2,
+          "OH1_A": 0.9725389465909984,
+          "OH2_A": 0.9769121587193923,
+          "HOH_deg": 103.88097052453595,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.7869343372243263,
+              "atom": "L:800 BO2 O27 (O) idx=266"
+            },
+            {
+              "distance_A": 2.812253366963947,
+              "atom": "Y:169 TYR O (O) idx=164"
+            },
+            {
+              "distance_A": 2.8521516439348114,
+              "atom": "Y:21 THR OG1 (O) idx=56"
+            },
+            {
+              "distance_A": 2.9389884314164862,
+              "atom": "L:800 BO2 O19 (O) idx=258"
+            },
+            {
+              "distance_A": 3.3620060975554433,
+              "atom": "Y:19 ARG O (O) idx=38"
+            }
+          ]
+        }
+      ],
+      "catalytic_network": {
+        "Lys33_NZ_Thr1_OG1_A": 2.738427651043561,
+        "Lys33_NZ_Asp17_OD1_A": 2.799917677361242,
+        "Lys33_NZ_Asp17_OD2_A": 3.2745778353858053,
+        "Thr1_N_Asp17_OD1_A": 4.636248699110083,
+        "Thr1_N_Asp17_OD2_A": 4.537959122777544,
+        "closest_Lys33H_to_Thr1_OG1_A": 1.7282318053101706,
+        "closest_Lys33H_to_Asp17_OD1_A": 1.7847461005856708,
+        "closest_Lys33H_to_Asp17_OD2_A": 2.5786795080107905,
+        "closest_Thr1NH_to_boronate_ONTERM_A": 1.919814817675209,
+        "Asp17_OD1_H_A": null,
+        "Asp17_OD2_H_A": null
+      }
+    },
+    {
+      "stem": "BO2_MS_B_LYS33",
+      "ligand": "BO2",
+      "status": "PASS",
+      "failures": [],
+      "warnings": [],
+      "n_atoms": 544,
+      "n_heavy": 268,
+      "n_H": 276,
+      "heavy_max_displacement_A": 0.0,
+      "heavy_rms_displacement_A": 0.0,
+      "min_HH_A": 1.5316019883952126,
+      "min_HH_pair": [
+        "Z:952 HOH H1 (H) idx=540",
+        "Z:952 HOH H2 (H) idx=541"
+      ],
+      "min_nonparent_Hheavy_A": 1.5823234080472466,
+      "min_nonparent_pair": [
+        "Z:952 HOH H1 (H) idx=540",
+        "Z:125 ASP OD2 (O) idx=197"
+      ],
+      "worst_XH_range_violations": [],
+      "microstate_expected_H_counts": {
+        "Thr1_N": 2,
+        "Lys33_NZ": 3,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0
+      },
+      "microstate_observed_H_counts": {
+        "Thr1_N": 2,
+        "Lys33_NZ": 3,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 0
+      },
+      "Thr1_OG1_H_count": 0,
+      "Thr1_OG1_B26_A": 1.4911465387412388,
+      "B26_coordination": [
+        {
+          "distance_A": 1.4911465387412388,
+          "atom": "Y:1 THR OG1 (O) idx=5"
+        },
+        {
+          "distance_A": 1.5292073109948168,
+          "atom": "L:800 BO2 O28 (O) idx=267"
+        },
+        {
+          "distance_A": 1.5382655817510804,
+          "atom": "L:800 BO2 O27 (O) idx=266"
+        },
+        {
+          "distance_A": 1.6356219000734935,
+          "atom": "L:800 BO2 C21 (C) idx=260"
+        }
+      ],
+      "boronate_OH": {
+        "O_NTERM": {
+          "atom": "O27",
+          "B_O_A": 1.5382655817510804,
+          "n_H": 1,
+          "O_H_A": 0.9793720039288951
+        },
+        "O_OXY": {
+          "atom": "O28",
+          "B_O_A": 1.5292073109948168,
+          "n_H": 1,
+          "O_H_A": 0.9768049307549033
+        }
+      },
+      "Arg19_NEH": {
+        "n_NE_H": 1,
+        "NE_H_A": 1.0179592783802576,
+        "H_CD_A": 2.093542246326806,
+        "H_CZ_A": 2.0542771035247354,
+        "CD_NE_H_deg": 114.57572050821125,
+        "CZ_NE_H_deg": 120.37604384601805
+      },
+      "waters": [
+        {
+          "water": "Y:951",
+          "n_H": 2,
+          "OH1_A": 0.9767623094796489,
+          "OH2_A": 0.9717193094786161,
+          "HOH_deg": 106.3136478873574,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.4542145382993716,
+              "atom": "L:800 BO2 O28 (O) idx=267"
+            },
+            {
+              "distance_A": 3.188997961742836,
+              "atom": "Y:130 SER N (N) idx=138"
+            },
+            {
+              "distance_A": 3.5441937023814005,
+              "atom": "L:800 BO2 O27 (O) idx=266"
+            },
+            {
+              "distance_A": 3.922269368618126,
+              "atom": "Y:1 THR N (N) idx=0"
+            },
+            {
+              "distance_A": 3.932599394802373,
+              "atom": "Y:130 SER OG (O) idx=143"
+            }
+          ]
+        },
+        {
+          "water": "Z:952",
+          "n_H": 2,
+          "OH1_A": 0.9594058436336729,
+          "OH2_A": 0.9749058308151078,
+          "HOH_deg": 104.70660810997173,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.5379757682058344,
+              "atom": "Z:125 ASP OD2 (O) idx=197"
+            },
+            {
+              "distance_A": 2.9740168123263855,
+              "atom": "Y:50 ALA N (N) idx=129"
+            },
+            {
+              "distance_A": 3.401164653467992,
+              "atom": "Y:49 ALA N (N) idx=124"
+            },
+            {
+              "distance_A": 3.428196172916607,
+              "atom": "L:800 BO2 O8 (O) idx=247"
+            },
+            {
+              "distance_A": 4.086070116872688,
+              "atom": "Z:125 ASP OD1 (O) idx=196"
+            }
+          ]
+        },
+        {
+          "water": "Y:953",
+          "n_H": 2,
+          "OH1_A": 0.9727727584708805,
+          "OH2_A": 0.9769646553601733,
+          "HOH_deg": 103.87561158781541,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.7869343372243263,
+              "atom": "L:800 BO2 O27 (O) idx=266"
+            },
+            {
+              "distance_A": 2.812253366963947,
+              "atom": "Y:169 TYR O (O) idx=164"
+            },
+            {
+              "distance_A": 2.8521516439348114,
+              "atom": "Y:21 THR OG1 (O) idx=56"
+            },
+            {
+              "distance_A": 2.9389884314164862,
+              "atom": "L:800 BO2 O19 (O) idx=258"
+            },
+            {
+              "distance_A": 3.3620060975554433,
+              "atom": "Y:19 ARG O (O) idx=38"
+            }
+          ]
+        }
+      ],
+      "catalytic_network": {
+        "Lys33_NZ_Thr1_OG1_A": 2.738427651043561,
+        "Lys33_NZ_Asp17_OD1_A": 2.799917677361242,
+        "Lys33_NZ_Asp17_OD2_A": 3.2745778353858053,
+        "Thr1_N_Asp17_OD1_A": 4.636248699110083,
+        "Thr1_N_Asp17_OD2_A": 4.537959122777544,
+        "closest_Lys33H_to_Thr1_OG1_A": 1.7206840505434093,
+        "closest_Lys33H_to_Asp17_OD1_A": 1.7762384235826367,
+        "closest_Lys33H_to_Asp17_OD2_A": 2.5390479593462745,
+        "closest_Thr1NH_to_boronate_ONTERM_A": 1.7426095693557944,
+        "Asp17_OD1_H_A": null,
+        "Asp17_OD2_H_A": null
+      }
+    },
+    {
+      "stem": "BO2_MS_C_ASP17",
+      "ligand": "BO2",
+      "status": "PASS",
+      "failures": [],
+      "warnings": [],
+      "n_atoms": 544,
+      "n_heavy": 268,
+      "n_H": 276,
+      "heavy_max_displacement_A": 0.0,
+      "heavy_rms_displacement_A": 0.0,
+      "min_HH_A": 1.5316482893388632,
+      "min_HH_pair": [
+        "Z:952 HOH H1 (H) idx=540",
+        "Z:952 HOH H2 (H) idx=541"
+      ],
+      "min_nonparent_Hheavy_A": 1.582340143206875,
+      "min_nonparent_pair": [
+        "Z:952 HOH H1 (H) idx=540",
+        "Z:125 ASP OD2 (O) idx=197"
+      ],
+      "worst_XH_range_violations": [],
+      "microstate_expected_H_counts": {
+        "Thr1_N": 2,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 1
+      },
+      "microstate_observed_H_counts": {
+        "Thr1_N": 2,
+        "Lys33_NZ": 2,
+        "Asp17_OD1": 0,
+        "Asp17_OD2": 1
+      },
+      "Thr1_OG1_H_count": 0,
+      "Thr1_OG1_B26_A": 1.4911465387412388,
+      "B26_coordination": [
+        {
+          "distance_A": 1.4911465387412388,
+          "atom": "Y:1 THR OG1 (O) idx=5"
+        },
+        {
+          "distance_A": 1.5292073109948168,
+          "atom": "L:800 BO2 O28 (O) idx=267"
+        },
+        {
+          "distance_A": 1.5382655817510804,
+          "atom": "L:800 BO2 O27 (O) idx=266"
+        },
+        {
+          "distance_A": 1.6356219000734935,
+          "atom": "L:800 BO2 C21 (C) idx=260"
+        }
+      ],
+      "boronate_OH": {
+        "O_NTERM": {
+          "atom": "O27",
+          "B_O_A": 1.5382655817510804,
+          "n_H": 1,
+          "O_H_A": 0.9802980061156803
+        },
+        "O_OXY": {
+          "atom": "O28",
+          "B_O_A": 1.5292073109948168,
+          "n_H": 1,
+          "O_H_A": 0.9797102375369713
+        }
+      },
+      "Arg19_NEH": {
+        "n_NE_H": 1,
+        "NE_H_A": 1.0179665472856465,
+        "H_CD_A": 2.093269727367372,
+        "H_CZ_A": 2.054510716420001,
+        "CD_NE_H_deg": 114.55094361970356,
+        "CZ_NE_H_deg": 120.39877282259084
+      },
+      "waters": [
+        {
+          "water": "Y:951",
+          "n_H": 2,
+          "OH1_A": 0.9790403406485773,
+          "OH2_A": 0.9663245402817623,
+          "HOH_deg": 105.6836985766489,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.4542145382993716,
+              "atom": "L:800 BO2 O28 (O) idx=267"
+            },
+            {
+              "distance_A": 3.188997961742836,
+              "atom": "Y:130 SER N (N) idx=138"
+            },
+            {
+              "distance_A": 3.5441937023814005,
+              "atom": "L:800 BO2 O27 (O) idx=266"
+            },
+            {
+              "distance_A": 3.922269368618126,
+              "atom": "Y:1 THR N (N) idx=0"
+            },
+            {
+              "distance_A": 3.932599394802373,
+              "atom": "Y:130 SER OG (O) idx=143"
+            }
+          ]
+        },
+        {
+          "water": "Z:952",
+          "n_H": 2,
+          "OH1_A": 0.9594047305873957,
+          "OH2_A": 0.9748832851939496,
+          "HOH_deg": 104.71292446256459,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.5379757682058344,
+              "atom": "Z:125 ASP OD2 (O) idx=197"
+            },
+            {
+              "distance_A": 2.9740168123263855,
+              "atom": "Y:50 ALA N (N) idx=129"
+            },
+            {
+              "distance_A": 3.401164653467992,
+              "atom": "Y:49 ALA N (N) idx=124"
+            },
+            {
+              "distance_A": 3.428196172916607,
+              "atom": "L:800 BO2 O8 (O) idx=247"
+            },
+            {
+              "distance_A": 4.086070116872688,
+              "atom": "Z:125 ASP OD1 (O) idx=196"
+            }
+          ]
+        },
+        {
+          "water": "Y:953",
+          "n_H": 2,
+          "OH1_A": 0.9732285060756665,
+          "OH2_A": 0.9772278023488805,
+          "HOH_deg": 104.02962100592298,
+          "nearest_polar_contacts": [
+            {
+              "distance_A": 2.7869343372243263,
+              "atom": "L:800 BO2 O27 (O) idx=266"
+            },
+            {
+              "distance_A": 2.812253366963947,
+              "atom": "Y:169 TYR O (O) idx=164"
+            },
+            {
+              "distance_A": 2.8521516439348114,
+              "atom": "Y:21 THR OG1 (O) idx=56"
+            },
+            {
+              "distance_A": 2.9389884314164862,
+              "atom": "L:800 BO2 O19 (O) idx=258"
+            },
+            {
+              "distance_A": 3.3620060975554433,
+              "atom": "Y:19 ARG O (O) idx=38"
+            }
+          ]
+        }
+      ],
+      "catalytic_network": {
+        "Lys33_NZ_Thr1_OG1_A": 2.738427651043561,
+        "Lys33_NZ_Asp17_OD1_A": 2.799917677361242,
+        "Lys33_NZ_Asp17_OD2_A": 3.2745778353858053,
+        "Thr1_N_Asp17_OD1_A": 4.636248699110083,
+        "Thr1_N_Asp17_OD2_A": 4.537959122777544,
+        "closest_Lys33H_to_Thr1_OG1_A": 1.7301575707328416,
+        "closest_Lys33H_to_Asp17_OD1_A": 1.790128357687513,
+        "closest_Lys33H_to_Asp17_OD2_A": 2.6506109943932104,
+        "closest_Thr1NH_to_boronate_ONTERM_A": 1.8368350437931933,
+        "Asp17_OD1_H_A": null,
+        "Asp17_OD2_H_A": 0.983646302681901
+      }
+    }
+  ],
+  "overall": "PASS"
+}

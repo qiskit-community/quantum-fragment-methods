@@ -1,0 +1,2 @@
+stem	status	energy_Eh	delta_to_min_Eh	delta_to_min_kcal_mol	delta_to_A_Eh	delta_to_A_kcal_mol	normal_termination	returncode	reason
+6V8_MS_A_THRN	FAIL						False	-11	xTB did not yield a normal parsed single point

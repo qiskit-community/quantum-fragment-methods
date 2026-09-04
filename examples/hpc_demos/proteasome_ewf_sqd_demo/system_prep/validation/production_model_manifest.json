@@ -1,0 +1,177 @@
+{
+  "stage": "freeze_production_models",
+  "selected_microstate": "MS_B_LYS33",
+  "selection_basis": {
+    "GFN2_whole_cluster": {
+      "6V8_delta_B_minus_A_kcal_mol": -7.2281,
+      "BO2_delta_B_minus_A_kcal_mol": 25.2008,
+      "note": "Semiempirical prescreen; ligand-dependent switch not confirmed by DFT."
+    },
+    "PBE0_def2SVP_catalytic_core": {
+      "6V8_delta_B_minus_A_kcal_mol": -25.15,
+      "BO2_delta_B_minus_A_kcal_mol": -19.34,
+      "note": "Both inhibitors strongly favor MS_B in the reduced catalytic core."
+    }
+  },
+  "canonical_receptor_source": "ixazomib",
+  "charges": {
+    "complex": -1,
+    "isolated_ligand": 0,
+    "implied_cut_receptor": -1
+  },
+  "source_receptor_comparison": {
+    "n_atoms": 491,
+    "max_heavy_coordinate_delta_A": 0.0,
+    "max_all_atom_coordinate_delta_A": 1.7625109501208451,
+    "note": "Final complexes use a single canonical receptor coordinate set, so final receptor identity is exact by construction."
+  },
+  "models": {
+    "ixazomib": {
+      "source": "6V8_MS_B_LYS33",
+      "ligand_resname": "6V8",
+      "complex_file": "production_models/ixazomib_complex.xyz",
+      "ligand_file": "production_models/ixazomib_ligand.xyz",
+      "complex_charge": -1,
+      "ligand_charge": 0,
+      "n_receptor_atoms": 491,
+      "n_ligand_atoms": 42,
+      "n_complex_atoms": 533,
+      "n_receptor_heavy": 240,
+      "n_ligand_heavy": 23,
+      "n_complex_heavy": 263,
+      "Thr1_OG1_B_distance_A": 1.4567075890514163,
+      "isolated_ligand_B_heavy_coordination": [
+        {
+          "distance_A": 1.5426140152351784,
+          "atom": [
+            "L",
+            "800",
+            "6V8",
+            "O27",
+            "O"
+          ],
+          "attached_H": 1
+        },
+        {
+          "distance_A": 1.5585438716956312,
+          "atom": [
+            "L",
+            "800",
+            "6V8",
+            "O28",
+            "O"
+          ],
+          "attached_H": 1
+        },
+        {
+          "distance_A": 1.6748665618490235,
+          "atom": [
+            "L",
+            "800",
+            "6V8",
+            "C21",
+            "C"
+          ],
+          "attached_H": null
+        }
+      ],
+      "isolated_ligand_B_is_three_coordinate_COO": true,
+      "both_B_bound_O_are_OH": true,
+      "min_non_covalent_receptor_ligand_distance_A": 1.7570742525372127,
+      "min_non_covalent_contact_receptor": [
+        "Y",
+        "951",
+        "HOH",
+        "O",
+        "O"
+      ],
+      "min_non_covalent_contact_ligand": [
+        "L",
+        "800",
+        "6V8",
+        "HO27",
+        "H"
+      ],
+      "status": "PASS"
+    },
+    "bortezomib": {
+      "source": "BO2_MS_B_LYS33",
+      "ligand_resname": "BO2",
+      "complex_file": "production_models/bortezomib_complex.xyz",
+      "ligand_file": "production_models/bortezomib_ligand.xyz",
+      "complex_charge": -1,
+      "ligand_charge": 0,
+      "n_receptor_atoms": 491,
+      "n_ligand_atoms": 53,
+      "n_complex_atoms": 544,
+      "n_receptor_heavy": 240,
+      "n_ligand_heavy": 28,
+      "n_complex_heavy": 268,
+      "Thr1_OG1_B_distance_A": 1.4911465387412388,
+      "isolated_ligand_B_heavy_coordination": [
+        {
+          "distance_A": 1.5292073109948168,
+          "atom": [
+            "L",
+            "800",
+            "BO2",
+            "O28",
+            "O"
+          ],
+          "attached_H": 1
+        },
+        {
+          "distance_A": 1.5382655817510804,
+          "atom": [
+            "L",
+            "800",
+            "BO2",
+            "O27",
+            "O"
+          ],
+          "attached_H": 1
+        },
+        {
+          "distance_A": 1.6356219000734935,
+          "atom": [
+            "L",
+            "800",
+            "BO2",
+            "C21",
+            "C"
+          ],
+          "attached_H": null
+        }
+      ],
+      "isolated_ligand_B_is_three_coordinate_COO": true,
+      "both_B_bound_O_are_OH": true,
+      "min_non_covalent_receptor_ligand_distance_A": 1.3022879155853375,
+      "min_non_covalent_contact_receptor": [
+        "Y",
+        "953",
+        "HOH",
+        "H2",
+        "H"
+      ],
+      "min_non_covalent_contact_ligand": [
+        "L",
+        "800",
+        "BO2",
+        "HO27",
+        "H"
+      ],
+      "status": "PASS"
+    }
+  },
+  "final_matched_receptor": {
+    "atom_count_equal": true,
+    "atom_order_equal": true,
+    "coordinates_equal": true,
+    "max_coordinate_delta_A": 0.0,
+    "by_construction": true
+  },
+  "overall": "PASS",
+  "outputs": {
+    "common_receptor": "production_models/common_receptor.xyz"
+  }
+}

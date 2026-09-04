@@ -1,0 +1,110 @@
+{
+  "stage": "8b_protonation_audit",
+  "alignment_rmsd_A": 0.1264,
+  "alignment_atoms": 804,
+  "ordinary_default_charge_sum_excluding_Thr1_and_ligand": 0,
+  "ionizable_groups": [
+    {
+      "residue": "Y:1 THR",
+      "special_thr1": true,
+      "hypothesis_only": "SPECIAL_Thr1_boronate_coupled",
+      "default_charge": null,
+      "focus_atoms": "N,OG1",
+      "to_6V8_A": 1.4567075890514163,
+      "to_BO2_A": 1.491100250939752,
+      "nearest_water_A": 3.922269368618126,
+      "nearby_polar": "Y:33 LYS NZ@2.738; Y:169 TYR O@2.856; Y:130 SER OG@3.052; Y:170 SER OG@3.318; Y:2 THR N@3.588"
+    },
+    {
+      "residue": "Y:17 ASP",
+      "special_thr1": false,
+      "hypothesis_only": "deprotonated",
+      "default_charge": -1,
+      "focus_atoms": "OD1,OD2",
+      "to_6V8_A": 5.739804003622409,
+      "to_BO2_A": 5.764048012939218,
+      "nearest_water_A": 5.479431539858846,
+      "nearby_polar": "Y:33 LYS NZ@2.800; Y:2 THR N@2.961; Y:2 THR O@3.256; Y:19 ARG N@3.319; Y:18 SER N@3.460"
+    },
+    {
+      "residue": "Y:19 ARG",
+      "special_thr1": false,
+      "hypothesis_only": "protonated",
+      "default_charge": 1,
+      "focus_atoms": "NE,NH1,NH2",
+      "to_6V8_A": 8.177743331751126,
+      "to_BO2_A": 8.122147540504779,
+      "nearest_water_A": 5.714148755501567,
+      "nearby_polar": "Y:168 ALA O@2.706; Y:170 SER O@3.538"
+    },
+    {
+      "residue": "Y:32 LYS",
+      "special_thr1": false,
+      "hypothesis_only": "protonated",
+      "default_charge": 1,
+      "focus_atoms": "NZ",
+      "to_6V8_A": 12.037882953410056,
+      "to_BO2_A": 12.234284204775669,
+      "nearest_water_A": 15.079431355326372,
+      "nearby_polar": ""
+    },
+    {
+      "residue": "Y:33 LYS",
+      "special_thr1": false,
+      "hypothesis_only": "protonated",
+      "default_charge": 1,
+      "focus_atoms": "NZ",
+      "to_6V8_A": 3.8252007790441387,
+      "to_BO2_A": 3.9512005800097443,
+      "nearest_water_A": 4.85765931287898,
+      "nearby_polar": "Y:19 ARG O@2.702; Y:1 THR OG1@2.738; Y:17 ASP OD1@2.800; Y:17 ASP OD2@3.275; Y:19 ARG N@3.521"
+    },
+    {
+      "residue": "Y:167 ASP",
+      "special_thr1": false,
+      "hypothesis_only": "deprotonated",
+      "default_charge": -1,
+      "focus_atoms": "OD1,OD2",
+      "to_6V8_A": 6.266053063931074,
+      "to_BO2_A": 6.147789401569606,
+      "nearest_water_A": 6.442537155500158,
+      "nearby_polar": "Y:170 SER OG@2.595; Y:130 SER OG@2.679; Y:169 TYR N@3.010; Y:168 ALA N@3.052; Y:131 GLY N@3.094; Y:170 SER N@3.382; Y:130 SER O@3.864"
+    },
+    {
+      "residue": "Y:169 TYR",
+      "special_thr1": false,
+      "hypothesis_only": "neutral_unless_evidence",
+      "default_charge": 0,
+      "focus_atoms": "OH",
+      "to_6V8_A": 9.33770003801793,
+      "to_BO2_A": 6.8375110676542805,
+      "nearest_water_A": 8.236437943674437,
+      "nearby_polar": ""
+    },
+    {
+      "residue": "Z:125 ASP",
+      "special_thr1": false,
+      "hypothesis_only": "deprotonated",
+      "default_charge": -1,
+      "focus_atoms": "OD1,OD2",
+      "to_6V8_A": 3.6175967160533533,
+      "to_BO2_A": 3.4099592021012577,
+      "nearest_water_A": 2.5379757682058344,
+      "nearby_polar": "Z:126 PRO N@3.286"
+    }
+  ],
+  "caps": {
+    "ACE": "neutral",
+    "NME": "neutral"
+  },
+  "ligand_dictionary_charge": {
+    "BO2": null,
+    "6V8": null
+  },
+  "warnings": [
+    "Dictionary ligand charge is not automatically the covalent-adduct charge.",
+    "Thr1 N-terminus and boronate protonation must be chosen together.",
+    "No protonation state or hydrogen position is assigned by this script."
+  ],
+  "next_step": "Choose explicit Thr1/boronate microstate(s), then add hydrogens and orient retained waters."
+}

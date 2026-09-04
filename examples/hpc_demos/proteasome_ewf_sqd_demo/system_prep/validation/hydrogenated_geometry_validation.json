@@ -1,0 +1,498 @@
+{
+  "stage": "8f_hydrogenated_geometry_validation",
+  "overall_pass": true,
+  "heavy_coordinate_tolerance_A": 1e-06,
+  "composition_checks": {
+    "6V8": {
+      "pass": true,
+      "states": [
+        {
+          "microstate": "MS_A_THRN",
+          "n_atoms": 533,
+          "element_counts": {
+            "B": 1,
+            "C": 158,
+            "CL": 2,
+            "H": 270,
+            "N": 44,
+            "O": 57,
+            "S": 1
+          }
+        },
+        {
+          "microstate": "MS_B_LYS33",
+          "n_atoms": 533,
+          "element_counts": {
+            "B": 1,
+            "C": 158,
+            "CL": 2,
+            "H": 270,
+            "N": 44,
+            "O": 57,
+            "S": 1
+          }
+        },
+        {
+          "microstate": "MS_C_ASP17",
+          "n_atoms": 533,
+          "element_counts": {
+            "B": 1,
+            "C": 158,
+            "CL": 2,
+            "H": 270,
+            "N": 44,
+            "O": 57,
+            "S": 1
+          }
+        }
+      ]
+    },
+    "BO2": {
+      "pass": true,
+      "states": [
+        {
+          "microstate": "MS_A_THRN",
+          "n_atoms": 544,
+          "element_counts": {
+            "B": 1,
+            "C": 163,
+            "H": 276,
+            "N": 46,
+            "O": 57,
+            "S": 1
+          }
+        },
+        {
+          "microstate": "MS_B_LYS33",
+          "n_atoms": 544,
+          "element_counts": {
+            "B": 1,
+            "C": 163,
+            "H": 276,
+            "N": 46,
+            "O": 57,
+            "S": 1
+          }
+        },
+        {
+          "microstate": "MS_C_ASP17",
+          "n_atoms": 544,
+          "element_counts": {
+            "B": 1,
+            "C": 163,
+            "H": 276,
+            "N": 46,
+            "O": 57,
+            "S": 1
+          }
+        }
+      ]
+    }
+  },
+  "heavy_atom_invariance": {
+    "6V8": [
+      {
+        "reference": "MS_A_THRN",
+        "microstate": "MS_B_LYS33",
+        "identity_pass": true,
+        "max_heavy_displacement_A": 0.0,
+        "coordinate_pass": true
+      },
+      {
+        "reference": "MS_A_THRN",
+        "microstate": "MS_C_ASP17",
+        "identity_pass": true,
+        "max_heavy_displacement_A": 0.0,
+        "coordinate_pass": true
+      }
+    ],
+    "BO2": [
+      {
+        "reference": "MS_A_THRN",
+        "microstate": "MS_B_LYS33",
+        "identity_pass": true,
+        "max_heavy_displacement_A": 0.0,
+        "coordinate_pass": true
+      },
+      {
+        "reference": "MS_A_THRN",
+        "microstate": "MS_C_ASP17",
+        "identity_pass": true,
+        "max_heavy_displacement_A": 0.0,
+        "coordinate_pass": true
+      }
+    ]
+  },
+  "structures": [
+    {
+      "ligand": "6V8",
+      "microstate": "MS_A_THRN",
+      "special_H_counts": {
+        "Thr1_N": {
+          "expected": 3,
+          "observed": 3,
+          "pass": true
+        },
+        "Thr1_OG1": {
+          "expected": 0,
+          "observed": 0,
+          "pass": true
+        },
+        "Lys33_NZ": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "Asp17_total": {
+          "expected": 0,
+          "observed": 0,
+          "pass": true
+        },
+        "6V8_O_NTERM_O28": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "6V8_O_OXY_O27": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "water_Y:437": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Z:406": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Y:462": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        }
+      },
+      "special_H_counts_pass": true,
+      "geometry_screen": {
+        "min_H_H_A": 1.0071122082469393,
+        "min_nonparent_H_heavy_A": 1.1857474435983404,
+        "min_heavy_heavy_A": 1.1823320176667707,
+        "bad_H_H_lt_0p55A": [],
+        "bad_nonparent_H_heavy_lt_0p75A": [],
+        "bad_heavy_heavy_lt_0p80A": []
+      },
+      "geometry_screen_pass": true
+    },
+    {
+      "ligand": "6V8",
+      "microstate": "MS_B_LYS33",
+      "special_H_counts": {
+        "Thr1_N": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "Thr1_OG1": {
+          "expected": 0,
+          "observed": 0,
+          "pass": true
+        },
+        "Lys33_NZ": {
+          "expected": 3,
+          "observed": 3,
+          "pass": true
+        },
+        "Asp17_total": {
+          "expected": 0,
+          "observed": 0,
+          "pass": true
+        },
+        "6V8_O_NTERM_O28": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "6V8_O_OXY_O27": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "water_Y:437": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Z:406": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Y:462": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        }
+      },
+      "special_H_counts_pass": true,
+      "geometry_screen": {
+        "min_H_H_A": 1.0071122082469393,
+        "min_nonparent_H_heavy_A": 1.1857474435983404,
+        "min_heavy_heavy_A": 1.1823320176667707,
+        "bad_H_H_lt_0p55A": [],
+        "bad_nonparent_H_heavy_lt_0p75A": [],
+        "bad_heavy_heavy_lt_0p80A": []
+      },
+      "geometry_screen_pass": true
+    },
+    {
+      "ligand": "6V8",
+      "microstate": "MS_C_ASP17",
+      "special_H_counts": {
+        "Thr1_N": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "Thr1_OG1": {
+          "expected": 0,
+          "observed": 0,
+          "pass": true
+        },
+        "Lys33_NZ": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "Asp17_total": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "6V8_O_NTERM_O28": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "6V8_O_OXY_O27": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "water_Y:437": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Z:406": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Y:462": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        }
+      },
+      "special_H_counts_pass": true,
+      "geometry_screen": {
+        "min_H_H_A": 0.859374772727248,
+        "min_nonparent_H_heavy_A": 1.1857474435983404,
+        "min_heavy_heavy_A": 1.1823320176667707,
+        "bad_H_H_lt_0p55A": [],
+        "bad_nonparent_H_heavy_lt_0p75A": [],
+        "bad_heavy_heavy_lt_0p80A": []
+      },
+      "geometry_screen_pass": true
+    },
+    {
+      "ligand": "BO2",
+      "microstate": "MS_A_THRN",
+      "special_H_counts": {
+        "Thr1_N": {
+          "expected": 3,
+          "observed": 3,
+          "pass": true
+        },
+        "Thr1_OG1": {
+          "expected": 0,
+          "observed": 0,
+          "pass": true
+        },
+        "Lys33_NZ": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "Asp17_total": {
+          "expected": 0,
+          "observed": 0,
+          "pass": true
+        },
+        "BO2_O_NTERM_O27": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "BO2_O_OXY_O28": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "water_Y:437": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Z:406": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Y:462": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        }
+      },
+      "special_H_counts_pass": true,
+      "geometry_screen": {
+        "min_H_H_A": 1.1240324728405289,
+        "min_nonparent_H_heavy_A": 1.1857474435983404,
+        "min_heavy_heavy_A": 1.1823320176667707,
+        "bad_H_H_lt_0p55A": [],
+        "bad_nonparent_H_heavy_lt_0p75A": [],
+        "bad_heavy_heavy_lt_0p80A": []
+      },
+      "geometry_screen_pass": true
+    },
+    {
+      "ligand": "BO2",
+      "microstate": "MS_B_LYS33",
+      "special_H_counts": {
+        "Thr1_N": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "Thr1_OG1": {
+          "expected": 0,
+          "observed": 0,
+          "pass": true
+        },
+        "Lys33_NZ": {
+          "expected": 3,
+          "observed": 3,
+          "pass": true
+        },
+        "Asp17_total": {
+          "expected": 0,
+          "observed": 0,
+          "pass": true
+        },
+        "BO2_O_NTERM_O27": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "BO2_O_OXY_O28": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "water_Y:437": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Z:406": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Y:462": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        }
+      },
+      "special_H_counts_pass": true,
+      "geometry_screen": {
+        "min_H_H_A": 1.1240324728405289,
+        "min_nonparent_H_heavy_A": 1.1857474435983404,
+        "min_heavy_heavy_A": 1.1823320176667707,
+        "bad_H_H_lt_0p55A": [],
+        "bad_nonparent_H_heavy_lt_0p75A": [],
+        "bad_heavy_heavy_lt_0p80A": []
+      },
+      "geometry_screen_pass": true
+    },
+    {
+      "ligand": "BO2",
+      "microstate": "MS_C_ASP17",
+      "special_H_counts": {
+        "Thr1_N": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "Thr1_OG1": {
+          "expected": 0,
+          "observed": 0,
+          "pass": true
+        },
+        "Lys33_NZ": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "Asp17_total": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "BO2_O_NTERM_O27": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "BO2_O_OXY_O28": {
+          "expected": 1,
+          "observed": 1,
+          "pass": true
+        },
+        "water_Y:437": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Z:406": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        },
+        "water_Y:462": {
+          "expected": 2,
+          "observed": 2,
+          "pass": true
+        }
+      },
+      "special_H_counts_pass": true,
+      "geometry_screen": {
+        "min_H_H_A": 0.859374772727248,
+        "min_nonparent_H_heavy_A": 1.1857474435983404,
+        "min_heavy_heavy_A": 1.1823320176667707,
+        "bad_H_H_lt_0p55A": [],
+        "bad_nonparent_H_heavy_lt_0p75A": [],
+        "bad_heavy_heavy_lt_0p80A": []
+      },
+      "geometry_screen_pass": true
+    }
+  ],
+  "interpretation": {
+    "pass": "Safe to proceed to identical hydrogen-only optimization with all heavy atoms frozen.",
+    "fail": "Inspect reported special-site H count or sub-angstrom clash before optimization."
+  }
+}

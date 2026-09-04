@@ -43,7 +43,8 @@ class QFWorkflow:
     """Orchestrator for quantum fragment calculations (EWF, DMET, MBE)."""
 
     def __init__(
-        self, geometry, basis, embedder=None, save_path="results/", fragmentation="atomic", **kwargs
+        self, geometry, basis, embedder=None, save_path="results/", fragmentation="atomic",
+        charge=0, spin=0, **kwargs
     ):
         """
         Initialize quantum fragment workflow.
@@ -61,6 +62,11 @@ class QFWorkflow:
             Directory for saving results (default: 'results/')
         fragmentation : str, optional
             Fragmentation scheme for EWF: 'atomic' or 'iao' (default: 'atomic')
+        charge : int, optional
+            Total molecular charge (default: 0). Pass -1 for anionic systems
+            such as the proteasome boronate complexes.
+        spin : int, optional
+            Number of unpaired electrons / 2S (default: 0 for singlet).
         **kwargs : dict
             Additional workflow configuration options
 
@@ -72,11 +78,14 @@ class QFWorkflow:
         ...     geometry=xyz_string,
         ...     basis='sto-3g',
         ...     embedder=embedder,
-        ...     fragmentation='iao'
+        ...     fragmentation='iao',
+        ...     charge=-1,
         ... )
         """
         self.geometry = geometry
         self.basis = basis
+        self.charge = charge
+        self.spin = spin
         self.embedder = embedder
         self.save_path = save_path
         self.fragmentation = fragmentation
@@ -164,6 +173,8 @@ class QFWorkflow:
         mol.atom = atom_data
         mol.unit = "Angstrom"
         mol.basis = self.basis
+        mol.charge = self.charge
+        mol.spin = self.spin
         mol.verbose = 3
         mol.build()
 

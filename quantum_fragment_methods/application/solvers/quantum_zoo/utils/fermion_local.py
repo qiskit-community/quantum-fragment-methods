@@ -49,7 +49,7 @@ __all__ = [
     "make_sbd_sci_solver",
 ]
 
-_VALID_CLASSICAL_BACKENDS = frozenset({"python", "hpc"})
+_VALID_CLASSICAL_BACKENDS = frozenset({"python", "hpc", "fulqrum"})
 
 
 def _seed_to_int(rand_seed: Any) -> int | None:
@@ -313,6 +313,79 @@ def make_sbd_sci_solver(
     return sci_solver
 
 
+def make_fulqrum_sci_solver(
+    workflow_path: str | Path,
+    max_iterations: int = 0,
+) -> Callable[
+    [list[tuple[np.ndarray, np.ndarray]], np.ndarray, np.ndarray, int, tuple[int, int]],
+    list[SCIResult],
+]:
+    """Build an ``sci_solver`` callback backed by Fulqrum.
+
+    STUB: currently delegates to ``qiskit_addon_sqd.fermion.solve_fermion``
+    (PySCF FCI on the selected subspace).  Replace the body of the inner
+    ``sci_solver()`` function with real Fulqrum calls once the colleague
+    use-case example is available.
+
+    Expected Fulqrum interface (to be confirmed)::
+
+        subspace = fulqrum.Subspace(ci_strings, norb, nelec)
+        result   = fulqrum.solve(subspace, one_body_tensor, two_body_tensor)
+        return [SCIResult(energy=result.energy, sci_state=..., ...)]
+
+    Args:
+        workflow_path: Directory for any scratch files (unused by stub).
+        max_iterations: Total iterations expected (used for progress display).
+
+    Returns:
+        Callable matching the ``sci_solver`` signature expected by
+        ``qiskit-addon-sqd``.
+    """
+    call_count = {"n": 0}
+    best_energy = {"e": None}
+
+    def sci_solver(
+        ci_strings: list[tuple[np.ndarray, np.ndarray]],
+        one_body_tensor: np.ndarray,
+        two_body_tensor: np.ndarray,
+        norb: int,
+        nelec: tuple[int, int],
+    ) -> list[SCIResult]:
+        # ── STUB ──────────────────────────────────────────────────────────────
+        # TODO: replace this block with real Fulqrum calls once the use-case
+        # example is available from the colleague.  The function signature and
+        # return type must remain identical.
+        # ──────────────────────────────────────────────────────────────────────
+        from qiskit_addon_sqd.fermion import solve_fermion
+
+        call_count["n"] += 1
+        results: list[SCIResult] = []
+
+        for ci_strs_a, ci_strs_b in ci_strings:
+            sci_result = solve_fermion(
+                (ci_strs_a, ci_strs_b),
+                one_body_tensor,
+                two_body_tensor,
+                norb=norb,
+                nelec=nelec,
+            )
+            results.append(sci_result)
+
+        iter_energy = min(r.energy for r in results)
+        prev = best_energy["e"]
+        delta_str = f"  Δ={iter_energy - prev:+.6f} Ha" if prev is not None else ""
+        total_str = f"/{max_iterations}" if max_iterations > 0 else ""
+        print(
+            f"    Fulqrum(stub) iter {call_count['n']:2d}{total_str}"
+            f"  E={iter_energy:.8f} Ha{delta_str}",
+            flush=True,
+        )
+        best_energy["e"] = iter_energy
+        return results
+
+    return sci_solver
+
+
 def diagonalize_fermionic_hamiltonian(
     one_body_tensor: np.ndarray,
     two_body_tensor: np.ndarray,
@@ -367,9 +440,6 @@ def diagonalize_fermionic_hamiltonian(
     Returns:
         Best :class:`~qiskit_addon_sqd.fermion.SCIResult` found by SQD.
     """
-    if sbd_config is None:
-        raise ValueError("sbd_config must be provided for SBD solver integration")
-
     backend = classical_backend.lower().strip()
     if backend not in _VALID_CLASSICAL_BACKENDS:
         raise ValueError(
@@ -377,7 +447,40 @@ def diagonalize_fermionic_hamiltonian(
             f"got {classical_backend!r}"
         )
 
+    # SBD requires an exe_path; Fulqrum and Python backends do not.
+    if backend not in ("fulqrum",) and sbd_config is None:
+        raise ValueError("sbd_config must be provided for SBD solver integration")
+
     bit_array = counts_to_bit_array(counts, num_bits=2 * norb)
+
+    # ── Fulqrum backend ───────────────────────────────────────────────────────
+    if backend == "fulqrum":
+        sci_solver = make_fulqrum_sci_solver(
+            workflow_path or ".", max_iterations=max_iterations
+        )
+        logger.info("Using Fulqrum sci_solver for classical SQD diagonalization")
+        return _addon_diagonalize_fermionic_hamiltonian(
+            one_body_tensor=one_body_tensor,
+            two_body_tensor=two_body_tensor,
+            bit_array=bit_array,
+            samples_per_batch=samples_per_batch,
+            norb=norb,
+            nelec=nelec,
+            num_batches=num_batches,
+            energy_tol=energy_tol,
+            occupancies_tol=occupancies_tol,
+            max_iterations=max_iterations,
+            sci_solver=sci_solver,
+            symmetrize_spin=symmetrize_spin,
+            max_dim=max_dim,
+            include_configurations=include_configurations,
+            initial_occupancies=initial_occupancies,
+            carryover_threshold=carryover_threshold,
+            callback=callback,
+            seed=seed,
+        )
+
+    # ── SBD backend (python or hpc classical preprocessing) ──────────────────
     sci_solver = make_sbd_sci_solver(sbd_config, workflow_path or ".", max_iterations=max_iterations)
 
     kwargs = dict(

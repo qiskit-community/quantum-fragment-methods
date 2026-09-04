@@ -1,0 +1,7 @@
+label_chain	label_start	label_end	n_residues	residue_names	heavy_atoms_deposited	core_residues_in_segment
+Y	1	2	2	THR,THR	14	Y:1
+Y	18	22	5	SER,ARG,ALA,THR,ALA	34	Y:19,Y:20,Y:21
+Y	46	51	6	ALA,GLY,GLY,ALA,ALA,ASP	31	Y:47,Y:49,Y:50
+Y	129	131	3	GLY,SER,GLY	14	Y:130
+Y	168	170	3	ALA,TYR,SER	23	Y:169
+Z	124	126	3	PHE,ASP,PRO	26	Z:125

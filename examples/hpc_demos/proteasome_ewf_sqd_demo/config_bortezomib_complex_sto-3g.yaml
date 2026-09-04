@@ -1,0 +1,74 @@
+# Bortezomib / 20S Proteasome complex  —  STO-3G  EWF+SQD configuration
+#
+# System:  bortezomib-proteasome covalent complex (MS_B_LYS33 proton microstate)
+#          544 atoms  |  charge = -1  |  spin = 0
+#
+# The -1 charge arises from the tetrahedral Thr1-O-B boronate adduct; the
+# Thr1 alkoxide donates one electron pair to boron.  See system_prep/README.md
+# for full charge-assignment rationale.
+#
+# QPU credentials are NOT stored here — injected via run_workflow.sh.
+
+# ============================================================================
+# Workflow / Molecule
+# ============================================================================
+workflow:
+  xyz_file: bortezomib_complex.xyz   # path relative to this config file
+  basis: sto-3g
+  charge: -1
+  spin: 0
+
+# ============================================================================
+# Embedder Configuration
+# ============================================================================
+embedder:
+  ewf:
+    bath_type: mp2
+    truncation: 1.0e-5
+    fragmentation: iao
+
+# ============================================================================
+# Solver Selection
+# ============================================================================
+solver_selection:
+  strategy: adaptive
+  orbital_threshold: 15        # fragments with n_orbitals < 15 → FCI; others → SQD
+
+# ============================================================================
+# QPU Configuration
+# ============================================================================
+qpu:
+  provider: qrmi
+  backend_name: ibm_pittsburgh
+
+  sampler_options:
+    default_shots: 1000000
+
+# ============================================================================
+# SQD Solver Configuration
+# ============================================================================
+sqd:
+  lucj:
+    n_reps: 1
+    max_connection: 12
+    connect_every_n: 4
+
+  transpilation:
+    optimization_level: 0
+    seed_transpiler: 42
+
+  classical_backend: python
+  symmetrize_spin: true
+  n_batches: 5
+  iterations: 10
+  samples_per_batch: 3000
+  energy_tol: 1.e-8
+  occupancies_tol: 1.e-5
+  carryover_threshold: 1.e-4
+  add_hf_string: true
+
+  sbd:
+    exe_path: /opt/executable/diag
+    cpus_per_batch: 8
+
+  circuit_save_dir: circuits

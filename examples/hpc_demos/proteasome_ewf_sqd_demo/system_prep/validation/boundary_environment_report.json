@@ -1,0 +1,775 @@
+{
+  "purpose": "Boundary-environment screening before final peptide cut/cap selection",
+  "alignment": {
+    "5LF3_chain": "Y",
+    "5LF7_chain": "Y",
+    "matched_backbone_atoms": 804,
+    "rmsd_A": 0.12641376577682634,
+    "note": "5LF3 BO2 coordinates transformed into the canonical 5LF7-Y receptor frame"
+  },
+  "ligand_selection": {
+    "BO2_native_Thr1_B_distance_A": 1.4400586793599728,
+    "6V8_native_Thr1_B_distance_A": 1.4567075890514163
+  },
+  "retained_waters": [
+    "Y:437",
+    "Z:406",
+    "Y:462"
+  ],
+  "boundaries": [
+    {
+      "segment": "Y:1-2",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 1,
+        "auth_chain": "Y",
+        "auth_seq": "2",
+        "comp_id": "THR",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 1.4567075890514163,
+          "whole_to_BO2_A": 1.491100250939752,
+          "whole_to_any_water_A": 3.726788027242775,
+          "whole_to_Thr1_A": 0.0,
+          "whole_to_nonlocal_core_A": 2.8559506298253834,
+          "sidechain_to_6V8_A": 1.4567075890514163,
+          "sidechain_to_BO2_A": 1.491100250939752,
+          "sidechain_to_any_water_A": 3.726788027242775,
+          "sidechain_to_Thr1_A": 0.0,
+          "water_distances_whole_A": {
+            "Y:437": 3.726788027242775,
+            "Z:406": 10.530138175731603,
+            "Y:462": 3.955335004775197
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 3.726788027242775,
+            "Z:406": 10.530138175731603,
+            "Y:462": 4.2894001911689195
+          },
+          "screen": "network_relevant_review"
+        }
+      },
+      "outside_neighbor": null
+    },
+    {
+      "segment": "Y:1-2",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 2,
+        "auth_chain": "Y",
+        "auth_seq": "3",
+        "comp_id": "THR",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 5.664555234085015,
+          "whole_to_BO2_A": 5.570984392575089,
+          "whole_to_any_water_A": 6.010284935009323,
+          "whole_to_Thr1_A": 1.3404126230381466,
+          "whole_to_nonlocal_core_A": 4.944464986224488,
+          "sidechain_to_6V8_A": 7.621033066454957,
+          "sidechain_to_BO2_A": 7.579263212358877,
+          "sidechain_to_any_water_A": 7.531933682660785,
+          "sidechain_to_Thr1_A": 3.282152494933769,
+          "water_distances_whole_A": {
+            "Y:437": 6.010284935009323,
+            "Z:406": 14.895561788667118,
+            "Y:462": 7.0417847879639135
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 7.531933682660785,
+            "Z:406": 17.32727171253455,
+            "Y:462": 8.521426465093736
+          },
+          "screen": "network_relevant_review"
+        }
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 3,
+        "auth_chain": "Y",
+        "auth_seq": "4",
+        "comp_id": "THR",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 7.1638496634142195,
+          "whole_to_BO2_A": 7.133539342538747,
+          "whole_to_any_water_A": 7.678461955365811,
+          "whole_to_Thr1_A": 3.8550845645718406,
+          "whole_to_nonlocal_core_A": 3.8550845645718406,
+          "sidechain_to_6V8_A": 7.1638496634142195,
+          "sidechain_to_BO2_A": 7.133539342538747,
+          "sidechain_to_any_water_A": 7.966994100663058,
+          "sidechain_to_Thr1_A": 3.8550845645718406,
+          "water_distances_whole_A": {
+            "Y:437": 7.678461955365811,
+            "Z:406": 14.632663803969535,
+            "Y:462": 10.128193817260804
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 7.966994100663058,
+            "Z:406": 14.632663803969535,
+            "Y:462": 10.152759329364603
+          },
+          "screen": "network_relevant_review"
+        }
+      }
+    },
+    {
+      "segment": "Y:18-22",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 18,
+        "auth_chain": "Y",
+        "auth_seq": "19",
+        "comp_id": "SER",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 6.589869801445254,
+          "whole_to_BO2_A": 6.507723516313177,
+          "whole_to_any_water_A": 6.803986625501259,
+          "whole_to_Thr1_A": 6.777892961680645,
+          "whole_to_nonlocal_core_A": 3.918011740666443,
+          "sidechain_to_6V8_A": 8.415498440377737,
+          "sidechain_to_BO2_A": 8.409399061732422,
+          "sidechain_to_any_water_A": 9.20248368648378,
+          "sidechain_to_Thr1_A": 8.595404702514015,
+          "water_distances_whole_A": {
+            "Y:437": 10.87189937407444,
+            "Z:406": 13.127237866360163,
+            "Y:462": 6.803986625501259
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 12.75178136575436,
+            "Z:406": 15.325169689109483,
+            "Y:462": 9.20248368648378
+          },
+          "screen": "network_relevant_review"
+        }
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 17,
+        "auth_chain": "Y",
+        "auth_seq": "18",
+        "comp_id": "ASP",
+        "ionizable_or_charge_sensitive_type": true,
+        "metrics": {
+          "whole_to_6V8_A": 5.739804003622409,
+          "whole_to_BO2_A": 5.764048012939218,
+          "whole_to_any_water_A": 5.479431539858846,
+          "whole_to_Thr1_A": 3.485130413628728,
+          "whole_to_nonlocal_core_A": 3.3186879937710234,
+          "sidechain_to_6V8_A": 5.739804003622409,
+          "sidechain_to_BO2_A": 5.764048012939218,
+          "sidechain_to_any_water_A": 5.479431539858846,
+          "sidechain_to_Thr1_A": 3.485130413628728,
+          "water_distances_whole_A": {
+            "Y:437": 7.70759281488066,
+            "Z:406": 14.30468765824685,
+            "Y:462": 5.479431539858846
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 7.70759281488066,
+            "Z:406": 14.30468765824685,
+            "Y:462": 5.479431539858846
+          },
+          "screen": "network_relevant_review"
+        }
+      }
+    },
+    {
+      "segment": "Y:18-22",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 22,
+        "auth_chain": "Y",
+        "auth_seq": "23",
+        "comp_id": "ALA",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 3.8749772902560395,
+          "whole_to_BO2_A": 3.641842026627196,
+          "whole_to_any_water_A": 6.427800090233049,
+          "whole_to_Thr1_A": 9.947892440110115,
+          "whole_to_nonlocal_core_A": 4.518081340569252,
+          "sidechain_to_6V8_A": 3.8749772902560395,
+          "sidechain_to_BO2_A": 3.641842026627196,
+          "sidechain_to_any_water_A": 8.623389414841482,
+          "sidechain_to_Thr1_A": 12.011062609111645,
+          "water_distances_whole_A": {
+            "Y:437": 10.90669748365654,
+            "Z:406": 8.550976844782125,
+            "Y:462": 6.427800090233049
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 12.874851571959956,
+            "Z:406": 8.623389414841482,
+            "Y:462": 8.77993536422677
+          },
+          "screen": "network_relevant_review"
+        }
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 23,
+        "auth_chain": "Y",
+        "auth_seq": "24",
+        "comp_id": "GLY",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 6.295793992817741,
+          "whole_to_BO2_A": 5.692612496193655,
+          "whole_to_any_water_A": 6.726162278744091,
+          "whole_to_Thr1_A": 9.734970775508259,
+          "whole_to_nonlocal_core_A": 3.4852722992615655,
+          "sidechain_to_6V8_A": null,
+          "sidechain_to_BO2_A": null,
+          "sidechain_to_any_water_A": null,
+          "sidechain_to_Thr1_A": null,
+          "water_distances_whole_A": {
+            "Y:437": 10.44030847245424,
+            "Z:406": 9.939622779562612,
+            "Y:462": 6.726162278744091
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": null,
+            "Z:406": null,
+            "Y:462": null
+          },
+          "screen": "network_relevant_review"
+        }
+      }
+    },
+    {
+      "segment": "Y:46-51",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 46,
+        "auth_chain": "Y",
+        "auth_seq": "47",
+        "comp_id": "ALA",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 3.788757843937769,
+          "whole_to_BO2_A": 3.9379859281197707,
+          "whole_to_any_water_A": 4.645223891267243,
+          "whole_to_Thr1_A": 3.595205974627884,
+          "whole_to_nonlocal_core_A": 3.595205974627884,
+          "sidechain_to_6V8_A": 4.24301496579966,
+          "sidechain_to_BO2_A": 4.324308336503216,
+          "sidechain_to_any_water_A": 4.645223891267243,
+          "sidechain_to_Thr1_A": 3.595205974627884,
+          "water_distances_whole_A": {
+            "Y:437": 4.645223891267243,
+            "Z:406": 9.4555533946988,
+            "Y:462": 8.580138518695371
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 4.645223891267243,
+            "Z:406": 11.68166268131381,
+            "Y:462": 8.95530429410413
+          },
+          "screen": "network_relevant_review"
+        }
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 45,
+        "auth_chain": "Y",
+        "auth_seq": "46",
+        "comp_id": "MET",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 3.876559041211672,
+          "whole_to_BO2_A": 4.071004227104534,
+          "whole_to_any_water_A": 6.9988180430698534,
+          "whole_to_Thr1_A": 3.618217378765411,
+          "whole_to_nonlocal_core_A": 3.618217378765411,
+          "sidechain_to_6V8_A": 3.876559041211672,
+          "sidechain_to_BO2_A": 4.071004227104534,
+          "sidechain_to_any_water_A": 9.23329177487639,
+          "sidechain_to_Thr1_A": 6.474790498541245,
+          "water_distances_whole_A": {
+            "Y:437": 6.9988180430698534,
+            "Z:406": 9.817622828363286,
+            "Y:462": 8.989763845619088
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 9.23329177487639,
+            "Z:406": 9.817622828363286,
+            "Y:462": 10.754796743779021
+          },
+          "screen": "network_relevant_review"
+        }
+      }
+    },
+    {
+      "segment": "Y:46-51",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 51,
+        "auth_chain": "Y",
+        "auth_seq": "52",
+        "comp_id": "ASP",
+        "ionizable_or_charge_sensitive_type": true,
+        "metrics": {
+          "whole_to_6V8_A": 6.583439374673389,
+          "whole_to_BO2_A": 6.822114969755396,
+          "whole_to_any_water_A": 4.8727676940318,
+          "whole_to_Thr1_A": 11.593929920436818,
+          "whole_to_nonlocal_core_A": 3.3289561426969803,
+          "sidechain_to_6V8_A": 7.288148324506031,
+          "sidechain_to_BO2_A": 7.947050156213441,
+          "sidechain_to_any_water_A": 6.19968725017641,
+          "sidechain_to_Thr1_A": 11.871760821377764,
+          "water_distances_whole_A": {
+            "Y:437": 11.444143436710327,
+            "Z:406": 4.8727676940318,
+            "Y:462": 13.238491039389645
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 11.444143436710327,
+            "Z:406": 6.19968725017641,
+            "Y:462": 13.83170752293439
+          },
+          "screen": "network_relevant_review"
+        }
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 52,
+        "auth_chain": "Y",
+        "auth_seq": "53",
+        "comp_id": "CYS",
+        "ionizable_or_charge_sensitive_type": true,
+        "metrics": {
+          "whole_to_6V8_A": 4.7851480645848365,
+          "whole_to_BO2_A": 5.0665848940413625,
+          "whole_to_any_water_A": 6.944157616298759,
+          "whole_to_Thr1_A": 7.873832611886038,
+          "whole_to_nonlocal_core_A": 3.4159698476421063,
+          "sidechain_to_6V8_A": 4.7851480645848365,
+          "sidechain_to_BO2_A": 5.0665848940413625,
+          "sidechain_to_any_water_A": 8.096939236526362,
+          "sidechain_to_Thr1_A": 7.873832611886038,
+          "water_distances_whole_A": {
+            "Y:437": 8.432189336109573,
+            "Z:406": 6.944157616298759,
+            "Y:462": 11.300169069531655
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 8.432189336109573,
+            "Z:406": 8.096939236526362,
+            "Y:462": 11.300169069531655
+          },
+          "screen": "network_relevant_review"
+        }
+      }
+    },
+    {
+      "segment": "Y:129-131",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 129,
+        "auth_chain": "Y",
+        "auth_seq": "130",
+        "comp_id": "GLY",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 5.323654665734817,
+          "whole_to_BO2_A": 5.173413192532542,
+          "whole_to_any_water_A": 3.549730975721978,
+          "whole_to_Thr1_A": 3.306989265177618,
+          "whole_to_nonlocal_core_A": 3.306989265177618,
+          "sidechain_to_6V8_A": null,
+          "sidechain_to_BO2_A": null,
+          "sidechain_to_any_water_A": null,
+          "sidechain_to_Thr1_A": null,
+          "water_distances_whole_A": {
+            "Y:437": 3.549730975721978,
+            "Z:406": 14.171323861940364,
+            "Y:462": 8.80390958608731
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": null,
+            "Z:406": null,
+            "Y:462": null
+          },
+          "screen": "network_relevant_review"
+        }
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 128,
+        "auth_chain": "Y",
+        "auth_seq": "129",
+        "comp_id": "VAL",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 6.819873459236618,
+          "whole_to_BO2_A": 6.776010169302639,
+          "whole_to_any_water_A": 5.870966189648864,
+          "whole_to_Thr1_A": 4.042599534952728,
+          "whole_to_nonlocal_core_A": 4.042599534952728,
+          "sidechain_to_6V8_A": 7.645183974241554,
+          "sidechain_to_BO2_A": 7.620863124434073,
+          "sidechain_to_any_water_A": 6.75132586978291,
+          "sidechain_to_Thr1_A": 6.622431351097578,
+          "water_distances_whole_A": {
+            "Y:437": 5.870966189648864,
+            "Z:406": 14.983223718546014,
+            "Y:462": 10.146936926974565
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 6.75132586978291,
+            "Z:406": 14.983223718546014,
+            "Y:462": 12.1941251838744
+          },
+          "screen": "second_shell_review"
+        }
+      }
+    },
+    {
+      "segment": "Y:129-131",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 131,
+        "auth_chain": "Y",
+        "auth_seq": "132",
+        "comp_id": "GLY",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 6.970788836279576,
+          "whole_to_BO2_A": 6.889919197924043,
+          "whole_to_any_water_A": 5.615196968940634,
+          "whole_to_Thr1_A": 2.958324018764677,
+          "whole_to_nonlocal_core_A": 2.958324018764677,
+          "sidechain_to_6V8_A": null,
+          "sidechain_to_BO2_A": null,
+          "sidechain_to_any_water_A": null,
+          "sidechain_to_Thr1_A": null,
+          "water_distances_whole_A": {
+            "Y:437": 5.615196968940634,
+            "Z:406": 16.526926544279192,
+            "Y:462": 8.41330285916298
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": null,
+            "Z:406": null,
+            "Y:462": null
+          },
+          "screen": "network_relevant_review"
+        }
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 132,
+        "auth_chain": "Y",
+        "auth_seq": "133",
+        "comp_id": "SER",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 9.225056585192311,
+          "whole_to_BO2_A": 9.057914932020337,
+          "whole_to_any_water_A": 7.348078592394081,
+          "whole_to_Thr1_A": 4.523010833504603,
+          "whole_to_nonlocal_core_A": 3.425540541286877,
+          "sidechain_to_6V8_A": 9.864739276838488,
+          "sidechain_to_BO2_A": 9.70010141962294,
+          "sidechain_to_any_water_A": 7.707771143462935,
+          "sidechain_to_Thr1_A": 5.925053586255567,
+          "water_distances_whole_A": {
+            "Y:437": 7.348078592394081,
+            "Z:406": 18.39502131012629,
+            "Y:462": 10.92758184595293
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 7.707771143462935,
+            "Z:406": 18.6408618362993,
+            "Y:462": 12.517107093893538
+          },
+          "screen": "network_relevant_review"
+        }
+      }
+    },
+    {
+      "segment": "Y:168-170",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 168,
+        "auth_chain": "Y",
+        "auth_seq": "169",
+        "comp_id": "ALA",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 7.802129773337533,
+          "whole_to_BO2_A": 7.5574168630114835,
+          "whole_to_any_water_A": 5.96142365547023,
+          "whole_to_Thr1_A": 6.778250364216419,
+          "whole_to_nonlocal_core_A": 2.7059037307339655,
+          "sidechain_to_6V8_A": 9.797696514997801,
+          "sidechain_to_BO2_A": 8.77871207953322,
+          "sidechain_to_any_water_A": 8.371478065431463,
+          "sidechain_to_Thr1_A": 8.89108058674535,
+          "water_distances_whole_A": {
+            "Y:437": 9.560317724845762,
+            "Z:406": 16.05557024835929,
+            "Y:462": 5.96142365547023
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 11.143161894184255,
+            "Z:406": 17.92162383825752,
+            "Y:462": 8.371478065431463
+          },
+          "screen": "network_relevant_review"
+        }
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 167,
+        "auth_chain": "Y",
+        "auth_seq": "168",
+        "comp_id": "ASP",
+        "ionizable_or_charge_sensitive_type": true,
+        "metrics": {
+          "whole_to_6V8_A": 6.266053063931074,
+          "whole_to_BO2_A": 6.147789401569606,
+          "whole_to_any_water_A": 6.442537155500158,
+          "whole_to_Thr1_A": 4.0762582106633,
+          "whole_to_nonlocal_core_A": 2.678966405164511,
+          "sidechain_to_6V8_A": 6.266053063931074,
+          "sidechain_to_BO2_A": 6.147789401569606,
+          "sidechain_to_any_water_A": 6.442537155500158,
+          "sidechain_to_Thr1_A": 4.0762582106633,
+          "water_distances_whole_A": {
+            "Y:437": 6.442537155500158,
+            "Z:406": 16.137233065181906,
+            "Y:462": 6.642218529979277
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 6.442537155500158,
+            "Z:406": 16.137233065181906,
+            "Y:462": 6.642218529979277
+          },
+          "screen": "network_relevant_review"
+        }
+      }
+    },
+    {
+      "segment": "Y:168-170",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 170,
+        "auth_chain": "Y",
+        "auth_seq": "171",
+        "comp_id": "SER",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 5.833269409173543,
+          "whole_to_BO2_A": 5.763189246033935,
+          "whole_to_any_water_A": 4.979522567475732,
+          "whole_to_Thr1_A": 3.0219865982495686,
+          "whole_to_nonlocal_core_A": 3.0219865982495686,
+          "sidechain_to_6V8_A": 5.833269409173543,
+          "sidechain_to_BO2_A": 5.763189246033935,
+          "sidechain_to_any_water_A": 6.146437179374724,
+          "sidechain_to_Thr1_A": 3.0219865982495686,
+          "water_distances_whole_A": {
+            "Y:437": 6.690405219416835,
+            "Z:406": 15.429101107971272,
+            "Y:462": 4.979522567475732
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 6.690405219416835,
+            "Z:406": 15.735623470329987,
+            "Y:462": 6.146437179374724
+          },
+          "screen": "network_relevant_review"
+        }
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 171,
+        "auth_chain": "Y",
+        "auth_seq": "172",
+        "comp_id": "GLY",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 7.805572752847784,
+          "whole_to_BO2_A": 7.763805312848776,
+          "whole_to_any_water_A": 6.489411837755399,
+          "whole_to_Thr1_A": 6.2386720542115315,
+          "whole_to_nonlocal_core_A": 3.3771676002236024,
+          "sidechain_to_6V8_A": null,
+          "sidechain_to_BO2_A": null,
+          "sidechain_to_any_water_A": null,
+          "sidechain_to_Thr1_A": null,
+          "water_distances_whole_A": {
+            "Y:437": 10.17195988981474,
+            "Z:406": 16.40825703723587,
+            "Y:462": 6.489411837755399
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": null,
+            "Z:406": null,
+            "Y:462": null
+          },
+          "screen": "network_relevant_review"
+        }
+      }
+    },
+    {
+      "segment": "Z:124-126",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Z",
+        "label_seq": 124,
+        "auth_chain": "Z",
+        "auth_seq": "124",
+        "comp_id": "PHE",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 6.4784054365252555,
+          "whole_to_BO2_A": 5.794699440309614,
+          "whole_to_any_water_A": 8.1283935067146,
+          "whole_to_Thr1_A": 15.712591479447317,
+          "whole_to_nonlocal_core_A": 8.369848863629496,
+          "sidechain_to_6V8_A": 8.86973415610637,
+          "sidechain_to_BO2_A": 7.9673889211742726,
+          "sidechain_to_any_water_A": 9.595957065347884,
+          "sidechain_to_Thr1_A": 17.48987747241244,
+          "water_distances_whole_A": {
+            "Y:437": 17.826026730598162,
+            "Z:406": 8.1283935067146,
+            "Y:462": 14.529025053320002
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 19.68594569737507,
+            "Z:406": 9.595957065347884,
+            "Y:462": 16.676134444169012
+          },
+          "screen": "second_shell_review"
+        }
+      },
+      "outside_neighbor": {
+        "label_chain": "Z",
+        "label_seq": 123,
+        "auth_chain": "Z",
+        "auth_seq": "123",
+        "comp_id": "SER",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 8.829726213195968,
+          "whole_to_BO2_A": 7.246678535716177,
+          "whole_to_any_water_A": 10.177749702168937,
+          "whole_to_Thr1_A": 15.580297686501378,
+          "whole_to_nonlocal_core_A": 4.5359592149841905,
+          "sidechain_to_6V8_A": 9.045773267112102,
+          "sidechain_to_BO2_A": 7.70613818077155,
+          "sidechain_to_any_water_A": 11.65974262151613,
+          "sidechain_to_Thr1_A": 15.580297686501378,
+          "water_distances_whole_A": {
+            "Y:437": 18.514237791494416,
+            "Z:406": 10.177749702168937,
+            "Y:462": 14.255038617976455
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 18.72568647606811,
+            "Z:406": 11.65974262151613,
+            "Y:462": 14.255038617976455
+          },
+          "screen": "second_shell_review"
+        }
+      }
+    },
+    {
+      "segment": "Z:124-126",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Z",
+        "label_seq": 126,
+        "auth_chain": "Z",
+        "auth_seq": "126",
+        "comp_id": "PRO",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 4.108867118805379,
+          "whole_to_BO2_A": 5.945932628153387,
+          "whole_to_any_water_A": 6.586920448889596,
+          "whole_to_Thr1_A": 15.92099648263261,
+          "whole_to_nonlocal_core_A": 6.526139210896432,
+          "sidechain_to_6V8_A": 4.108867118805379,
+          "sidechain_to_BO2_A": 5.945932628153387,
+          "sidechain_to_any_water_A": 6.640721873411048,
+          "sidechain_to_Thr1_A": 15.92099648263261,
+          "water_distances_whole_A": {
+            "Y:437": 16.839020072438885,
+            "Z:406": 6.586920448889596,
+            "Y:462": 14.431052456421877
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 16.839020072438885,
+            "Z:406": 6.640721873411048,
+            "Y:462": 14.431052456421877
+          },
+          "screen": "network_relevant_review"
+        }
+      },
+      "outside_neighbor": {
+        "label_chain": "Z",
+        "label_seq": 127,
+        "auth_chain": "Z",
+        "auth_seq": "127",
+        "comp_id": "VAL",
+        "ionizable_or_charge_sensitive_type": false,
+        "metrics": {
+          "whole_to_6V8_A": 5.5519615452558835,
+          "whole_to_BO2_A": 7.417386049266094,
+          "whole_to_any_water_A": 4.0928116252766955,
+          "whole_to_Thr1_A": 14.56896979885676,
+          "whole_to_nonlocal_core_A": 3.0553423703408265,
+          "sidechain_to_6V8_A": 5.5519615452558835,
+          "sidechain_to_BO2_A": 7.417386049266094,
+          "sidechain_to_any_water_A": 4.0928116252766955,
+          "sidechain_to_Thr1_A": 14.56896979885676,
+          "water_distances_whole_A": {
+            "Y:437": 14.87454258120229,
+            "Z:406": 4.0928116252766955,
+            "Y:462": 14.509022675562962
+          },
+          "water_distances_sidechain_A": {
+            "Y:437": 14.87454258120229,
+            "Z:406": 4.0928116252766955,
+            "Y:462": 14.509022675562962
+          },
+          "screen": "network_relevant_review"
+        }
+      }
+    }
+  ],
+  "screen_meanings": {
+    "network_relevant_review": "Geometry places this residue within first-shell/network-like distance of ligand, retained water, or nonlocal functional core.",
+    "charge_sensitive_review": "An ionizable/charge-sensitive side chain lies within 8 A of the modeled chemistry; do not discard solely because it is outside the direct-contact shell.",
+    "second_shell_review": "Not first-shell by this screen, but geometrically close enough to deserve one explicit modeling decision.",
+    "peripheral_by_geometry": "No close geometric signal in this diagnostic; this supports, but does not prove, safe exclusion."
+  },
+  "important_caveats": [
+    "These are geometric screens, not energetic calculations.",
+    "Charge effects are longer ranged than hydrogen-bond/contact distances.",
+    "Side-chain protonation states remain unresolved.",
+    "Backbone adjacency to a cut is intentionally excluded from the nonlocal-core metric.",
+    "No keep/delete/cap decision is made automatically.",
+    "No coordinates are modified."
+  ],
+  "next_step": "Use these distances to finalize segment endpoints, then construct the first explicit capped receptor topology."
+}

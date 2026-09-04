@@ -1,0 +1,767 @@
+{
+  "stage": "8a_rev1_capped_heavy_atom_receptor_scaffold_with_Lys33",
+  "canonical_source": "raw/5LF7.cif",
+  "frozen_segments": [
+    {
+      "label_chain": "Y",
+      "label_start": 1,
+      "label_end": 3
+    },
+    {
+      "label_chain": "Y",
+      "label_start": 17,
+      "label_end": 22
+    },
+    {
+      "label_chain": "Y",
+      "label_start": 31,
+      "label_end": 35
+    },
+    {
+      "label_chain": "Y",
+      "label_start": 45,
+      "label_end": 50
+    },
+    {
+      "label_chain": "Y",
+      "label_start": 129,
+      "label_end": 131
+    },
+    {
+      "label_chain": "Y",
+      "label_start": 167,
+      "label_end": 170
+    },
+    {
+      "label_chain": "Z",
+      "label_start": 124,
+      "label_end": 126
+    }
+  ],
+  "manual_boundary_decision": {
+    "Y31_35_added": true,
+    "Y31_35_reason": "Adds the conserved catalytic Lys33 region; Val31 also contributes pocket context.",
+    "Y45_included": true,
+    "reason": "Asp51 side chain is geometrically peripheral to ligands, retained waters, and Thr1; kept as convergence candidate rather than reference residue.",
+    "Y51_Asp_excluded": true
+  },
+  "retained_waters": [
+    {
+      "source_water": "Y:437",
+      "source_comp_id": "HOH",
+      "pdb_resseq": 951,
+      "atoms": [
+        {
+          "source_atom": "O",
+          "element": "O",
+          "xyz": [
+            44.57,
+            181.162,
+            63.512
+          ]
+        }
+      ]
+    },
+    {
+      "source_water": "Z:406",
+      "source_comp_id": "HOH",
+      "pdb_resseq": 952,
+      "atoms": [
+        {
+          "source_atom": "O",
+          "element": "O",
+          "xyz": [
+            48.603,
+            189.369,
+            69.98
+          ]
+        }
+      ]
+    },
+    {
+      "source_water": "Y:462",
+      "source_comp_id": "HOH",
+      "pdb_resseq": 953,
+      "atoms": [
+        {
+          "source_atom": "O",
+          "element": "O",
+          "xyz": [
+            50.733,
+            181.881,
+            62.892
+          ]
+        }
+      ]
+    }
+  ],
+  "retained_residues": [
+    {
+      "label_chain": "Y",
+      "label_seq": 1,
+      "auth_chain": "Y",
+      "auth_seq": "2",
+      "comp_id": "THR"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 2,
+      "auth_chain": "Y",
+      "auth_seq": "3",
+      "comp_id": "THR"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 3,
+      "auth_chain": "Y",
+      "auth_seq": "4",
+      "comp_id": "THR"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 17,
+      "auth_chain": "Y",
+      "auth_seq": "18",
+      "comp_id": "ASP"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 18,
+      "auth_chain": "Y",
+      "auth_seq": "19",
+      "comp_id": "SER"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 19,
+      "auth_chain": "Y",
+      "auth_seq": "20",
+      "comp_id": "ARG"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 20,
+      "auth_chain": "Y",
+      "auth_seq": "21",
+      "comp_id": "ALA"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 21,
+      "auth_chain": "Y",
+      "auth_seq": "22",
+      "comp_id": "THR"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 22,
+      "auth_chain": "Y",
+      "auth_seq": "23",
+      "comp_id": "ALA"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 31,
+      "auth_chain": "Y",
+      "auth_seq": "32",
+      "comp_id": "VAL"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 32,
+      "auth_chain": "Y",
+      "auth_seq": "33",
+      "comp_id": "LYS"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 33,
+      "auth_chain": "Y",
+      "auth_seq": "34",
+      "comp_id": "LYS"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 34,
+      "auth_chain": "Y",
+      "auth_seq": "35",
+      "comp_id": "VAL"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 35,
+      "auth_chain": "Y",
+      "auth_seq": "36",
+      "comp_id": "ILE"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 45,
+      "auth_chain": "Y",
+      "auth_seq": "46",
+      "comp_id": "MET"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 46,
+      "auth_chain": "Y",
+      "auth_seq": "47",
+      "comp_id": "ALA"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 47,
+      "auth_chain": "Y",
+      "auth_seq": "48",
+      "comp_id": "GLY"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 48,
+      "auth_chain": "Y",
+      "auth_seq": "49",
+      "comp_id": "GLY"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 49,
+      "auth_chain": "Y",
+      "auth_seq": "50",
+      "comp_id": "ALA"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 50,
+      "auth_chain": "Y",
+      "auth_seq": "51",
+      "comp_id": "ALA"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 129,
+      "auth_chain": "Y",
+      "auth_seq": "130",
+      "comp_id": "GLY"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 130,
+      "auth_chain": "Y",
+      "auth_seq": "131",
+      "comp_id": "SER"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 131,
+      "auth_chain": "Y",
+      "auth_seq": "132",
+      "comp_id": "GLY"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 167,
+      "auth_chain": "Y",
+      "auth_seq": "168",
+      "comp_id": "ASP"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 168,
+      "auth_chain": "Y",
+      "auth_seq": "169",
+      "comp_id": "ALA"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 169,
+      "auth_chain": "Y",
+      "auth_seq": "170",
+      "comp_id": "TYR"
+    },
+    {
+      "label_chain": "Y",
+      "label_seq": 170,
+      "auth_chain": "Y",
+      "auth_seq": "171",
+      "comp_id": "SER"
+    },
+    {
+      "label_chain": "Z",
+      "label_seq": 124,
+      "auth_chain": "Z",
+      "auth_seq": "124",
+      "comp_id": "PHE"
+    },
+    {
+      "label_chain": "Z",
+      "label_seq": 125,
+      "auth_chain": "Z",
+      "auth_seq": "125",
+      "comp_id": "ASP"
+    },
+    {
+      "label_chain": "Z",
+      "label_seq": 126,
+      "auth_chain": "Z",
+      "auth_seq": "126",
+      "comp_id": "PRO"
+    }
+  ],
+  "caps": [
+    {
+      "type": "NME",
+      "caps_C_terminus_of_segment": "Y:1-3",
+      "source_outside_residue": "Y:4 LEU",
+      "pdb_resseq": 901,
+      "atoms": [
+        {
+          "new_atom": "N",
+          "source_residue": "Y:4",
+          "source_atom": "N",
+          "xyz": [
+            44.18,
+            170.993,
+            67.551
+          ]
+        },
+        {
+          "new_atom": "CH3",
+          "source_residue": "Y:4",
+          "source_atom": "CA",
+          "xyz": [
+            43.119,
+            169.96,
+            67.537
+          ]
+        }
+      ],
+      "retained_C_to_cap_N_A": 1.3158
+    },
+    {
+      "type": "ACE",
+      "caps_N_terminus_of_segment": "Y:17-22",
+      "source_outside_residue": "Y:16 ALA",
+      "pdb_resseq": 902,
+      "atoms": [
+        {
+          "new_atom": "CH3",
+          "source_residue": "Y:16",
+          "source_atom": "CA",
+          "xyz": [
+            49.048,
+            172.111,
+            68.301
+          ]
+        },
+        {
+          "new_atom": "C",
+          "source_residue": "Y:16",
+          "source_atom": "C",
+          "xyz": [
+            50.414,
+            172.274,
+            67.614
+          ]
+        },
+        {
+          "new_atom": "O",
+          "source_residue": "Y:16",
+          "source_atom": "O",
+          "xyz": [
+            51.408,
+            171.533,
+            67.908
+          ]
+        }
+      ],
+      "cap_C_to_retained_N_A": 1.3424
+    },
+    {
+      "type": "NME",
+      "caps_C_terminus_of_segment": "Y:17-22",
+      "source_outside_residue": "Y:23 GLY",
+      "pdb_resseq": 903,
+      "atoms": [
+        {
+          "new_atom": "N",
+          "source_residue": "Y:23",
+          "source_atom": "N",
+          "xyz": [
+            51.477,
+            189.61,
+            60.468
+          ]
+        },
+        {
+          "new_atom": "CH3",
+          "source_residue": "Y:23",
+          "source_atom": "CA",
+          "xyz": [
+            51.287,
+            189.634,
+            59.016
+          ]
+        }
+      ],
+      "retained_C_to_cap_N_A": 1.3259
+    },
+    {
+      "type": "ACE",
+      "caps_N_terminus_of_segment": "Y:31-35",
+      "source_outside_residue": "Y:30 THR",
+      "pdb_resseq": 904,
+      "atoms": [
+        {
+          "new_atom": "CH3",
+          "source_residue": "Y:30",
+          "source_atom": "CA",
+          "xyz": [
+            58.361,
+            178.061,
+            69.546
+          ]
+        },
+        {
+          "new_atom": "C",
+          "source_residue": "Y:30",
+          "source_atom": "C",
+          "xyz": [
+            57.29,
+            178.485,
+            70.548
+          ]
+        },
+        {
+          "new_atom": "O",
+          "source_residue": "Y:30",
+          "source_atom": "O",
+          "xyz": [
+            57.544,
+            178.472,
+            71.712
+          ]
+        }
+      ],
+      "cap_C_to_retained_N_A": 1.3372
+    },
+    {
+      "type": "NME",
+      "caps_C_terminus_of_segment": "Y:31-35",
+      "source_outside_residue": "Y:36 GLU",
+      "pdb_resseq": 905,
+      "atoms": [
+        {
+          "new_atom": "N",
+          "source_residue": "Y:36",
+          "source_atom": "N",
+          "xyz": [
+            48.371,
+            174.865,
+            80.532
+          ]
+        },
+        {
+          "new_atom": "CH3",
+          "source_residue": "Y:36",
+          "source_atom": "CA",
+          "xyz": [
+            48.081,
+            173.981,
+            81.604
+          ]
+        }
+      ],
+      "retained_C_to_cap_N_A": 1.3028
+    },
+    {
+      "type": "ACE",
+      "caps_N_terminus_of_segment": "Y:45-50",
+      "source_outside_residue": "Y:44 THR",
+      "pdb_resseq": 906,
+      "atoms": [
+        {
+          "new_atom": "CH3",
+          "source_residue": "Y:44",
+          "source_atom": "CA",
+          "xyz": [
+            44.344,
+            175.549,
+            73.604
+          ]
+        },
+        {
+          "new_atom": "C",
+          "source_residue": "Y:44",
+          "source_atom": "C",
+          "xyz": [
+            44.104,
+            176.974,
+            73.112
+          ]
+        },
+        {
+          "new_atom": "O",
+          "source_residue": "Y:44",
+          "source_atom": "O",
+          "xyz": [
+            43.048,
+            177.552,
+            73.334
+          ]
+        }
+      ],
+      "cap_C_to_retained_N_A": 1.3221
+    },
+    {
+      "type": "NME",
+      "caps_C_terminus_of_segment": "Y:45-50",
+      "source_outside_residue": "Y:51 ASP",
+      "pdb_resseq": 907,
+      "atoms": [
+        {
+          "new_atom": "N",
+          "source_residue": "Y:51",
+          "source_atom": "N",
+          "xyz": [
+            45.343,
+            187.988,
+            73.328
+          ]
+        },
+        {
+          "new_atom": "CH3",
+          "source_residue": "Y:51",
+          "source_atom": "CA",
+          "xyz": [
+            44.011,
+            187.7,
+            73.788
+          ]
+        }
+      ],
+      "retained_C_to_cap_N_A": 1.3349
+    },
+    {
+      "type": "ACE",
+      "caps_N_terminus_of_segment": "Y:129-131",
+      "source_outside_residue": "Y:128 VAL",
+      "pdb_resseq": 908,
+      "atoms": [
+        {
+          "new_atom": "CH3",
+          "source_residue": "Y:128",
+          "source_atom": "CA",
+          "xyz": [
+            40.646,
+            175.445,
+            65.43
+          ]
+        },
+        {
+          "new_atom": "C",
+          "source_residue": "Y:128",
+          "source_atom": "C",
+          "xyz": [
+            41.89,
+            176.124,
+            64.892
+          ]
+        },
+        {
+          "new_atom": "O",
+          "source_residue": "Y:128",
+          "source_atom": "O",
+          "xyz": [
+            43.045,
+            175.653,
+            65.143
+          ]
+        }
+      ],
+      "cap_C_to_retained_N_A": 1.3528
+    },
+    {
+      "type": "NME",
+      "caps_C_terminus_of_segment": "Y:129-131",
+      "source_outside_residue": "Y:132 SER",
+      "pdb_resseq": 909,
+      "atoms": [
+        {
+          "new_atom": "N",
+          "source_residue": "Y:132",
+          "source_atom": "N",
+          "xyz": [
+            42.875,
+            174.665,
+            60.527
+          ]
+        },
+        {
+          "new_atom": "CH3",
+          "source_residue": "Y:132",
+          "source_atom": "CA",
+          "xyz": [
+            41.9,
+            173.71,
+            60.957
+          ]
+        }
+      ],
+      "retained_C_to_cap_N_A": 1.3473
+    },
+    {
+      "type": "ACE",
+      "caps_N_terminus_of_segment": "Y:167-170",
+      "source_outside_residue": "Y:166 ARG",
+      "pdb_resseq": 910,
+      "atoms": [
+        {
+          "new_atom": "CH3",
+          "source_residue": "Y:166",
+          "source_atom": "CA",
+          "xyz": [
+            49.29,
+            173.479,
+            53.409
+          ]
+        },
+        {
+          "new_atom": "C",
+          "source_residue": "Y:166",
+          "source_atom": "C",
+          "xyz": [
+            49.148,
+            174.951,
+            53.855
+          ]
+        },
+        {
+          "new_atom": "O",
+          "source_residue": "Y:166",
+          "source_atom": "O",
+          "xyz": [
+            49.046,
+            175.817,
+            53.032
+          ]
+        }
+      ],
+      "cap_C_to_retained_N_A": 1.3351
+    },
+    {
+      "type": "NME",
+      "caps_C_terminus_of_segment": "Y:167-170",
+      "source_outside_residue": "Y:171 GLY",
+      "pdb_resseq": 911,
+      "atoms": [
+        {
+          "new_atom": "N",
+          "source_residue": "Y:171",
+          "source_atom": "N",
+          "xyz": [
+            53.102,
+            176.002,
+            61.5
+          ]
+        },
+        {
+          "new_atom": "CH3",
+          "source_residue": "Y:171",
+          "source_atom": "CA",
+          "xyz": [
+            54.474,
+            175.418,
+            61.39
+          ]
+        }
+      ],
+      "retained_C_to_cap_N_A": 1.3394
+    },
+    {
+      "type": "ACE",
+      "caps_N_terminus_of_segment": "Z:124-126",
+      "source_outside_residue": "Z:123 SER",
+      "pdb_resseq": 912,
+      "atoms": [
+        {
+          "new_atom": "CH3",
+          "source_residue": "Z:123",
+          "source_atom": "CA",
+          "xyz": [
+            60.05,
+            189.243,
+            73.959
+          ]
+        },
+        {
+          "new_atom": "C",
+          "source_residue": "Z:123",
+          "source_atom": "C",
+          "xyz": [
+            58.49,
+            189.38,
+            73.954
+          ]
+        },
+        {
+          "new_atom": "O",
+          "source_residue": "Z:123",
+          "source_atom": "O",
+          "xyz": [
+            57.806,
+            188.431,
+            74.224
+          ]
+        }
+      ],
+      "cap_C_to_retained_N_A": 1.3096
+    },
+    {
+      "type": "NME",
+      "caps_C_terminus_of_segment": "Z:124-126",
+      "source_outside_residue": "Z:127 VAL",
+      "pdb_resseq": 913,
+      "atoms": [
+        {
+          "new_atom": "N",
+          "source_residue": "Z:127",
+          "source_atom": "N",
+          "xyz": [
+            50.513,
+            194.289,
+            72.734
+          ]
+        },
+        {
+          "new_atom": "CH3",
+          "source_residue": "Z:127",
+          "source_atom": "CA",
+          "xyz": [
+            49.412,
+            194.117,
+            73.68
+          ]
+        }
+      ],
+      "retained_C_to_cap_N_A": 1.3139
+    }
+  ],
+  "counts": {
+    "retained_residues": 30,
+    "ACE_caps": 6,
+    "NME_caps": 7,
+    "retained_waters": 3,
+    "heavy_atoms_total": 240,
+    "protein_heavy_atoms": 205,
+    "cap_heavy_atoms": 32,
+    "water_heavy_atoms": 3
+  },
+  "chemistry_policy": [
+    "Thr1 remains the authentic natural N-terminus; no ACE cap is placed before it.",
+    "ACE/NME heavy-atom geometry is inherited from the real neighboring peptide residues.",
+    "No heavy-atom coordinate of a retained protein residue or water is changed.",
+    "Cap hydrogens, protein hydrogens, water hydrogens, protonation states, and final charge are deferred.",
+    "The cap scheme must be identical in the bortezomib and ixazomib complexes."
+  ],
+  "next_step": "Inspect scaffold geometry, then assign protonation/formal charge and add hydrogens including cap and water hydrogens."
+}

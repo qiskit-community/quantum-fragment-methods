@@ -1,0 +1,2 @@
+stem	status	energy_Eh	n_atoms	n_electrons	n_AO	scf_converged	delta_to_min_kcal_mol	delta_to_A_kcal_mol	reason
+6V8_MS_B_LYS33	PASS	-3519.0622441686864	114	442	1073	True			

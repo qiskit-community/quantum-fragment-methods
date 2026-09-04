@@ -1,0 +1,4 @@
+microstate	transferred_proton_location	Thr1_N	Lys33_NZ	Asp17	boronate	fixed_background_charge	catalytic_subsystem_charge	total_complex_charge
+MS_A_THRN	Thr1_N	NH3+	NH2	COO-	tetrahedral_B_C_ThrO_OH_OH	0	-1	-1
+MS_B_LYS33	Lys33_NZ	NH2	NH3+	COO-	tetrahedral_B_C_ThrO_OH_OH	0	-1	-1
+MS_C_ASP17	Asp17	NH2	NH2	COOH	tetrahedral_B_C_ThrO_OH_OH	0	-1	-1

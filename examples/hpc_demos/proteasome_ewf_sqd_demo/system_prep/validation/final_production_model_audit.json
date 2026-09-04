@@ -1,0 +1,85 @@
+{
+  "stage": "final_production_model_audit",
+  "expected_charges": {
+    "ixazomib_complex": -1,
+    "bortezomib_complex": -1,
+    "ixazomib_ligand": 0,
+    "bortezomib_ligand": 0
+  },
+  "counts": {
+    "common_receptor": 491,
+    "ixazomib_complex": 533,
+    "ixazomib_ligand": 42,
+    "bortezomib_complex": 544,
+    "bortezomib_ligand": 53
+  },
+  "checks": {
+    "ixazomib_receptor_equals_common": {
+      "pass": true,
+      "max_delta_A": 0.0,
+      "failure": null
+    },
+    "bortezomib_receptor_equals_common": {
+      "pass": true,
+      "max_delta_A": 0.0,
+      "failure": null
+    },
+    "complex_receptors_exactly_matched": {
+      "pass": true,
+      "max_delta_A": 0.0,
+      "failure": null
+    },
+    "expected_atom_counts": {
+      "pass": true
+    }
+  },
+  "per_ligand": {
+    "ixazomib": {
+      "complex_equals_receptor_plus_ligand": true,
+      "ligand_suffix_max_delta_A": 0.0,
+      "ligand_suffix_failure": null,
+      "isolated_ligand_B_three_coordinate_COO": true,
+      "B_heavy_neighbors": [
+        {
+          "element": "O",
+          "distance_A": 1.5426140152351784
+        },
+        {
+          "element": "O",
+          "distance_A": 1.5585438716956312
+        },
+        {
+          "element": "C",
+          "distance_A": 1.6748665618490235
+        }
+      ],
+      "intended_receptor_O_B_distance_A": 1.4567075890514163,
+      "minimum_other_receptor_ligand_distance_A": 1.7570742525579417,
+      "catastrophic_overlap_absent": true
+    },
+    "bortezomib": {
+      "complex_equals_receptor_plus_ligand": true,
+      "ligand_suffix_max_delta_A": 0.0,
+      "ligand_suffix_failure": null,
+      "isolated_ligand_B_three_coordinate_COO": true,
+      "B_heavy_neighbors": [
+        {
+          "element": "O",
+          "distance_A": 1.5292073109948168
+        },
+        {
+          "element": "O",
+          "distance_A": 1.5382655817510804
+        },
+        {
+          "element": "C",
+          "distance_A": 1.6356219000734935
+        }
+      ],
+      "intended_receptor_O_B_distance_A": 1.4911465387412388,
+      "minimum_other_receptor_ligand_distance_A": 1.30228791557763,
+      "catastrophic_overlap_absent": true
+    }
+  },
+  "overall": "PASS"
+}

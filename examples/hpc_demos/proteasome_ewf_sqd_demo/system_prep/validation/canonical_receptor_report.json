@@ -1,0 +1,326 @@
+{
+  "purpose": "Stage-5 canonical receptor screening; no coordinate modification",
+  "canonical_beta5_copy": "Y",
+  "pocket_cutoff_A": 5.0,
+  "source_resolution_A": {
+    "5LF3": 2.1,
+    "5LF7": 2.0
+  },
+  "stage4_context": {
+    "local_environment_heavy_rmsd_A": 0.1987,
+    "aligned_B26_displacement_A": 0.257,
+    "warhead_vector_angle_deg": 5.847
+  },
+  "candidates": {
+    "5LF3": {
+      "host_chain": "Y",
+      "native_ligand": "BO2",
+      "transplanted_ligand": "6V8",
+      "hard_clashes_lt_1.8A": 0,
+      "closest_nonbonded_heavy_pair_A": 2.327,
+      "donor_native_thr_B26_A": 1.4567,
+      "transplanted_thr_B26_A": 1.4315,
+      "transplanted_thr_B26_deviation_from_donor_native_A": 0.0252,
+      "contact_distortion": {
+        "residue_count": 19,
+        "mean_absolute_delta_A": 0.1305,
+        "rms_delta_A": 0.1604,
+        "max_absolute_delta_A": 0.2913,
+        "per_residue": [
+          {
+            "label_chain": "Y",
+            "label_seq": "1",
+            "native_min_A": 1.4567,
+            "transplanted_min_A": 1.4315,
+            "delta_A": -0.0252
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "130",
+            "native_min_A": 4.5619,
+            "transplanted_min_A": 4.4921,
+            "delta_A": -0.0698
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "169",
+            "native_min_A": 3.8708,
+            "transplanted_min_A": 3.832,
+            "delta_A": -0.0388
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "19",
+            "native_min_A": 4.0042,
+            "transplanted_min_A": 3.8674,
+            "delta_A": -0.1368
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "20",
+            "native_min_A": 3.1881,
+            "transplanted_min_A": 3.1405,
+            "delta_A": -0.0476
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "21",
+            "native_min_A": 2.8553,
+            "transplanted_min_A": 3.1064,
+            "delta_A": 0.2511
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "22",
+            "native_min_A": 3.875,
+            "transplanted_min_A": 4.1662,
+            "delta_A": 0.2913
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "27",
+            "native_min_A": 4.286,
+            "transplanted_min_A": 4.2629,
+            "delta_A": -0.0231
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "31",
+            "native_min_A": 3.9796,
+            "transplanted_min_A": 3.8176,
+            "delta_A": -0.162
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "33",
+            "native_min_A": 3.8252,
+            "transplanted_min_A": 3.7916,
+            "delta_A": -0.0336
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "45",
+            "native_min_A": 3.8766,
+            "transplanted_min_A": 3.6288,
+            "delta_A": -0.2478
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "46",
+            "native_min_A": 3.7888,
+            "transplanted_min_A": 3.737,
+            "delta_A": -0.0517
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "47",
+            "native_min_A": 2.7941,
+            "transplanted_min_A": 2.7027,
+            "delta_A": -0.0914
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "48",
+            "native_min_A": 3.8774,
+            "transplanted_min_A": 3.7516,
+            "delta_A": -0.1259
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "49",
+            "native_min_A": 3.048,
+            "transplanted_min_A": 3.3294,
+            "delta_A": 0.2814
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "50",
+            "native_min_A": 4.6957,
+            "transplanted_min_A": 4.9201,
+            "delta_A": 0.2244
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "52",
+            "native_min_A": 4.7851,
+            "transplanted_min_A": 5.0159,
+            "delta_A": 0.2307
+          },
+          {
+            "label_chain": "Z",
+            "label_seq": "125",
+            "native_min_A": 3.5588,
+            "transplanted_min_A": 3.5266,
+            "delta_A": -0.0322
+          },
+          {
+            "label_chain": "Z",
+            "label_seq": "126",
+            "native_min_A": 4.1089,
+            "transplanted_min_A": 4.2227,
+            "delta_A": 0.1138
+          }
+        ]
+      }
+    },
+    "5LF7": {
+      "host_chain": "Y",
+      "native_ligand": "6V8",
+      "transplanted_ligand": "BO2",
+      "hard_clashes_lt_1.8A": 0,
+      "closest_nonbonded_heavy_pair_A": 2.416,
+      "donor_native_thr_B26_A": 1.4401,
+      "transplanted_thr_B26_A": 1.4922,
+      "transplanted_thr_B26_deviation_from_donor_native_A": 0.0521,
+      "contact_distortion": {
+        "residue_count": 18,
+        "mean_absolute_delta_A": 0.1144,
+        "rms_delta_A": 0.141,
+        "max_absolute_delta_A": 0.298,
+        "per_residue": [
+          {
+            "label_chain": "Y",
+            "label_seq": "1",
+            "native_min_A": 1.4401,
+            "transplanted_min_A": 1.4922,
+            "delta_A": 0.0521
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "130",
+            "native_min_A": 4.3082,
+            "transplanted_min_A": 4.2766,
+            "delta_A": -0.0316
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "169",
+            "native_min_A": 3.7326,
+            "transplanted_min_A": 3.7752,
+            "delta_A": 0.0426
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "19",
+            "native_min_A": 3.8693,
+            "transplanted_min_A": 4.0158,
+            "delta_A": 0.1464
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "20",
+            "native_min_A": 3.36,
+            "transplanted_min_A": 3.4279,
+            "delta_A": 0.0679
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "21",
+            "native_min_A": 2.8752,
+            "transplanted_min_A": 2.5949,
+            "delta_A": -0.2804
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "22",
+            "native_min_A": 3.9403,
+            "transplanted_min_A": 3.6423,
+            "delta_A": -0.298
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "27",
+            "native_min_A": 4.1516,
+            "transplanted_min_A": 4.1299,
+            "delta_A": -0.0217
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "31",
+            "native_min_A": 4.0784,
+            "transplanted_min_A": 4.2454,
+            "delta_A": 0.167
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "33",
+            "native_min_A": 3.9147,
+            "transplanted_min_A": 3.943,
+            "delta_A": 0.0283
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "45",
+            "native_min_A": 3.934,
+            "transplanted_min_A": 4.0702,
+            "delta_A": 0.1363
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "46",
+            "native_min_A": 3.8716,
+            "transplanted_min_A": 3.9366,
+            "delta_A": 0.0651
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "47",
+            "native_min_A": 2.7551,
+            "transplanted_min_A": 2.8509,
+            "delta_A": 0.0958
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "48",
+            "native_min_A": 3.9328,
+            "transplanted_min_A": 3.8694,
+            "delta_A": -0.0633
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "49",
+            "native_min_A": 2.9922,
+            "transplanted_min_A": 2.7835,
+            "delta_A": -0.2088
+          },
+          {
+            "label_chain": "Y",
+            "label_seq": "50",
+            "native_min_A": 4.8629,
+            "transplanted_min_A": 4.7099,
+            "delta_A": -0.153
+          },
+          {
+            "label_chain": "Z",
+            "label_seq": "125",
+            "native_min_A": 3.5651,
+            "transplanted_min_A": 3.4084,
+            "delta_A": -0.1568
+          },
+          {
+            "label_chain": "Z",
+            "label_seq": "129",
+            "native_min_A": 4.0884,
+            "transplanted_min_A": 4.0447,
+            "delta_A": -0.0438
+          }
+        ]
+      }
+    }
+  },
+  "recommendation": {
+    "recommended_entry": "5LF7",
+    "basis": [
+      "The transplantation metrics are effectively tied at screening resolution.",
+      "5LF7 is used as a deterministic tie-breaker because its deposited resolution is slightly higher (2.00 A vs 2.10 A)."
+    ],
+    "confidence": "low-to-moderate"
+  },
+  "selection_rule": [
+    "Reject a host if reciprocal transplantation creates severe hard clashes.",
+    "Prefer a host that preserves the donor ligand's catalytic Thr-OG1--B26 geometry.",
+    "Then prefer smaller distortion of the donor ligand's native residue-contact pattern.",
+    "Use deposited resolution only as a deterministic tie-breaker when transplantation metrics are effectively tied.",
+    "Do not interpret a tie-break selection as evidence that the other receptor is biologically inferior."
+  ]
+}

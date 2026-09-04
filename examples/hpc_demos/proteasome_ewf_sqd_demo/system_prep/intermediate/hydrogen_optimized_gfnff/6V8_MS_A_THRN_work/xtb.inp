@@ -1,0 +1,6 @@
+$opt
+  engine=rf
+$end
+$fix
+  atoms: 1-263
+$end

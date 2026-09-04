@@ -1,0 +1,32 @@
+{
+  "stage": "9a_whole_cluster_gfn2_microstate_prescreen",
+  "scientific_role": "Inexpensive whole-cluster prescreen of catalytic protonation microstates. GFN2-xTB energies are diagnostic only and are not final binding energies or benchmark truth.",
+  "comparison_rule": "Compare A/B/C only within the same ligand. Cross-ligand absolute GFN2 energies are not comparable because BO2 and 6V8 compositions differ.",
+  "charge": -1,
+  "uhf": 0,
+  "threads": 1,
+  "results": [
+    {
+      "stem": "6V8_MS_A_THRN",
+      "status": "FAIL",
+      "returncode": -11,
+      "normal_termination": false,
+      "energy_Eh": null,
+      "command": [
+        "/Users/thaddeuspellegrini/.local/xtb-conda/bin/xtb",
+        "input.xyz",
+        "--gfn",
+        "2",
+        "--chrg",
+        "-1",
+        "--uhf",
+        "0"
+      ],
+      "stdout": "intermediate/gfn2_microstate_screen/6V8_MS_A_THRN/xtb.out",
+      "stderr": "intermediate/gfn2_microstate_screen/6V8_MS_A_THRN/xtb.err",
+      "reason": "xTB did not yield a normal parsed single point"
+    }
+  ],
+  "ligand_differential_microstate_shifts": {},
+  "overall": "FAIL"
+}

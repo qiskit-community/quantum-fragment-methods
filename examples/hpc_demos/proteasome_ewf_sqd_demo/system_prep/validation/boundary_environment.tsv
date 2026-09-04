@@ -1,0 +1,24 @@
+segment	boundary_side	role	residue	ionizable	screen	whole_to_6V8_A	whole_to_BO2_A	whole_to_any_water_A	whole_to_Thr1_A	whole_to_nonlocal_core_A	sidechain_to_6V8_A	sidechain_to_BO2_A	sidechain_to_any_water_A	sidechain_to_Thr1_A
+Y:1-2	N	retained_endpoint	Y:1 THR	False	network_relevant_review	1.457	1.491	3.727	0.0	2.856	1.457	1.491	3.727	0.0
+Y:1-2	C	retained_endpoint	Y:2 THR	False	network_relevant_review	5.665	5.571	6.01	1.34	4.944	7.621	7.579	7.532	3.282
+Y:1-2	C	outside_neighbor	Y:3 THR	False	network_relevant_review	7.164	7.134	7.678	3.855	3.855	7.164	7.134	7.967	3.855
+Y:18-22	N	retained_endpoint	Y:18 SER	False	network_relevant_review	6.59	6.508	6.804	6.778	3.918	8.415	8.409	9.202	8.595
+Y:18-22	N	outside_neighbor	Y:17 ASP	True	network_relevant_review	5.74	5.764	5.479	3.485	3.319	5.74	5.764	5.479	3.485
+Y:18-22	C	retained_endpoint	Y:22 ALA	False	network_relevant_review	3.875	3.642	6.428	9.948	4.518	3.875	3.642	8.623	12.011
+Y:18-22	C	outside_neighbor	Y:23 GLY	False	network_relevant_review	6.296	5.693	6.726	9.735	3.485				
+Y:46-51	N	retained_endpoint	Y:46 ALA	False	network_relevant_review	3.789	3.938	4.645	3.595	3.595	4.243	4.324	4.645	3.595
+Y:46-51	N	outside_neighbor	Y:45 MET	False	network_relevant_review	3.877	4.071	6.999	3.618	3.618	3.877	4.071	9.233	6.475
+Y:46-51	C	retained_endpoint	Y:51 ASP	True	network_relevant_review	6.583	6.822	4.873	11.594	3.329	7.288	7.947	6.2	11.872
+Y:46-51	C	outside_neighbor	Y:52 CYS	True	network_relevant_review	4.785	5.067	6.944	7.874	3.416	4.785	5.067	8.097	7.874
+Y:129-131	N	retained_endpoint	Y:129 GLY	False	network_relevant_review	5.324	5.173	3.55	3.307	3.307				
+Y:129-131	N	outside_neighbor	Y:128 VAL	False	second_shell_review	6.82	6.776	5.871	4.043	4.043	7.645	7.621	6.751	6.622
+Y:129-131	C	retained_endpoint	Y:131 GLY	False	network_relevant_review	6.971	6.89	5.615	2.958	2.958				
+Y:129-131	C	outside_neighbor	Y:132 SER	False	network_relevant_review	9.225	9.058	7.348	4.523	3.426	9.865	9.7	7.708	5.925
+Y:168-170	N	retained_endpoint	Y:168 ALA	False	network_relevant_review	7.802	7.557	5.961	6.778	2.706	9.798	8.779	8.371	8.891
+Y:168-170	N	outside_neighbor	Y:167 ASP	True	network_relevant_review	6.266	6.148	6.443	4.076	2.679	6.266	6.148	6.443	4.076
+Y:168-170	C	retained_endpoint	Y:170 SER	False	network_relevant_review	5.833	5.763	4.98	3.022	3.022	5.833	5.763	6.146	3.022
+Y:168-170	C	outside_neighbor	Y:171 GLY	False	network_relevant_review	7.806	7.764	6.489	6.239	3.377				
+Z:124-126	N	retained_endpoint	Z:124 PHE	False	second_shell_review	6.478	5.795	8.128	15.713	8.37	8.87	7.967	9.596	17.49
+Z:124-126	N	outside_neighbor	Z:123 SER	False	second_shell_review	8.83	7.247	10.178	15.58	4.536	9.046	7.706	11.66	15.58
+Z:124-126	C	retained_endpoint	Z:126 PRO	False	network_relevant_review	4.109	5.946	6.587	15.921	6.526	4.109	5.946	6.641	15.921
+Z:124-126	C	outside_neighbor	Z:127 VAL	False	network_relevant_review	5.552	7.417	4.093	14.569	3.055	5.552	7.417	4.093	14.569

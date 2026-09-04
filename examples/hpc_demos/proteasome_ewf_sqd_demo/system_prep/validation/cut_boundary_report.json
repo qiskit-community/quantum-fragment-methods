@@ -1,0 +1,376 @@
+{
+  "purpose": "Inspect peptide-coherent reference boundaries before cap construction",
+  "canonical_receptor": {
+    "entry_id": "5LF7",
+    "beta5_copy": "Y",
+    "sha256": "4f3b7016c8bb48287a850d22c499191bab13222ed136ba7774ccf41d105188f8"
+  },
+  "n_segments": 6,
+  "n_boundaries": 12,
+  "boundaries": [
+    {
+      "segment": "Y:1-2",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 1,
+        "auth_chain": "Y",
+        "auth_seq": "2",
+        "comp_id": "THR"
+      },
+      "outside_neighbor": null,
+      "natural_polymer_terminus": true,
+      "peptide_CN_distance_A": null,
+      "geometry_screen": "unavailable",
+      "flags": [],
+      "cap_planning_note": "Preserve the native polymer N-terminus; do NOT add an ACE-like cap here. For Y:1 this is chemically essential because catalytic Thr1 requires its authentic N-terminal amino group."
+    },
+    {
+      "segment": "Y:1-2",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 2,
+        "auth_chain": "Y",
+        "auth_seq": "3",
+        "comp_id": "THR"
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 3,
+        "auth_chain": "Y",
+        "auth_seq": "4",
+        "comp_id": "THR"
+      },
+      "natural_polymer_terminus": false,
+      "peptide_CN_distance_A": 1.3419,
+      "geometry_screen": "normal_peptide_geometry",
+      "flags": [],
+      "cap_planning_note": "Internal C-side peptide cut. Initial reference choice: consider an N-methylamide/NME-like continuation on the retained carbonyl C to preserve peptide-amide character."
+    },
+    {
+      "segment": "Y:18-22",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 18,
+        "auth_chain": "Y",
+        "auth_seq": "19",
+        "comp_id": "SER"
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 17,
+        "auth_chain": "Y",
+        "auth_seq": "18",
+        "comp_id": "ASP"
+      },
+      "natural_polymer_terminus": false,
+      "peptide_CN_distance_A": 1.3383,
+      "geometry_screen": "normal_peptide_geometry",
+      "flags": [
+        "outside_neighbor_ionizable"
+      ],
+      "cap_planning_note": "Internal N-side peptide cut. Initial reference choice: consider an ACE-like carbonyl cap on the retained residue N to preserve peptide-amide electronic structure rather than simply replacing the severed bond with H."
+    },
+    {
+      "segment": "Y:18-22",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 22,
+        "auth_chain": "Y",
+        "auth_seq": "23",
+        "comp_id": "ALA"
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 23,
+        "auth_chain": "Y",
+        "auth_seq": "24",
+        "comp_id": "GLY"
+      },
+      "natural_polymer_terminus": false,
+      "peptide_CN_distance_A": 1.3259,
+      "geometry_screen": "normal_peptide_geometry",
+      "flags": [
+        "outside_neighbor_gly"
+      ],
+      "cap_planning_note": "Internal C-side peptide cut. Initial reference choice: consider an N-methylamide/NME-like continuation on the retained carbonyl C to preserve peptide-amide character."
+    },
+    {
+      "segment": "Y:46-51",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 46,
+        "auth_chain": "Y",
+        "auth_seq": "47",
+        "comp_id": "ALA"
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 45,
+        "auth_chain": "Y",
+        "auth_seq": "46",
+        "comp_id": "MET"
+      },
+      "natural_polymer_terminus": false,
+      "peptide_CN_distance_A": 1.3162,
+      "geometry_screen": "normal_peptide_geometry",
+      "flags": [],
+      "cap_planning_note": "Internal N-side peptide cut. Initial reference choice: consider an ACE-like carbonyl cap on the retained residue N to preserve peptide-amide electronic structure rather than simply replacing the severed bond with H."
+    },
+    {
+      "segment": "Y:46-51",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 51,
+        "auth_chain": "Y",
+        "auth_seq": "52",
+        "comp_id": "ASP"
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 52,
+        "auth_chain": "Y",
+        "auth_seq": "53",
+        "comp_id": "CYS"
+      },
+      "natural_polymer_terminus": false,
+      "peptide_CN_distance_A": 1.3368,
+      "geometry_screen": "normal_peptide_geometry",
+      "flags": [
+        "retained_endpoint_ionizable",
+        "outside_neighbor_ionizable"
+      ],
+      "cap_planning_note": "Internal C-side peptide cut. Initial reference choice: consider an N-methylamide/NME-like continuation on the retained carbonyl C to preserve peptide-amide character."
+    },
+    {
+      "segment": "Y:129-131",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 129,
+        "auth_chain": "Y",
+        "auth_seq": "130",
+        "comp_id": "GLY"
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 128,
+        "auth_chain": "Y",
+        "auth_seq": "129",
+        "comp_id": "VAL"
+      },
+      "natural_polymer_terminus": false,
+      "peptide_CN_distance_A": 1.3528,
+      "geometry_screen": "normal_peptide_geometry",
+      "flags": [
+        "retained_endpoint_gly"
+      ],
+      "cap_planning_note": "Internal N-side peptide cut. Initial reference choice: consider an ACE-like carbonyl cap on the retained residue N to preserve peptide-amide electronic structure rather than simply replacing the severed bond with H."
+    },
+    {
+      "segment": "Y:129-131",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 131,
+        "auth_chain": "Y",
+        "auth_seq": "132",
+        "comp_id": "GLY"
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 132,
+        "auth_chain": "Y",
+        "auth_seq": "133",
+        "comp_id": "SER"
+      },
+      "natural_polymer_terminus": false,
+      "peptide_CN_distance_A": 1.3473,
+      "geometry_screen": "normal_peptide_geometry",
+      "flags": [
+        "retained_endpoint_gly"
+      ],
+      "cap_planning_note": "Internal C-side peptide cut. Initial reference choice: consider an N-methylamide/NME-like continuation on the retained carbonyl C to preserve peptide-amide character."
+    },
+    {
+      "segment": "Y:168-170",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 168,
+        "auth_chain": "Y",
+        "auth_seq": "169",
+        "comp_id": "ALA"
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 167,
+        "auth_chain": "Y",
+        "auth_seq": "168",
+        "comp_id": "ASP"
+      },
+      "natural_polymer_terminus": false,
+      "peptide_CN_distance_A": 1.3315,
+      "geometry_screen": "normal_peptide_geometry",
+      "flags": [
+        "outside_neighbor_ionizable"
+      ],
+      "cap_planning_note": "Internal N-side peptide cut. Initial reference choice: consider an ACE-like carbonyl cap on the retained residue N to preserve peptide-amide electronic structure rather than simply replacing the severed bond with H."
+    },
+    {
+      "segment": "Y:168-170",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Y",
+        "label_seq": 170,
+        "auth_chain": "Y",
+        "auth_seq": "171",
+        "comp_id": "SER"
+      },
+      "outside_neighbor": {
+        "label_chain": "Y",
+        "label_seq": 171,
+        "auth_chain": "Y",
+        "auth_seq": "172",
+        "comp_id": "GLY"
+      },
+      "natural_polymer_terminus": false,
+      "peptide_CN_distance_A": 1.3394,
+      "geometry_screen": "normal_peptide_geometry",
+      "flags": [
+        "outside_neighbor_gly"
+      ],
+      "cap_planning_note": "Internal C-side peptide cut. Initial reference choice: consider an N-methylamide/NME-like continuation on the retained carbonyl C to preserve peptide-amide character."
+    },
+    {
+      "segment": "Z:124-126",
+      "side": "N",
+      "retained_endpoint": {
+        "label_chain": "Z",
+        "label_seq": 124,
+        "auth_chain": "Z",
+        "auth_seq": "124",
+        "comp_id": "PHE"
+      },
+      "outside_neighbor": {
+        "label_chain": "Z",
+        "label_seq": 123,
+        "auth_chain": "Z",
+        "auth_seq": "123",
+        "comp_id": "SER"
+      },
+      "natural_polymer_terminus": false,
+      "peptide_CN_distance_A": 1.3096,
+      "geometry_screen": "normal_peptide_geometry",
+      "flags": [],
+      "cap_planning_note": "Internal N-side peptide cut. Initial reference choice: consider an ACE-like carbonyl cap on the retained residue N to preserve peptide-amide electronic structure rather than simply replacing the severed bond with H."
+    },
+    {
+      "segment": "Z:124-126",
+      "side": "C",
+      "retained_endpoint": {
+        "label_chain": "Z",
+        "label_seq": 126,
+        "auth_chain": "Z",
+        "auth_seq": "126",
+        "comp_id": "PRO"
+      },
+      "outside_neighbor": {
+        "label_chain": "Z",
+        "label_seq": 127,
+        "auth_chain": "Z",
+        "auth_seq": "127",
+        "comp_id": "VAL"
+      },
+      "natural_polymer_terminus": false,
+      "peptide_CN_distance_A": 1.3139,
+      "geometry_screen": "normal_peptide_geometry",
+      "flags": [
+        "retained_endpoint_pro"
+      ],
+      "cap_planning_note": "Internal C-side peptide cut. Initial reference choice: consider an N-methylamide/NME-like continuation on the retained carbonyl C to preserve peptide-amide character."
+    }
+  ],
+  "special_review": [
+    {
+      "segment": "Y:1-2",
+      "side": "N",
+      "reason": [
+        "natural_polymer_terminus",
+        "unavailable"
+      ]
+    },
+    {
+      "segment": "Y:18-22",
+      "side": "N",
+      "reason": [
+        "outside_neighbor_ionizable"
+      ]
+    },
+    {
+      "segment": "Y:18-22",
+      "side": "C",
+      "reason": [
+        "outside_neighbor_gly"
+      ]
+    },
+    {
+      "segment": "Y:46-51",
+      "side": "C",
+      "reason": [
+        "retained_endpoint_ionizable",
+        "outside_neighbor_ionizable"
+      ]
+    },
+    {
+      "segment": "Y:129-131",
+      "side": "N",
+      "reason": [
+        "retained_endpoint_gly"
+      ]
+    },
+    {
+      "segment": "Y:129-131",
+      "side": "C",
+      "reason": [
+        "retained_endpoint_gly"
+      ]
+    },
+    {
+      "segment": "Y:168-170",
+      "side": "N",
+      "reason": [
+        "outside_neighbor_ionizable"
+      ]
+    },
+    {
+      "segment": "Y:168-170",
+      "side": "C",
+      "reason": [
+        "outside_neighbor_gly"
+      ]
+    },
+    {
+      "segment": "Z:124-126",
+      "side": "C",
+      "reason": [
+        "retained_endpoint_pro"
+      ]
+    }
+  ],
+  "important_principles": [
+    "Catalytic Thr1 must retain its authentic N-terminal amino group.",
+    "Do not choose cap chemistry merely to minimize atom count.",
+    "Prefer preserving peptide-amide electronic structure at internal cuts.",
+    "A cap is part of the model Hamiltonian and must be identical between the two ligand complexes.",
+    "Cuts near Pro require extra scrutiny because proline peptide nitrogens are substituted.",
+    "Ionizable side chains near segment boundaries require protonation review but are not automatically bad cut locations.",
+    "This stage is diagnostic only; no cap atoms are created."
+  ],
+  "next_step": "Review boundary report, adjust any awkward segment endpoints, then construct a first explicit capped receptor with a documented cap scheme."
+}

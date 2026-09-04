@@ -1,0 +1,28 @@
+{
+  "stage": "9b_pbe0_def2svp_minimal_core_microstate_screen",
+  "scientific_role": "Higher-level catalytic-core A/B/C ordering check. Not a final binding energy.",
+  "method": {
+    "xc": "pbe0",
+    "basis": "def2-svp",
+    "density_fitting": true,
+    "charge": -1,
+    "spin": 0,
+    "grid_level": 3,
+    "conv_tol": 1e-08
+  },
+  "results": [
+    {
+      "stem": "BO2_MS_A_THRN",
+      "status": "PASS",
+      "reason": null,
+      "energy_Eh": -2902.323788870628,
+      "n_atoms": 125,
+      "n_electrons": 458,
+      "n_AO": 1165,
+      "scf_converged": true,
+      "pyscf_version": "2.9.0"
+    }
+  ],
+  "ligand_differential_microstate_shifts": {},
+  "overall": "PASS"
+}

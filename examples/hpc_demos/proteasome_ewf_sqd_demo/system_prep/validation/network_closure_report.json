@@ -1,0 +1,316 @@
+{
+  "purpose": "Chemistry-first network closure before cutting/capping/protonation",
+  "canonical_receptor": {
+    "entry_id": "5LF7",
+    "beta5_copy": "Y",
+    "sha256": "4f3b7016c8bb48287a850d22c499191bab13222ed136ba7774ccf41d105188f8"
+  },
+  "model_definitions": {
+    "functional_network_core": [
+      "catalytic residue",
+      "strong initial direct-contact residues",
+      "protein residues supporting all high_conserved_bridge_both waters"
+    ],
+    "peptide_coherent_reference": [
+      "functional_network_core",
+      "+/- 1 polymer residue sequence context",
+      "fill sequence gaps of at most 1 residue",
+      "deliberately generous reference topology; not final cluster"
+    ]
+  },
+  "functional_network_core": {
+    "residues": [
+      "Y:1",
+      "Y:19",
+      "Y:20",
+      "Y:21",
+      "Y:47",
+      "Y:49",
+      "Y:50",
+      "Y:130",
+      "Y:169",
+      "Z:125"
+    ],
+    "n_residues": 10,
+    "protein_heavy_atoms_deposited": 70,
+    "retained_water_oxygens": 3,
+    "heavy_atom_totals_with_ligand": {
+      "6V8": 96,
+      "BO2": 101
+    }
+  },
+  "peptide_coherent_reference": {
+    "residues": [
+      "Y:1",
+      "Y:2",
+      "Y:18",
+      "Y:19",
+      "Y:20",
+      "Y:21",
+      "Y:22",
+      "Y:46",
+      "Y:47",
+      "Y:48",
+      "Y:49",
+      "Y:50",
+      "Y:51",
+      "Y:129",
+      "Y:130",
+      "Y:131",
+      "Y:168",
+      "Y:169",
+      "Y:170",
+      "Z:124",
+      "Z:125",
+      "Z:126"
+    ],
+    "n_residues": 22,
+    "protein_heavy_atoms_deposited": 142,
+    "retained_water_oxygens": 3,
+    "heavy_atom_totals_with_ligand": {
+      "6V8": 168,
+      "BO2": 173
+    },
+    "segments": [
+      {
+        "label_chain": "Y",
+        "label_start": 1,
+        "label_end": 2,
+        "n_residues": 2,
+        "residue_names": [
+          "THR",
+          "THR"
+        ],
+        "heavy_atoms_deposited": 14,
+        "core_residues_in_segment": [
+          "Y:1"
+        ]
+      },
+      {
+        "label_chain": "Y",
+        "label_start": 18,
+        "label_end": 22,
+        "n_residues": 5,
+        "residue_names": [
+          "SER",
+          "ARG",
+          "ALA",
+          "THR",
+          "ALA"
+        ],
+        "heavy_atoms_deposited": 34,
+        "core_residues_in_segment": [
+          "Y:19",
+          "Y:20",
+          "Y:21"
+        ]
+      },
+      {
+        "label_chain": "Y",
+        "label_start": 46,
+        "label_end": 51,
+        "n_residues": 6,
+        "residue_names": [
+          "ALA",
+          "GLY",
+          "GLY",
+          "ALA",
+          "ALA",
+          "ASP"
+        ],
+        "heavy_atoms_deposited": 31,
+        "core_residues_in_segment": [
+          "Y:47",
+          "Y:49",
+          "Y:50"
+        ]
+      },
+      {
+        "label_chain": "Y",
+        "label_start": 129,
+        "label_end": 131,
+        "n_residues": 3,
+        "residue_names": [
+          "GLY",
+          "SER",
+          "GLY"
+        ],
+        "heavy_atoms_deposited": 14,
+        "core_residues_in_segment": [
+          "Y:130"
+        ]
+      },
+      {
+        "label_chain": "Y",
+        "label_start": 168,
+        "label_end": 170,
+        "n_residues": 3,
+        "residue_names": [
+          "ALA",
+          "TYR",
+          "SER"
+        ],
+        "heavy_atoms_deposited": 23,
+        "core_residues_in_segment": [
+          "Y:169"
+        ]
+      },
+      {
+        "label_chain": "Z",
+        "label_start": 124,
+        "label_end": 126,
+        "n_residues": 3,
+        "residue_names": [
+          "PHE",
+          "ASP",
+          "PRO"
+        ],
+        "heavy_atoms_deposited": 26,
+        "core_residues_in_segment": [
+          "Z:125"
+        ]
+      }
+    ]
+  },
+  "retained_water_candidates": [
+    {
+      "water": "Y:437",
+      "auth_chain": "Y",
+      "auth_seq": "437",
+      "min_to_6V8_A": 2.726,
+      "min_to_BO2_A": 2.453,
+      "nearest_5LF3_water_distance_A": 0.2468,
+      "nearest_5LF3_water": "Y:404",
+      "protein_supports": [
+        {
+          "residue": "Y:130",
+          "comp_id": "SER",
+          "atom": "N",
+          "distance_A": 3.189
+        }
+      ]
+    },
+    {
+      "water": "Z:406",
+      "auth_chain": "Z",
+      "auth_seq": "406",
+      "min_to_6V8_A": 2.7534,
+      "min_to_BO2_A": 3.427,
+      "nearest_5LF3_water_distance_A": 0.5228,
+      "nearest_5LF3_water": "Z:1412",
+      "protein_supports": [
+        {
+          "residue": "Z:125",
+          "comp_id": "ASP",
+          "atom": "OD2",
+          "distance_A": 2.538
+        },
+        {
+          "residue": "Y:50",
+          "comp_id": "ALA",
+          "atom": "N",
+          "distance_A": 2.974
+        },
+        {
+          "residue": "Y:49",
+          "comp_id": "ALA",
+          "atom": "N",
+          "distance_A": 3.4012
+        }
+      ]
+    },
+    {
+      "water": "Y:462",
+      "auth_chain": "Y",
+      "auth_seq": "462",
+      "min_to_6V8_A": 2.8367,
+      "min_to_BO2_A": 2.7885,
+      "nearest_5LF3_water_distance_A": 0.4819,
+      "nearest_5LF3_water": "Y:443",
+      "protein_supports": [
+        {
+          "residue": "Y:169",
+          "comp_id": "TYR",
+          "atom": "O",
+          "distance_A": 2.8123
+        },
+        {
+          "residue": "Y:21",
+          "comp_id": "THR",
+          "atom": "OG1",
+          "distance_A": 2.8522
+        },
+        {
+          "residue": "Y:19",
+          "comp_id": "ARG",
+          "atom": "O",
+          "distance_A": 3.362
+        }
+      ]
+    }
+  ],
+  "optional_convergence_candidates_not_in_core": [
+    {
+      "residue": "Y:22",
+      "comp_id": "ALA",
+      "signal": "moderate_to_strong_inspect",
+      "min_to_6V8_A": 3.875,
+      "min_to_BO2_A": 3.6423,
+      "chemistry": "small/nonpolar side chain"
+    },
+    {
+      "residue": "Y:46",
+      "comp_id": "ALA",
+      "signal": "moderate_to_strong_inspect",
+      "min_to_6V8_A": 3.7888,
+      "min_to_BO2_A": 3.9366,
+      "chemistry": "small/nonpolar side chain"
+    },
+    {
+      "residue": "Y:33",
+      "comp_id": "LYS",
+      "signal": "moderate_to_strong_inspect",
+      "min_to_6V8_A": 3.8252,
+      "min_to_BO2_A": 3.943,
+      "chemistry": "basic/polar side chain"
+    },
+    {
+      "residue": "Y:48",
+      "comp_id": "GLY",
+      "signal": "moderate_to_strong_inspect",
+      "min_to_6V8_A": 3.8774,
+      "min_to_BO2_A": 3.8694,
+      "chemistry": "small/nonpolar backbone-dominated residue"
+    },
+    {
+      "residue": "Y:45",
+      "comp_id": "MET",
+      "signal": "contextual_inspect",
+      "min_to_6V8_A": 3.8766,
+      "min_to_BO2_A": null,
+      "chemistry": "polarizable thioether side chain"
+    },
+    {
+      "residue": "Y:31",
+      "comp_id": "VAL",
+      "signal": "contextual_inspect",
+      "min_to_6V8_A": 3.9796,
+      "min_to_BO2_A": null,
+      "chemistry": "hydrophobic side chain"
+    }
+  ],
+  "important_caveats": [
+    "Counts are deposited heavy atoms only; hydrogens and caps are not included.",
+    "Crystallographic waters currently contribute oxygen coordinates only; H positions are unresolved.",
+    "Water bridge evidence is heavy-atom geometry, not a finalized hydrogen-bond assignment.",
+    "Peptide context is a topology proposal, not evidence that every added context residue must survive in the final model.",
+    "No protonation state or formal cluster charge is assigned here.",
+    "No coordinates are modified in this stage."
+  ],
+  "next_decision": [
+    "Inspect the functional-network core and peptide-coherent reference geometrically.",
+    "Choose chemically sensible cut locations and cap types.",
+    "Then build a generous first explicit cluster and assign protonation/hydrogens.",
+    "Use smaller variants only as convergence/pruning tests against that reference."
+  ]
+}

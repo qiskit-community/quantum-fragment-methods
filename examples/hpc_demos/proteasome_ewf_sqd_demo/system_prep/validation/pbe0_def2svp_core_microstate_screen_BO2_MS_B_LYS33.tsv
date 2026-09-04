@@ -1,0 +1,2 @@
+stem	status	energy_Eh	n_atoms	n_electrons	n_AO	scf_converged	delta_to_min_kcal_mol	delta_to_A_kcal_mol	reason
+BO2_MS_B_LYS33	PASS	-2902.354602502777	125	458	1165	True			

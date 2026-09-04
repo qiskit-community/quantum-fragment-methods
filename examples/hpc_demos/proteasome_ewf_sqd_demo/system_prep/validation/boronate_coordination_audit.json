@@ -1,0 +1,357 @@
+{
+  "stage": "8c_boronate_coordination_audit",
+  "alignment_rmsd_A": 0.1264,
+  "alignment_atoms": 804,
+  "bonding_scale_cutoff_A": 1.9,
+  "retained_waters": [
+    "Y:437",
+    "Z:406",
+    "Y:462"
+  ],
+  "inhibitors": {
+    "6V8": {
+      "B26_neighbors": [
+        {
+          "source": "protein",
+          "atom": "Thr1_OG1",
+          "element": "O",
+          "distance_A": 1.4567
+        },
+        {
+          "source": "ligand",
+          "atom": "O27",
+          "element": "O",
+          "distance_A": 1.5426
+        },
+        {
+          "source": "ligand",
+          "atom": "O28",
+          "element": "O",
+          "distance_A": 1.5585
+        },
+        {
+          "source": "ligand",
+          "atom": "C21",
+          "element": "C",
+          "distance_A": 1.6749
+        }
+      ],
+      "B_centered_angles": [
+        {
+          "atom1": "Thr1_OG1",
+          "atom2": "O27",
+          "angle_deg": 109.47
+        },
+        {
+          "atom1": "Thr1_OG1",
+          "atom2": "O28",
+          "angle_deg": 103.91
+        },
+        {
+          "atom1": "Thr1_OG1",
+          "atom2": "C21",
+          "angle_deg": 112.25
+        },
+        {
+          "atom1": "O27",
+          "atom2": "O28",
+          "angle_deg": 101.42
+        },
+        {
+          "atom1": "O27",
+          "atom2": "C21",
+          "angle_deg": 108.53
+        },
+        {
+          "atom1": "O28",
+          "atom2": "C21",
+          "angle_deg": 120.45
+        }
+      ],
+      "boronate_oxygen_environment": [
+        {
+          "inhibitor": "6V8",
+          "oxygen_atom": "O27",
+          "B26_O_A": 1.5426140152351784,
+          "Thr1_N_A": 3.977325231861233,
+          "Lys33_NZ_A": 5.09267640833382,
+          "Gly47_N_A": 2.9470468269099497,
+          "water_Y:437_A": 2.7260148568927525,
+          "water_Z:406_A": 9.234715101182065,
+          "water_Y:462_A": 5.107419211304274,
+          "closest_retained_polar": [
+            {
+              "residue": "Y:1 THR",
+              "atom": "OG1",
+              "distance_A": 2.4493854331239864
+            },
+            {
+              "residue": "Y:47 GLY",
+              "atom": "N",
+              "distance_A": 2.9470468269099497
+            },
+            {
+              "residue": "Y:47 GLY",
+              "atom": "O",
+              "distance_A": 3.3416238567498864
+            },
+            {
+              "residue": "Y:1 THR",
+              "atom": "N",
+              "distance_A": 3.977325231861233
+            },
+            {
+              "residue": "Y:46 ALA",
+              "atom": "O",
+              "distance_A": 4.984827078244532
+            },
+            {
+              "residue": "Y:46 ALA",
+              "atom": "N",
+              "distance_A": 5.073989456039491
+            },
+            {
+              "residue": "Y:33 LYS",
+              "atom": "NZ",
+              "distance_A": 5.09267640833382
+            },
+            {
+              "residue": "Y:1 THR",
+              "atom": "O",
+              "distance_A": 5.2501360934741514
+            }
+          ]
+        },
+        {
+          "inhibitor": "6V8",
+          "oxygen_atom": "O28",
+          "B26_O_A": 1.5585438716956312,
+          "Thr1_N_A": 2.596876777977726,
+          "Lys33_NZ_A": 4.490346311811575,
+          "Gly47_N_A": 5.314615696360373,
+          "water_Y:437_A": 3.5565294881386844,
+          "water_Z:406_A": 9.979226723549283,
+          "water_Y:462_A": 2.8366913825793545,
+          "closest_retained_polar": [
+            {
+              "residue": "Y:1 THR",
+              "atom": "OG1",
+              "distance_A": 2.375459955461249
+            },
+            {
+              "residue": "Y:1 THR",
+              "atom": "N",
+              "distance_A": 2.596876777977726
+            },
+            {
+              "residue": "Y:169 TYR",
+              "atom": "O",
+              "distance_A": 3.8707581944626823
+            },
+            {
+              "residue": "Y:33 LYS",
+              "atom": "NZ",
+              "distance_A": 4.490346311811575
+            },
+            {
+              "residue": "Y:19 ARG",
+              "atom": "O",
+              "distance_A": 4.51777345602897
+            },
+            {
+              "residue": "Y:130 SER",
+              "atom": "OG",
+              "distance_A": 4.561890178423848
+            },
+            {
+              "residue": "Y:21 THR",
+              "atom": "OG1",
+              "distance_A": 4.69087038831815
+            },
+            {
+              "residue": "Y:47 GLY",
+              "atom": "O",
+              "distance_A": 4.975895195841651
+            }
+          ]
+        }
+      ],
+      "Thr1_OG1_B26_A": 1.4567075890514163
+    },
+    "BO2": {
+      "B26_neighbors": [
+        {
+          "source": "protein",
+          "atom": "Thr1_OG1",
+          "element": "O",
+          "distance_A": 1.4911
+        },
+        {
+          "source": "ligand",
+          "atom": "O28",
+          "element": "O",
+          "distance_A": 1.5295
+        },
+        {
+          "source": "ligand",
+          "atom": "O27",
+          "element": "O",
+          "distance_A": 1.5379
+        },
+        {
+          "source": "ligand",
+          "atom": "C21",
+          "element": "C",
+          "distance_A": 1.6353
+        }
+      ],
+      "B_centered_angles": [
+        {
+          "atom1": "Thr1_OG1",
+          "atom2": "O28",
+          "angle_deg": 116.34
+        },
+        {
+          "atom1": "Thr1_OG1",
+          "atom2": "O27",
+          "angle_deg": 110.83
+        },
+        {
+          "atom1": "Thr1_OG1",
+          "atom2": "C21",
+          "angle_deg": 102.95
+        },
+        {
+          "atom1": "O28",
+          "atom2": "O27",
+          "angle_deg": 103.5
+        },
+        {
+          "atom1": "O28",
+          "atom2": "C21",
+          "angle_deg": 110.69
+        },
+        {
+          "atom1": "O27",
+          "atom2": "C21",
+          "angle_deg": 112.86
+        }
+      ],
+      "boronate_oxygen_environment": [
+        {
+          "inhibitor": "BO2",
+          "oxygen_atom": "O28",
+          "B26_O_A": 1.5295205131020666,
+          "Thr1_N_A": 3.854267930286476,
+          "Lys33_NZ_A": 5.248582113820539,
+          "Gly47_N_A": 3.044331100345723,
+          "water_Y:437_A": 2.453749676981264,
+          "water_Z:406_A": 9.378910558673697,
+          "water_Y:462_A": 5.07283172202452,
+          "closest_retained_polar": [
+            {
+              "residue": "Y:1 THR",
+              "atom": "OG1",
+              "distance_A": 2.566445446774655
+            },
+            {
+              "residue": "Y:47 GLY",
+              "atom": "N",
+              "distance_A": 3.044331100345723
+            },
+            {
+              "residue": "Y:47 GLY",
+              "atom": "O",
+              "distance_A": 3.4580688912828883
+            },
+            {
+              "residue": "Y:1 THR",
+              "atom": "N",
+              "distance_A": 3.854267930286476
+            },
+            {
+              "residue": "Y:46 ALA",
+              "atom": "O",
+              "distance_A": 5.097882998478544
+            },
+            {
+              "residue": "Y:1 THR",
+              "atom": "O",
+              "distance_A": 5.122688269736153
+            },
+            {
+              "residue": "Y:33 LYS",
+              "atom": "NZ",
+              "distance_A": 5.248582113820539
+            },
+            {
+              "residue": "Y:46 ALA",
+              "atom": "N",
+              "distance_A": 5.271205604502953
+            }
+          ]
+        },
+        {
+          "inhibitor": "BO2",
+          "oxygen_atom": "O27",
+          "B26_O_A": 1.5379144969731016,
+          "Thr1_N_A": 2.538720562183216,
+          "Lys33_NZ_A": 4.583503792082007,
+          "Gly47_N_A": 5.419376183616999,
+          "water_Y:437_A": 3.5443127295400445,
+          "water_Z:406_A": 10.072551712122618,
+          "water_Y:462_A": 2.7868672903150395,
+          "closest_retained_polar": [
+            {
+              "residue": "Y:1 THR",
+              "atom": "OG1",
+              "distance_A": 2.493884851298392
+            },
+            {
+              "residue": "Y:1 THR",
+              "atom": "N",
+              "distance_A": 2.538720562183216
+            },
+            {
+              "residue": "Y:169 TYR",
+              "atom": "O",
+              "distance_A": 3.7735516463109087
+            },
+            {
+              "residue": "Y:130 SER",
+              "atom": "OG",
+              "distance_A": 4.4416209612451185
+            },
+            {
+              "residue": "Y:19 ARG",
+              "atom": "O",
+              "distance_A": 4.580418883045426
+            },
+            {
+              "residue": "Y:33 LYS",
+              "atom": "NZ",
+              "distance_A": 4.583503792082007
+            },
+            {
+              "residue": "Y:21 THR",
+              "atom": "OG1",
+              "distance_A": 4.617228618652394
+            },
+            {
+              "residue": "Y:1 THR",
+              "atom": "O",
+              "distance_A": 4.948472886949521
+            }
+          ]
+        }
+      ],
+      "Thr1_OG1_B26_A": 1.491100250939752
+    }
+  },
+  "interpretation_policy": [
+    "Heavy-atom geometry can define likely coordination and H-bond geometry, but not proton locations.",
+    "Do not infer O-H protonation solely from B-O or donor-acceptor distances.",
+    "Use the same atom/proton count when comparing alternative proton-transfer microstates."
+  ],
+  "next_step": "Define a small set of same-composition Thr1/Lys33/boronate proton-transfer microstates and place hydrogens explicitly."
+}

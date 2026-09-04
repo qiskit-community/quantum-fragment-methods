@@ -1,0 +1,140 @@
+{
+  "stage": "8d_catalytic_microstate_registry",
+  "purpose": "Define a small, same-composition, same-charge proton-location screen before hydrogen placement.",
+  "fixed_background_charge_excluding_Thr1_Lys33_Asp17_ligand": 0,
+  "boronate_oxygen_functional_roles": {
+    "6V8": {
+      "O_NTERM": {
+        "atom": "O28",
+        "B26_O_A": 1.5585438716956312,
+        "Thr1_N_A": 2.596876777977726,
+        "Gly47_N_A": 5.314615696360373
+      },
+      "O_OXY": {
+        "atom": "O27",
+        "B26_O_A": 1.5426140152351784,
+        "Thr1_N_A": 3.977325231861233,
+        "Gly47_N_A": 2.9470468269099497
+      }
+    },
+    "BO2": {
+      "O_NTERM": {
+        "atom": "O27",
+        "B26_O_A": 1.5379144969731016,
+        "Thr1_N_A": 2.538720562183216,
+        "Gly47_N_A": 5.419376183616999
+      },
+      "O_OXY": {
+        "atom": "O28",
+        "B26_O_A": 1.5295205131020666,
+        "Thr1_N_A": 3.854267930286476,
+        "Gly47_N_A": 3.044331100345723
+      }
+    }
+  },
+  "first_screen_microstates": [
+    {
+      "id": "MS_A_THRN",
+      "description": "Transferred Thr1 hydroxyl proton resides on the Thr1 N-terminal amine.",
+      "Thr1_N": {
+        "form": "NH3+",
+        "formal_charge": 1
+      },
+      "Lys33_NZ": {
+        "form": "NH2",
+        "formal_charge": 0
+      },
+      "Asp17": {
+        "form": "COO-",
+        "formal_charge": -1
+      },
+      "boronate": {
+        "form": "tetrahedral_B_C_ThrO_OH_OH",
+        "formal_charge": -1,
+        "O_NTERM": "OH",
+        "O_OXY": "OH"
+      },
+      "transferred_proton_location": "Thr1_N",
+      "fixed_background_charge": 0,
+      "catalytic_subsystem_charge": -1,
+      "total_complex_charge": -1
+    },
+    {
+      "id": "MS_B_LYS33",
+      "description": "Transferred Thr1 hydroxyl proton resides on Lys33 NZ.",
+      "Thr1_N": {
+        "form": "NH2",
+        "formal_charge": 0
+      },
+      "Lys33_NZ": {
+        "form": "NH3+",
+        "formal_charge": 1
+      },
+      "Asp17": {
+        "form": "COO-",
+        "formal_charge": -1
+      },
+      "boronate": {
+        "form": "tetrahedral_B_C_ThrO_OH_OH",
+        "formal_charge": -1,
+        "O_NTERM": "OH",
+        "O_OXY": "OH"
+      },
+      "transferred_proton_location": "Lys33_NZ",
+      "fixed_background_charge": 0,
+      "catalytic_subsystem_charge": -1,
+      "total_complex_charge": -1
+    },
+    {
+      "id": "MS_C_ASP17",
+      "description": "Sensitivity state: transferred Thr1 hydroxyl proton resides on Asp17.",
+      "Thr1_N": {
+        "form": "NH2",
+        "formal_charge": 0
+      },
+      "Lys33_NZ": {
+        "form": "NH2",
+        "formal_charge": 0
+      },
+      "Asp17": {
+        "form": "COOH",
+        "formal_charge": 0,
+        "proton_oxygen": "choose_by_local_H_bond_geometry_during_build"
+      },
+      "boronate": {
+        "form": "tetrahedral_B_C_ThrO_OH_OH",
+        "formal_charge": -1,
+        "O_NTERM": "OH",
+        "O_OXY": "OH"
+      },
+      "transferred_proton_location": "Asp17",
+      "fixed_background_charge": 0,
+      "catalytic_subsystem_charge": -1,
+      "total_complex_charge": -1
+    }
+  ],
+  "comparison_invariants": {
+    "same_heavy_atom_coordinates": true,
+    "same_number_of_atoms": true,
+    "same_number_of_hydrogens": true,
+    "same_total_charge": -1,
+    "same_boron_connectivity": "B26--Thr1_OG1, B26--O_NTERM, B26--O_OXY, B26--C21",
+    "both_boronate_oxygens_provisionally_protonated": true
+  },
+  "deferred_sensitivity_state": {
+    "id": "MS_D_BORONATE_REARRANGED",
+    "status": "DEFERRED",
+    "description": "Explore transfer of a proton from Thr1 NH3+ to a B-bound hydroxyl, producing a water-like B-bound oxygen and potentially altered B-O connectivity/coordination.",
+    "reason_deferred": "This is a more substantial chemical rearrangement than simple proton relocation within the fixed crystallographic tetrahedral adduct and should not be mixed into the first controlled screen."
+  },
+  "selection_plan": [
+    "Build MS_A, MS_B, and MS_C for both 6V8 and BO2 using identical receptor heavy atoms.",
+    "Add all ordinary hydrogens consistently.",
+    "Place only the catalytic proton differently between microstates.",
+    "Initially hold all heavy atoms fixed.",
+    "Optimize hydrogen positions only with the same method for all states.",
+    "Compare energies separately for 6V8 and BO2.",
+    "Prefer one common receptor/catalytic microstate convention for both inhibitors unless evidence strongly supports ligand-specific protonation.",
+    "Treat MS_D only as a later sensitivity calculation."
+  ]
+}
