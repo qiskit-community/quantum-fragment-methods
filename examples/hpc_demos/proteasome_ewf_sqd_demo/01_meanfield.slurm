@@ -2,9 +2,9 @@
 #SBATCH --job-name=prot_01_mf
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=64G
-#SBATCH --time=02:00:00
+#SBATCH --cpus-per-task=96
+#SBATCH --mem=1900G
+#SBATCH --time=3-00:00:00
 #SBATCH --output=/gpfs/scc6000/proj/toffoli/thaddeus/quantum-fragment-methods/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/01_meanfield_%j.out
 #SBATCH --error=/gpfs/scc6000/proj/toffoli/thaddeus/quantum-fragment-methods/examples/hpc_demos/proteasome_ewf_sqd_demo/logs/01_meanfield_%j.err
 
