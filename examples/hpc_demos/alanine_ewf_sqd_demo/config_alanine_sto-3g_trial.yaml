@@ -73,8 +73,8 @@ sqd:
   add_hf_string: true
 
   sbd:
-    exe_path: /opt/executable/diag
-    cpus_per_batch: 8
+    device: cpu          # → gpu once GPU container is built
+    mpi_ranks: 1         # SBD Davidson uses OMP threads internally
 
   # Circuit saving disabled for trial (no SQD circuits produced)
   circuit_save_dir: null

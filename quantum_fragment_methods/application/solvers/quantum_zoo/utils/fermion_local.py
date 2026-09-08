@@ -212,8 +212,9 @@ def make_sbd_sci_solver(
             struct fields (``method``, ``eps``, ``max_it``, ``max_nb``,
             ``max_time``, ``do_rdm``, ``do_shuffle``, ``carryover_type``,
             ``ratio``, ``threshold``, ``bit_length``, etc.).
-            ``exe_path``, ``cpus_per_batch``, ``device``, and ``mpi_ranks``
-            are consumed here and not forwarded to ``solve_sci_batch``.
+            ``exe_path``, ``cpus_per_batch``, ``device``, ``mpi_ranks``,
+            and ``mri_ranks`` (legacy misspelling of ``mpi_ranks``) are
+            consumed here and not forwarded to ``solve_sci_batch``.
         device: ``'cpu'`` (default) or ``'gpu'`` / ``'gpu-omp'``.
             Overridden by ``sbd_config.get('device')`` when present.
         mpi_comm: MPI communicator.  Defaults to ``MPI.COMM_WORLD`` inside
@@ -233,7 +234,7 @@ def make_sbd_sci_solver(
     device_config = _SBDDeviceConfig(device=resolved_device)
 
     # Strip non-TPB_SBD keys so _create_sbd_config doesn't choke on unknowns
-    _strip = {"exe_path", "cpus_per_batch", "device", "mpi_ranks"}
+    _strip = {"exe_path", "cpus_per_batch", "device", "mpi_ranks", "mri_ranks"}
     tpb_config = {k: v for k, v in sbd_config.items() if k not in _strip}
 
     logger.debug(

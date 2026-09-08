@@ -70,12 +70,13 @@ sqd:
   carryover_threshold: 1.e-4
   add_hf_string: true
 
-  # SBD solver options
-  # exe_path: /opt/executable/diag is baked into the container image (v3.0+).
-  #           Falls back to /workspace/executable/diag if running with an older image.
+  # SBD solver options — sbd-eigensolver Python bindings (container v4.0+)
   sbd:
-    exe_path: /opt/executable/diag
-    cpus_per_batch: 8
+    device: cpu          # → gpu once GPU container is built
+    mpi_ranks: 1         # SBD Davidson uses OMP threads internally
+                         # (OMP_NUM_THREADS from SLURM covers all 96 CPUs per fragment).
+                         # Raise and launch with "mpirun -np N python ..." to distribute
+                         # batches across ranks (MPI parallelism sub-task).
 
   # Circuit persistence
   # Both the abstract (pre-transpile) and ISA (post-transpile) circuits are saved
