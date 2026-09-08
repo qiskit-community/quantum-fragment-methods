@@ -7,50 +7,49 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Add labels for documentation
 LABEL maintainer="Thaddeus Pellegrini"
-LABEL description="Complete environment for quantum fragment methods with PySCF, GPU4PySCF, Qiskit, Qiskit Addon SQD, Vayesta, PyCI, SBD, QRMI, Fulqrum, and Block2. Includes CUDA 12.8 for GPU acceleration on HPC clusters."
-LABEL version="3.0"
+LABEL description="Quantum fragment methods: PySCF, GPU4PySCF, Qiskit, qiskit-addon-sqd, Vayesta, sbd-eigensolver, QRMI, Fulqrum. CUDA 12.8 for GPU acceleration on HPC clusters."
+LABEL version="4.0"
 
 # Set working directory
 WORKDIR /workspace
 
 # ============================================================================
-# PHASE 1: Install System Dependencies
+# PHASE 1: System Dependencies
+#
+# - gcc/g++/gfortran/make: C/C++/Fortran build toolchain for Python extensions
+#   (PySCF, Vayesta, sbd-eigensolver pybind11 extension)
+# - git/wget/curl: version control and download tools
+# - openmpi-bin/libopenmpi-dev: MPI toolchain; mpicc on PATH lets
+#   sbd-eigensolver's setup.py auto-discover MPI without MPI_HOME
+# - libopenblas-dev: BLAS/LAPACK for PySCF and SBD Davidson kernels
+# - libomp-dev: OpenMP runtime for sbd-eigensolver CPU backend
+# - python3/python3-pip/python3-dev: system Python (used only to bootstrap
+#   Miniconda in Phase 3; conda Python takes over afterwards)
+# - vim/nano/tree: interactive debugging utilities
 RUN apt-get update && apt-get install -y \
-    # C++ Build Tools
     gcc \
     g++ \
     gfortran \
     make \
-    cmake \
-    # Version Control
     git \
-    # Download Tools
     wget \
     curl \
-    # MPI for Parallel Computing
     openmpi-bin \
     libopenmpi-dev \
-    # Linear Algebra Libraries
     libopenblas-dev \
-    # OpenMP for Parallelization
     libomp-dev \
-    # Python Development
     python3 \
     python3-pip \
     python3-dev \
-    # Graphviz for Qiskit visualization
-    graphviz \
-    libgraphviz-dev \
-    # Utilities
     vim \
     nano \
     tree \
     && rm -rf /var/lib/apt/lists/*
 
 # ============================================================================
-# PHASE 2: Install CUDA Toolkit + NVIDIA userspace libraries
+# PHASE 2: CUDA Toolkit + NVIDIA userspace libraries
 #
-# IBM SCC H200 nodes run driver 590.48.01 (requires CUDA >= 12.8 runtime).
+# IBM SCC H100 nodes run driver 590.48.01 (requires CUDA >= 12.8 runtime).
 # The host OS has no NVIDIA userspace libs — the container must supply them.
 #
 # - cuda-toolkit-12-8: provides libcudart.so 12.8 (compatible with driver 590.x)
@@ -69,31 +68,30 @@ ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64:${LD_LIBRARY_PATH}"
 ENV CUDA_HOME="/usr/local/cuda"
 
 # ============================================================================
-# PHASE 3: Install Miniconda for Python Environment Management
-# Install Miniconda for x86_64 
+# PHASE 3: Miniconda
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
     bash /tmp/miniconda.sh -b -p /opt/conda && \
     rm /tmp/miniconda.sh
 
-# Add conda to PATH
 ENV PATH="/opt/conda/bin:${PATH}"
 
-# Create .condarc to use only conda-forge and avoid TOS issues
 RUN echo "channels:" > /root/.condarc && \
     echo "  - conda-forge" >> /root/.condarc && \
     echo "channel_priority: strict" >> /root/.condarc && \
     echo "auto_activate_base: false" >> /root/.condarc
 
-# Initialize conda for bash
 RUN conda init bash
 
-# Create conda environment with Python 3.12 using conda-forge only
-# Pin Python to 3.12.* to prevent upgrades to 3.13
+# Pin Python to 3.12.* — conda would otherwise upgrade to 3.13
 RUN conda create -n qfrag-env python=3.12.* --override-channels -c conda-forge -y
 
 # ============================================================================
-# PHASE 4: Install Conda Packages
-# Pin Python 3.12 to prevent conda from upgrading to 3.13
+# PHASE 4: Conda packages
+#
+# - cmake: required by Vayesta's --no-build-isolation pip install
+# - h5py: HDF5 bindings used by EWF dumpfile (ewf_dumpfile.h5)
+# - scipy: linear algebra utilities throughout
+# (xcfun removed — no imports in this codebase)
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
     conda install python=3.12.* --override-channels -c conda-forge \
@@ -102,11 +100,21 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
         cmake=4.2.3 \
         h5py=3.15.1 \
         scipy=1.17.1 \
-        xcfun=2.1.1 \
         -y"
 
 # ============================================================================
-# PHASE 5: Install Python Packages via pip
+# PHASE 5: Python packages via pip
+#
+# Install order matters for sbd-eigensolver: pybind11 and mpi4py must be
+# present before the sbd-eigensolver sdist is built so setup.py can find
+# pybind11 include paths and link mpi4py headers.
+#
+# Packages removed vs prior image:
+#   - qc-pyci: no imports in codebase
+#   - cvxpy: no imports in codebase
+#   - seaborn: no imports in codebase
+#   - pandas: demo-notebook only; add locally if needed
+#   - block2: no imports in codebase
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
     pip install --no-cache-dir \
@@ -115,11 +123,7 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
         ffsim==0.0.70 \
         qiskit==2.3.0 \
         qiskit-ibm-runtime==0.45.1 \
-        qc-pyci==0.6.3 \
-        cvxpy>=1.1 \
         matplotlib==3.10.8 \
-        pandas==3.0.1 \
-        seaborn==0.13.2 \
         jupyter \
         jupyterlab \
         ipykernel \
@@ -127,84 +131,61 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
         pytest \
         pytest-cov"
 
-# Install GPU4PySCF for GPU-accelerated quantum chemistry
-# cuda12x wheel bundles its own CUDA 12.x runtime (ships 12.9, compatible with
-# driver 590.x). libcuda.so is provided by libnvidia-compute-590 in Phase 2.
+# GPU4PySCF — cuda12x wheel bundles its own CUDA 12.x runtime (ships 12.9,
+# compatible with driver 590.x). libcuda.so is provided by libnvidia-compute-590.
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
     pip install --no-cache-dir gpu4pyscf-cuda12x && \
     pip install --no-cache-dir cutensor-cu12"
 
-# Install QRMI (Qiskit Runtime Model Interface)
-# Note: QRMI requires Rust compilation which fails on ARM64 emulation
-# Use pip install from PyPI instead of building from source
+# QRMI — requires Rust compilation; install from PyPI pre-built wheel
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
     pip install --no-cache-dir 'qrmi[ibm]'"
 
-# Install qiskit-addon-sqd Python package from PyPI
+# qiskit-addon-sqd — >=0.13.1 required for SPMD sci_solver support used by
+# sbd-eigensolver's solve_sci_batch across MPI ranks
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
-    pip install --no-cache-dir qiskit-addon-sqd==0.12.1"
+    pip install --no-cache-dir 'qiskit-addon-sqd>=0.13.1'"
+
+# sbd-eigensolver — Python bindings for SBD (Selected Basis Diagonalization).
+# Replaces the former cmake build of r-ccs-cms/sbd that produced /opt/executable/diag.
+# setup.py auto-discovers MPI via mpicc (on PATH from Phase 1 openmpi-bin) and
+# BLAS via BLAS_LIBS=openblas (default). CPU backend only; GPU (Thrust) requires
+# NVHPC nvc++ — add NVHPC_HOME and rebuild for the GPU container image.
+RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
+    conda activate qfrag-env && \
+    pip install --no-cache-dir pybind11 mpi4py && \
+    pip install --no-cache-dir sbd-eigensolver"
+
+# Smoke test — confirms CPU backend compiled and loads correctly
+RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
+    conda activate qfrag-env && \
+    python -c \"import sbd; print('sbd backends:', sbd.available_backends()); assert 'cpu' in sbd.available_backends()\""
 
 # ============================================================================
-# PHASE 6: Clone and Install Vayesta
-# Placed BEFORE Fulqrum so a Fulqrum build failure cannot block Vayesta.
-# NOTE: Cloned to /opt/Vayesta — NOT /workspace (see Fulqrum note above).
+# PHASE 6: Vayesta (EWF embedding framework)
+# Placed before Fulqrum so a Fulqrum build failure cannot block Vayesta.
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
     git clone https://github.com/BoothGroup/Vayesta.git /opt/Vayesta && \
     cd /opt/Vayesta && \
     pip install --no-build-isolation --no-deps ."
 
-# Install Fulqrum (Full Quantum Resource Utilization Manager)
-# NOTE: Cloned to /opt/fulqrum, NOT /workspace (see Fulqrum note above).
-# The qiskit-addon-sqd-hpc submodule ships no pyproject.toml in the checked-out
-# commit, so we only install the top-level fulqrum package and skip the submodule
-# pip install.  The submodule sources are still present on disk for reference.
+# Fulqrum — alternative sci_solver backend (fulqrum classical_backend option
+# in fermion_local.py). The qiskit-addon-sqd-hpc submodule has no pyproject.toml
+# so only the top-level fulqrum package is installed.
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate qfrag-env && \
     git clone --recurse-submodules https://github.com/qiskit-community/fulqrum.git /opt/fulqrum && \
     cd /opt/fulqrum && \
     pip install ."
 
-# Install block2 from preview repository (x86_64 wheel)
-RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
-    conda activate qfrag-env && \
-    pip install --no-cache-dir block2 --extra-index-url=https://block-hczhai.github.io/block2-preview/pypi/"
-
 # ============================================================================
-# PHASE 7: Clone and install PyCI
-# NOTE: Cloned to /opt/pyci — NOT /workspace (see Fulqrum note above).
-RUN git clone https://github.com/theochem/pyci.git /opt/pyci
-
-# Set environment variables for PyCI compilation
-ENV CC=gcc
-ENV CXX=g++
-
-# Note: PyCI compilation requires manual steps - see docs/installation.md
-# Users should run: cd /opt/pyci && make && pip install .
-
-# ============================================================================
-# PHASE 8: Clone and compile SBD Solver
-# NOTE: Cloned to /opt/sbd — NOT /workspace (see Fulqrum note above).
-# Uses the linux-cpu CMake preset: GCC 11, OpenMPI 3.1, OpenBLAS/LAPACK.
-# The compiled binary lands at /opt/executable/diag.
-# Verified to build cleanly on the SCC H200 nodes (native x86_64 GCC 11.4.0).
-RUN git clone https://github.com/r-ccs-cms/sbd.git /opt/sbd && \
-    mkdir -p /opt/executable && \
-    cd /opt/sbd && \
-    cmake --preset linux-cpu \
-        -DCMAKE_CXX_FLAGS="-O3 -march=x86-64" \
-        -DBLAS_LIBRARIES="-lopenblas" && \
-    cmake --build build/linux-cpu --target tpb_diag -j$(nproc) && \
-    cp build/linux-cpu/apps/chemistry_tpb_selected_basis_diagonalization/diag /opt/executable/diag && \
-    chmod +x /opt/executable/diag
-
-# ============================================================================
-# PHASE 9: Install quantum-fragment-methods Package
-# The package is installed from the baked-in copy at image build time so that
-# the editable install works even before /workspace is mounted.
+# PHASE 7: quantum-fragment-methods package
+# Baked-in copy at image build time so the editable install works before
+# /workspace is bind-mounted at runtime.
 COPY . /opt/quantum-fragment-methods
 
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
@@ -213,32 +194,26 @@ RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     pip install -e ."
 
 # ============================================================================
-# PHASE 10: Setup Environment Variables
-# Set MPI environment variables
+# PHASE 8: Runtime environment
 ENV OMPI_CXX=g++
 ENV OMP_NUM_THREADS=1
 
-# Add /workspace to PYTHONPATH so the editable install of quantum-fragment-methods
-# at /workspace/quantum_fragment_methods (from the GPFS bind-mount) takes precedence
-# over the baked-in copy at /opt/quantum-fragment-methods at runtime.
+# /workspace takes precedence over the baked-in copy at runtime (GPFS mount)
 ENV PYTHONPATH="/workspace:${PYTHONPATH}"
 
 # ============================================================================
-# PHASE 11: Create Helper Directories
-RUN mkdir -p /opt/executable && \
-    mkdir -p /opt/data
+# PHASE 9: Helper directories
+RUN mkdir -p /opt/data
 
 # ============================================================================
-# PHASE 12: Setup Conda Activation in bashrc
+# PHASE 10: Shell setup
 RUN echo "source /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
     echo "conda activate qfrag-env" >> ~/.bashrc && \
     echo "echo ''" >> ~/.bashrc && \
     echo "echo ' Quantum Fragment Methods Environment'" >> ~/.bashrc && \
     echo "echo ' Python packages: PySCF, Qiskit, ffsim, scipy'" >> ~/.bashrc && \
-    echo "echo ' Special tools: Vayesta, PyCI, SBD'" >> ~/.bashrc && \
+    echo "echo ' Special tools: Vayesta, sbd-eigensolver, Fulqrum, QRMI'" >> ~/.bashrc && \
     echo "echo ' Working directory: /workspace'" >> ~/.bashrc && \
-    echo "echo ' Architecture: x86_64 via emulation'" >> ~/.bashrc && \
     echo "echo ''" >> ~/.bashrc
 
-# Set default command to bash with conda environment activated
 CMD ["/bin/bash"]

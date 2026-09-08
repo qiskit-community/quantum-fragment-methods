@@ -24,6 +24,8 @@ import json as _json
 import logging
 import os
 import pickle
+import shutil
+from datetime import datetime
 from pathlib import Path
 
 import yaml
@@ -269,16 +271,39 @@ for frag_id, frag in embedding_result.fragments.items():
 # Monkey-patch solve_fragments to inject per-fragment SQD checkpoint args
 _orig_solve_fragments = workflow.solve_fragments
 
+# ---------------------------------------------------------------------------
+# Per-fragment checkpoint: load any partial results from a previous run so
+# that a TIMEOUT or preemption mid-solve can be resumed by simply requeuing.
+# ---------------------------------------------------------------------------
+output_dir = Path(args.output_dir)
+output_dir.mkdir(parents=True, exist_ok=True)
+_checkpoint_file = output_dir / "solver_results.pkl"
+
+_resumed: dict = {}
+if _checkpoint_file.exists() and not args.force_resubmit:
+    try:
+        with open(_checkpoint_file, "rb") as _f:
+            _resumed = pickle.load(_f)
+        print(f"\nResuming from checkpoint: {len(_resumed)} fragment(s) already solved.")
+    except Exception as _e:
+        print(f"\nWARNING: could not load checkpoint ({_e}); starting from scratch.")
+        _resumed = {}
+
+
 def _patched_solve_fragments():
     import h5py
     import time as _time
 
     solvers = workflow._assign_solvers()
-    fragment_results = {}
+    fragment_results = dict(_resumed)  # seed with any already-solved fragments
     dumpfile = embedding_result.metadata.get("dumpfile")
     timings = {}
 
     for frag_id, frag in embedding_result.fragments.items():
+        if frag_id in fragment_results:
+            print(f"  Fragment {frag_id}: skipping (loaded from checkpoint)")
+            continue
+
         solver = solvers[frag_id]
         print(f"\nSolving fragment {frag_id} with {solver.name}...")
 
@@ -326,6 +351,11 @@ def _patched_solve_fragments():
 
         fragment_results[frag_id] = result
 
+        # Write checkpoint after every fragment so a timeout loses at most one
+        # fragment's worth of work.
+        with open(_checkpoint_file, "wb") as _cf:
+            pickle.dump(fragment_results, _cf)
+
     return fragment_results, timings
 
 
@@ -336,10 +366,22 @@ fragment_results, fragment_timings = _patched_solve_fragments()
 # ---------------------------------------------------------------------------
 import numpy as np
 
-output_dir = Path(args.output_dir)
-output_dir.mkdir(parents=True, exist_ok=True)
+# ---------------------------------------------------------------------------
+# Helper
+# ---------------------------------------------------------------------------
+def archive_if_exists(path: Path) -> None:
+    """Rename an existing file to <stem>_<YYYYMMDD_HHMMSS><suffix> so prior
+    results are preserved rather than overwritten."""
+    if path.exists():
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        archived = path.with_name(f"{path.stem}_{ts}{path.suffix}")
+        shutil.move(str(path), archived)
+        print(f"Archived existing {path.name} → {archived.name}")
 
-output_file = output_dir / "solver_results.pkl"
+# output_dir already created above; _checkpoint_file IS solver_results.pkl.
+# No archive needed — the checkpoint was written incrementally and is already
+# the final file.  Just confirm it is complete.
+output_file = _checkpoint_file
 with open(output_file, "wb") as f:
     pickle.dump(fragment_results, f)
 

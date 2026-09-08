@@ -17,7 +17,9 @@ Usage:
 
 import argparse
 import pickle
+import shutil
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import yaml
@@ -114,11 +116,27 @@ print(f"\nRunning EWF fragmentation ({fragmentation} scheme)...")
 print(f"  Fragments to build: {mol.natm} (one per atom, IAO scheme)")
 sys.stdout.flush()
 
+# ---------------------------------------------------------------------------
+# Helper
+# ---------------------------------------------------------------------------
+def archive_if_exists(path: Path) -> None:
+    """Rename an existing file to <stem>_<YYYYMMDD_HHMMSS><suffix> so prior
+    results are preserved rather than overwritten."""
+    if path.exists():
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        archived = path.with_name(f"{path.stem}_{ts}{path.suffix}")
+        shutil.move(str(path), archived)
+        print(f"Archived existing {path.name} → {archived.name}")
+
 output_dir = Path(args.output_dir)
 output_dir.mkdir(parents=True, exist_ok=True)
-dumpfile_path = str(output_dir / "ewf_dumpfile.h5")
+dumpfile_path = output_dir / "ewf_dumpfile.h5"
 
-ewf_embedder = EWF(bath_type=bath_type, truncation=truncation, dumpfile=dumpfile_path)
+# Archive stale dumpfile from any previous run — h5py raises ValueError if
+# fragment groups already exist when Vayesta tries to create them.
+archive_if_exists(dumpfile_path)
+
+ewf_embedder = EWF(bath_type=bath_type, truncation=truncation, dumpfile=str(dumpfile_path))
 embedding_result = ewf_embedder.create_fragments(mf, fragmentation=fragmentation)
 
 fragments = embedding_result.fragments
@@ -166,6 +184,7 @@ embedding_data = {
 }
 
 output_file = output_dir / "embedding_data.pkl"
+archive_if_exists(output_file)
 with open(output_file, "wb") as f:
     pickle.dump(embedding_data, f)
 

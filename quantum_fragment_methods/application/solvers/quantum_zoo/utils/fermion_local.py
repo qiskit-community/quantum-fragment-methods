@@ -23,6 +23,7 @@ from __future__ import annotations
 import logging
 from collections.abc import Callable, Mapping, Sequence
 from contextlib import contextmanager
+from functools import partial
 from pathlib import Path
 from typing import Any, Iterator
 
@@ -35,9 +36,16 @@ from qiskit_addon_sqd.fermion import (
     diagonalize_fermionic_hamiltonian as _addon_diagonalize_fermionic_hamiltonian,
 )
 
-from quantum_fragment_methods.application.solvers.quantum_zoo.utils.sbd_interface import (
-    SBDInterface,
-)
+try:
+    from sbd.sbd_solver import solve_sci_batch as _sbd_solve_sci_batch
+    from sbd.device_config import DeviceConfig as _SBDDeviceConfig
+except ImportError as _sbd_import_err:  # pragma: no cover
+    _sbd_solve_sci_batch = None  # type: ignore[assignment]
+    _SBDDeviceConfig = None  # type: ignore[assignment]
+    _sbd_import_err_msg = (
+        "sbd-eigensolver is not installed.  "
+        "Run: pip install sbd-eigensolver"
+    )
 
 logger = logging.getLogger(__name__)
 
@@ -184,133 +192,62 @@ def counts_to_bit_array(
     return BitArray.from_counts(dict(counts), num_bits=num_bits)
 
 
-def _write_fcidump(
-    h1e: np.ndarray,
-    h2e: np.ndarray,
-    norb: int,
-    nelec: tuple[int, int],
-    fcidump_path: Path,
-) -> None:
-    """Write an FCIDUMP file for the SBD solver."""
-    from pyscf import tools
-
-    tools.fcidump.from_integrals(
-        str(fcidump_path),
-        h1e,
-        h2e,
-        norb,
-        nelec,
-        nuc=0.0,
-    )
-
-
 def make_sbd_sci_solver(
     sbd_config: dict[str, Any],
-    workflow_path: str | Path,
-    max_iterations: int = 0,
+    device: str = "cpu",
+    mpi_comm: Any | None = None,
 ) -> Callable[
     [list[tuple[np.ndarray, np.ndarray]], np.ndarray, np.ndarray, int, tuple[int, int]],
     list[SCIResult],
 ]:
-    """Build an ``sci_solver`` callback that diagonalizes batches with SBD.
+    """Build an ``sci_solver`` backed by ``sbd-eigensolver`` Python bindings.
+
+    Returns a ``partial(solve_sci_batch, ...)`` that matches the ``sci_solver``
+    signature expected by :func:`diagonalize_fermionic_hamiltonian`.  No
+    subprocess is spawned and no FCIDUMP files are written — the bindings handle
+    all internal I/O via a managed temp directory.
 
     Args:
-        sbd_config: SBD configuration. Must include ``exe_path``.
-        workflow_path: Directory for FCIDUMP files and per-batch SBD workdirs.
-        max_iterations: Total SBD iterations expected (used for progress display).
+        sbd_config: SBD configuration dict.  Keys map directly to ``TPB_SBD``
+            struct fields (``method``, ``eps``, ``max_it``, ``max_nb``,
+            ``max_time``, ``do_rdm``, ``do_shuffle``, ``carryover_type``,
+            ``ratio``, ``threshold``, ``bit_length``, etc.).
+            ``exe_path``, ``cpus_per_batch``, ``device``, and ``mpi_ranks``
+            are consumed here and not forwarded to ``solve_sci_batch``.
+        device: ``'cpu'`` (default) or ``'gpu'`` / ``'gpu-omp'``.
+            Overridden by ``sbd_config.get('device')`` when present.
+        mpi_comm: MPI communicator.  Defaults to ``MPI.COMM_WORLD`` inside
+            ``solve_sci_batch`` when ``None``.
 
     Returns:
-        Callable matching the ``sci_solver`` signature expected by
-        ``qiskit-addon-sqd``.
+        Callable matching the ``sci_solver`` signature.
+
+    Raises:
+        ImportError: if ``sbd-eigensolver`` is not installed.
     """
-    sbd_exe_path = sbd_config.get("exe_path")
-    if not sbd_exe_path:
-        raise ValueError("exe_path must be specified in sbd_config")
+    if _sbd_solve_sci_batch is None:  # pragma: no cover
+        raise ImportError(_sbd_import_err_msg)
 
-    work_root = Path(workflow_path)
-    work_root.mkdir(parents=True, exist_ok=True)
-    sbd_interface = SBDInterface(sbd_exe_path=sbd_exe_path, config=sbd_config)
-    call_count = {"n": 0}
-    best_energy = {"e": None}
+    # Resolve device — config key takes precedence over kwarg
+    resolved_device = sbd_config.get("device", device)
+    device_config = _SBDDeviceConfig(device=resolved_device)
 
-    def sci_solver(
-        ci_strings: list[tuple[np.ndarray, np.ndarray]],
-        one_body_tensor: np.ndarray,
-        two_body_tensor: np.ndarray,
-        norb: int,
-        nelec: tuple[int, int],
-    ) -> list[SCIResult]:
-        call_count["n"] += 1
-        iteration = call_count["n"]
-        iteration_dir = work_root / f"iteration_{iteration}"
-        iteration_dir.mkdir(parents=True, exist_ok=True)
+    # Strip non-TPB_SBD keys so _create_sbd_config doesn't choke on unknowns
+    _strip = {"exe_path", "cpus_per_batch", "device", "mpi_ranks"}
+    tpb_config = {k: v for k, v in sbd_config.items() if k not in _strip}
 
-        fcidump_path = iteration_dir / "fcidump.txt"
-        _write_fcidump(one_body_tensor, two_body_tensor, norb, nelec, fcidump_path)
+    logger.debug(
+        "make_sbd_sci_solver: device=%s  tpb_keys=%s",
+        resolved_device,
+        sorted(tpb_config),
+    )
 
-        logger.debug(
-            "SBD sci_solver iteration %s: diagonalizing %s batch(es)",
-            iteration,
-            len(ci_strings),
-        )
-
-        results: list[SCIResult] = []
-        for batch_idx, (ci_strs_a, _ci_strs_b) in enumerate(ci_strings):
-            # SBD AlphaDets currently expect a single spin sector; when spins are
-            # symmetrized, alpha and beta strings match. Prefer alpha otherwise.
-            batch_work_dir = iteration_dir / f"batch_{batch_idx}"
-            batch_work_dir.mkdir(parents=True, exist_ok=True)
-
-            sbd_result = sbd_interface.run_sbd_solver(
-                fcidump_path=str(fcidump_path),
-                ci_strs_alpha=np.asarray(ci_strs_a).tolist(),
-                norb=norb,
-                nelec=nelec,
-                work_dir=str(batch_work_dir),
-                cpus_per_batch=sbd_config.get("cpus_per_batch", 4),
-            )
-
-            energy = sbd_result["energy"]
-            if energy is None:
-                raise RuntimeError(
-                    f"SBD did not report an energy for iteration {iteration}, "
-                    f"batch {batch_idx} (see {batch_work_dir})"
-                )
-
-            ci_strs_a_out = np.asarray(sbd_result["ci_strs_a"])
-            ci_strs_b_out = np.asarray(sbd_result["ci_strs_b"])
-            sci_state = SCIState(
-                amplitudes=sbd_result["amplitudes"],
-                ci_strs_a=ci_strs_a_out,
-                ci_strs_b=ci_strs_b_out,
-                norb=norb,
-                nelec=nelec,
-            )
-            results.append(
-                SCIResult(
-                    energy=float(energy),
-                    sci_state=sci_state,
-                    orbital_occupancies=tuple(sbd_result["occupancies"]),
-                    rdm1=sbd_result.get("rdm1"),
-                    rdm2=sbd_result.get("rdm2"),
-                )
-            )
-
-        # Print one concise line per SBD iteration: energy + delta from previous
-        iter_energy = min(r.energy for r in results)
-        prev = best_energy["e"]
-        delta_str = f"  Δ={iter_energy - prev:+.6f} Ha" if prev is not None else ""
-        total_str = f"/{max_iterations}" if max_iterations > 0 else ""
-        print(
-            f"    SBD iter {iteration:2d}{total_str}"
-            f"  E={iter_energy:.8f} Ha{delta_str}",
-            flush=True,
-        )
-        best_energy["e"] = iter_energy
-
-        return results
-
-    return sci_solver
+    return partial(
+        _sbd_solve_sci_batch,
+        sbd_config=tpb_config,
+        device_config=device_config,
+        mpi_comm=mpi_comm,
+    )
 
 
 def make_fulqrum_sci_solver(
@@ -431,8 +368,12 @@ def diagonalize_fermionic_hamiltonian(
         initial_occupancies: Optional initial orbital occupancies.
         carryover_threshold: Coefficient threshold for carryover determinants.
         callback: Optional callback after each iteration.
-        workflow_path: Directory for SBD scratch files.
-        sbd_config: SBD configuration (must include ``exe_path``).
+        workflow_path: Directory for SBD scratch files (Fulqrum only; ignored
+            by the ``sbd-eigensolver`` backend which manages its own temp dir).
+        sbd_config: SBD configuration dict passed to
+            :func:`make_sbd_sci_solver`.  Must contain at least ``device``
+            (``'cpu'`` or ``'gpu'``); all other keys are forwarded to
+            ``TPB_SBD``.  Not required for ``fulqrum`` backend.
         seed: RNG seed for recovery/subsampling.
         classical_backend: ``\"python\"`` for stock ``qiskit-addon-sqd``
             preprocessing, or ``\"hpc\"`` for ``qiskit-addon-sqd-hpc``.
@@ -447,7 +388,6 @@ def diagonalize_fermionic_hamiltonian(
             f"got {classical_backend!r}"
         )
 
-    # SBD requires an exe_path; Fulqrum and Python backends do not.
     if backend not in ("fulqrum",) and sbd_config is None:
         raise ValueError("sbd_config must be provided for SBD solver integration")
 
@@ -481,7 +421,7 @@ def diagonalize_fermionic_hamiltonian(
         )
 
     # ── SBD backend (python or hpc classical preprocessing) ──────────────────
-    sci_solver = make_sbd_sci_solver(sbd_config, workflow_path or ".", max_iterations=max_iterations)
+    sci_solver = make_sbd_sci_solver(sbd_config)
 
     kwargs = dict(
         one_body_tensor=one_body_tensor,

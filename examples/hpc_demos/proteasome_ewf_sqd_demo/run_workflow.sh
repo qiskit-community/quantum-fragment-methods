@@ -72,7 +72,13 @@ fi
 # ---------------------------------------------------------------------------
 submit_system() {
     local SYSTEM_NAME="$1"     # e.g. ixazomib_complex
-    local CONFIG_FILE="$SCRIPT_DIR/config_${SYSTEM_NAME}_sto-3g.yaml"
+
+    # Host-side path (used only to verify the file exists before submitting)
+    local HOST_CONFIG="$SCRIPT_DIR/config_${SYSTEM_NAME}_sto-3g.yaml"
+
+    # Container-relative path: repo root is mounted at /workspace, so strip
+    # $REPO_ROOT prefix and replace with /workspace.
+    local CONFIG_FILE="/workspace${HOST_CONFIG#$REPO_ROOT}"
 
     echo ""
     echo "─── Submitting system: $SYSTEM_NAME ───"

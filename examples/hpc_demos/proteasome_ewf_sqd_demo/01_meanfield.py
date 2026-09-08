@@ -19,6 +19,8 @@ Usage:
 
 import argparse
 import pickle
+import shutil
+from datetime import datetime
 from pathlib import Path
 
 import yaml
@@ -76,8 +78,21 @@ print(f"Charge:   {charge}")
 print(f"Spin:     {spin}")
 
 # ---------------------------------------------------------------------------
-# Run mean-field calculation
+# Run mean-field calculation (skip if a completed result already exists)
 # ---------------------------------------------------------------------------
+output_dir = Path(args.output_dir)
+output_dir.mkdir(parents=True, exist_ok=True)
+_mf_file = output_dir / "mf_data.pkl"
+
+if _mf_file.exists():
+    print(f"\nFound existing mf_data.pkl — loading instead of rerunning SCF.")
+    with open(_mf_file, "rb") as _f:
+        _existing = pickle.load(_f)
+    print(f"  HF energy (cached): {_existing['hf_energy']:.8f} Ha")
+    print(f"  Skipping SCF. Delete {_mf_file} to force a fresh calculation.")
+    import sys
+    sys.exit(0)
+
 workflow = QFWorkflow(geometry=str(xyz_path), basis=basis, charge=charge, spin=spin)
 mf = workflow.run_mean_field()
 
@@ -91,10 +106,22 @@ print(f"  Charge:          {mol.charge}")
 print(f"  Spin:            {mol.spin}")
 
 # ---------------------------------------------------------------------------
+# Helper
+# ---------------------------------------------------------------------------
+def archive_if_exists(path: Path) -> None:
+    """Rename an existing file to <stem>_<YYYYMMDD_HHMMSS><suffix> so prior
+    results are preserved rather than overwritten."""
+    if path.exists():
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        archived = path.with_name(f"{path.stem}_{ts}{path.suffix}")
+        shutil.move(str(path), archived)
+        print(f"Archived existing {path.name} → {archived.name}")
+
+# ---------------------------------------------------------------------------
 # Save results
 # ---------------------------------------------------------------------------
-output_dir = Path(args.output_dir)
-output_dir.mkdir(parents=True, exist_ok=True)
+# output_dir already created above (before SCF skip check)
+archive_if_exists(output_dir / "mf_data.pkl")
 
 data = {
     "hf_energy": mf.e_tot,

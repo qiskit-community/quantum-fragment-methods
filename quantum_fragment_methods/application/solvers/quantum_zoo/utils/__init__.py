@@ -18,9 +18,6 @@ from quantum_fragment_methods.application.solvers.quantum_zoo.utils.lucj import 
     build_lucj_circuit,
     get_zigzag_physical_layout,
 )
-from quantum_fragment_methods.application.solvers.quantum_zoo.utils.sbd_interface import (
-    SBDInterface,
-)
 from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
     SCIResult,
     SCIState,
@@ -30,7 +27,6 @@ from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_loca
 )
 
 __all__ = [
-    "SBDInterface",
     "SCIResult",
     "SCIState",
     "build_lucj_circuit",
