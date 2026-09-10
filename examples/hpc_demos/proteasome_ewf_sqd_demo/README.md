@@ -47,12 +47,14 @@ three-coordinate boronic acid references.
 
 ## Workflow
 
+### Classical reference mode (default)
+
 ```
-Step 1 (GPU)         Step 2 (GPU)           Step 3 (GPU + QPU)      Step 4 (CPU)
+Step 1 (GPU)         Step 2 (GPU)           Step 3 (GPU)            Step 4 (CPU)
 ──────────────       ──────────────────────  ────────────────────    ─────────────────────
 01_meanfield.py  →   02_fragments.py     →   03_solve.py         →   04_reconstruct.py
-  HF mean-field        Vayesta EWF embed       FCI / SQD               Partitioned cumulant
-  (charge-aware)       IAO fragmentation       per fragment            energy reconstruction
+  HF mean-field        Vayesta EWF embed       FCI (small frags)       Partitioned cumulant
+  (charge-aware)       IAO fragmentation       CCSD (large frags)      energy reconstruction
   Save mf_data.pkl     Save embedding_data     Save solver_results     Save summary.json
 
                            ┌──── ixazomib_complex   (1→2→3→4) ────┐
@@ -60,6 +62,28 @@ Step 1 (GPU)         Step 2 (GPU)           Step 3 (GPU + QPU)      Step 4 (CPU)
 All four systems           │     bortezomib_complex  (1→2→3→4) ────│──→ 05_binding_energy.py
 run in parallel ───────────┘     bortezomib_ligand   (1→2→3→4) ────┘     ΔΔE_bind output
 ```
+
+### QPU mode (`--qpu`)
+
+The QPU workflow splits step 3 into three sub-steps so that expensive HPC
+nodes are not held idle while waiting for the IBM Quantum queue:
+
+```
+Step 3a (GPU, ~1d)          Step 3b (GPU, ~1h)       Step 3c (GPU, ~4h)
+───────────────────         ─────────────────────    ─────────────────────────
+03_solve_ccsd.py        →   03_solve_sqd_submit.py → 03_solve_sqd_collect.py
+  FCI (small frags)           Build LUCJ circuits      Retrieve QPU counts
+  CCSD (large frags)          Submit to IBM Quantum     Run SBD postprocessing
+  Save ccsd_results.pkl       Save job_manifest.json    Merge → solver_results.pkl
+                              EXIT (HPC node released)
+
+                          ↑ MANUAL trigger after 3a
+                          Monitor with 03_solve_sqd_monitor.sh (login node)
+                          ↑ MANUAL trigger after all QPU jobs DONE
+```
+
+`run_workflow.sh --qpu` submits steps 1, 2, 3a, and 4 automatically.
+Steps 3b and 3c are printed as ready-to-paste `sbatch` commands.
 
 ---
 
@@ -77,11 +101,18 @@ run in parallel ───────────┘     bortezomib_ligand   (1�
 | `bortezomib_ligand.xyz`  | 53-atom extracted ligand |
 | `01_meanfield.py`  | Hartree-Fock via `QFWorkflow` (charge/spin aware) |
 | `02_fragments.py`  | EWF fragmentation via Vayesta |
-| `03_solve.py`      | Adaptive FCI/SQD fragment solver |
+| `03_solve.py`      | Monolithic FCI/CCSD adaptive solver (classical mode) |
+| `03_solve_ccsd.py` | Step 3a — CCSD reference for all SQD-eligible fragments |
+| `03_solve_sqd_submit.py` | Step 3b — Submit QPU jobs and exit (fire-and-forget) |
+| `03_solve_sqd_monitor.sh` | Monitor QPU job status from login node (no HPC allocation) |
+| `03_solve_sqd_collect.py` | Step 3c — Retrieve counts + SBD postprocessing + merge |
 | `04_reconstruct.py` | Partitioned cumulant energy reconstruction |
 | `05_binding_energy.py` | ΔΔE_bind assembly from four summaries |
 | `01_meanfield.slurm` – `05_binding_energy.slurm` | Slurm job scripts |
-| `run_workflow.sh`  | Submit all systems as parallel dependency chains |
+| `03_solve_ccsd.slurm` | Slurm script for step 3a (QPU mode) |
+| `03_solve_sqd_submit.slurm` | Slurm script for step 3b (QPU mode) |
+| `03_solve_sqd_collect.slurm` | Slurm script for step 3c (QPU mode) |
+| `run_workflow.sh`  | Submit all systems; `--qpu` flag enables QPU split workflow |
 | `system_prep/`     | Full system preparation pipeline (scripts 01–27) |
 
 ---
@@ -144,10 +175,15 @@ rsync -avP --partial --exclude='*.tar' --exclude='*.sqsh' --exclude='__pycache__
   . $HPC_USERNAME@$HPC_LOGIN_HOST:$HPC_PROJECT/quantum-fragment-methods/
 
 cd $HPC_PROJECT/quantum-fragment-methods/examples/hpc_demos/proteasome_ewf_sqd_demo
+
+# Classical CCSD reference (no QPU required):
 bash run_workflow.sh
+
+# QPU workflow — submits 3a automatically, prints manual 3b/3c commands:
+bash run_workflow.sh --qpu
 ```
 
-`run_workflow.sh` submits all four systems in parallel (each as a four-job
+`run_workflow.sh` submits all four systems in parallel (each as a multi-job
 chain) and a final binding energy job that waits for all four reconstructions.
 
 ---
@@ -191,15 +227,39 @@ results/
 
 ---
 
-## Checkpoint-aware QPU workflow
+## Checkpoint-aware resumption
 
-Step 3 is checkpoint-aware.  If the Slurm wall time expires while the QPU job
-is still queued, resubmit step 3 only:
+### Classical mode (`03_solve.py`)
+
+Step 3 is checkpoint-aware.  If the Slurm wall time expires mid-run, resubmit:
 
 ```bash
 python 03_solve.py --config config_ixazomib_complex_sto-3g.yaml --wait
-# or to discard checkpoints and resubmit fresh:
+# discard checkpoints and restart:
 python 03_solve.py --config config_ixazomib_complex_sto-3g.yaml --force-resubmit
+```
+
+### QPU mode (3a/3b/3c)
+
+Each step checkpoints independently:
+
+- **3a** (`03_solve_ccsd.py`): writes `ccsd_results.pkl` incrementally
+  (one fragment at a time).  Re-running resumes from the last completed
+  fragment; pass `--force-rerun` to start from scratch.
+
+- **3b** (`03_solve_sqd_submit.py`): writes `job_manifest.json` and per-fragment
+  `job_id.txt`.  Re-running skips already-submitted fragments.  Use
+  `--force-resubmit` to resubmit all.
+
+- **3c** (`03_solve_sqd_collect.py`): writes per-fragment `sbd_result.pkl`
+  (final) and `sbd_checkpoint.pkl` (per-iteration).  Re-running loads
+  cached results and resumes interrupted SBD iterations.
+
+Monitor QPU jobs from the login node (no allocation needed):
+
+```bash
+bash 03_solve_sqd_monitor.sh ixazomib_complex_sto-3g --watch 300
+bash 03_solve_sqd_monitor.sh bortezomib_complex_sto-3g --watch 300
 ```
 
 ---

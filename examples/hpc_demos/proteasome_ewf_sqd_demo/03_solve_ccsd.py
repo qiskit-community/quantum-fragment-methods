@@ -215,3 +215,17 @@ for frag_id, frag in fragments.items():
 print(f"\n{'='*60}")
 print(f"All fragments solved: {n_fci} FCI  {n_ccsd} CCSD")
 print(f"{'='*60}")
+
+# ---------------------------------------------------------------------------
+# Write solver_results.pkl so 04_reconstruct.py can consume this run directly.
+# ccsd_results.pkl is also kept so 03_solve_sqd_collect.py can load it when
+# merging with QPU results later.
+# ---------------------------------------------------------------------------
+solver_results_file = output_dir / "solver_results.pkl"
+with open(solver_results_file, "wb") as f:
+    pickle.dump(fragment_results, f)
+
+print(f"\nWrote: {checkpoint_file}  (ccsd_results — QPU merge input)")
+print(f"Wrote: {solver_results_file}  (solver_results — step 4 input)")
+print(f"\n→ Run 04_reconstruct.py for the classical CCSD reference energy.")
+print(f"→ Run 03_solve_sqd_submit.py to submit QPU jobs for SQD correction.")
