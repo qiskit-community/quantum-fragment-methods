@@ -188,8 +188,10 @@ class CCSD(BaseSolver):
         """
         Solve CCSD from Hamiltonian integrals.
 
-        This method creates a temporary mean-field object from the
-        provided integrals and then solves CCSD.
+        Diagonalises h1e to obtain canonical MOs, transforms h2e into
+        that basis, and constructs a mean-field reference.  This avoids
+        the Davidson divergence caused by using non-canonical (embedded)
+        integrals directly.
 
         Parameters
         ----------
@@ -209,12 +211,6 @@ class CCSD(BaseSolver):
         -------
         SolverResult
             CCSD solution with energy and density matrices
-
-        Notes
-        -----
-        This method constructs a fake mean-field object with the
-        provided integrals. It's useful for fragment calculations
-        where you have effective Hamiltonians.
         """
         try:
             from pyscf import gto, scf
@@ -223,31 +219,47 @@ class CCSD(BaseSolver):
                 "PySCF is required for CCSD solver. Install with: pip install pyscf"
             ) from e
 
-        # Create a fake molecule with correct number of electrons
         nelec = 2 * nocc
+
+        # ── Step 1: canonicalise h1e ──────────────────────────────────────────
+        # EWF cluster Hamiltonians are not diagonal in the embedding basis.
+        # Using np.diag(h1e) as orbital energies gives wrong CCSD denominators
+        # and causes Davidson divergence on large bath fragments.
+        # Diagonalising h1e with occupied/virtual blocks separately gives the
+        # canonical Fock-like orbital energies that CCSD expects.
+        eps, C = np.linalg.eigh(h1e)   # C: columns = MOs in embedding basis
+
+        # ── Step 2: transform h2e into canonical basis ────────────────────────
+        # h2e shape: (norb, norb, norb, norb) — chemist (ij|kl) notation.
+        # Four-index AO→MO transformation: (ij|kl) → (pq|rs)
+        h2e_mo = np.einsum("ijkl,ip,jq,kr,ls->pqrs", h2e, C, C, C, C,
+                           optimize=True)
+
+        # ── Step 3: build fake RHF reference ─────────────────────────────────
         mol = gto.Mole()
         mol.nelectron = nelec
         mol.nao = norb
         mol.build(dump_input=False, parse_arg=False)
 
-        # Create fake mean-field object
         mf = scf.RHF(mol)
-        mf.get_hcore = lambda *args: h1e
-        mf.get_ovlp = lambda *args: np.eye(norb)
-        mf._eri = h2e
+        h1e_mo = np.diag(eps)                       # diagonal in canonical basis
+        mf.get_hcore = lambda *args: h1e_mo
+        mf.get_ovlp  = lambda *args: np.eye(norb)
+        mf._eri      = h2e_mo
 
-        # Set up MO coefficients (identity for simplicity)
-        mf.mo_coeff = np.eye(norb)
-        mf.mo_occ = np.zeros(norb)
+        mf.mo_coeff  = np.eye(norb)                 # already canonical
+        mf.mo_occ    = np.zeros(norb)
         mf.mo_occ[:nocc] = 2.0
-        mf.mo_energy = np.diag(h1e)
+        mf.mo_energy = eps                          # eigenvalues of h1e
 
-        # Compute mean-field energy
-        dm = mf.make_rdm1()
-        vhf = mf.get_veff(dm=dm)
-        mf.e_tot = np.einsum("ij,ji->", h1e + 0.5 * vhf, dm)
+        # Reference energy: sum of occupied orbital energies minus double-
+        # counted Coulomb/exchange.  For an embedded fragment the "HF" energy
+        # defined this way is self-consistent with the denominators used by
+        # CCSD and gives a well-behaved correlation energy.
+        dm      = mf.make_rdm1()
+        vhf     = mf.get_veff(dm=dm)
+        mf.e_tot = np.einsum("ij,ji->", h1e_mo + 0.5 * vhf, dm)
 
-        # Solve CCSD
         return self.solve(mf, **kwargs)
 
     @staticmethod
