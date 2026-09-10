@@ -135,6 +135,9 @@ class CCSD(BaseSolver):
         max_cycle = kwargs.get("max_cycle", self.max_cycle)
         diis_space = kwargs.get("diis_space", self.diis_space)
 
+        # Pop internal override before forwarding kwargs to PySCF
+        _ao2mo_override = kwargs.pop("_ao2mo_override", None)
+
         # Create CCSD object
         try:
             ccsd = pyscf.cc.CCSD(mf)
@@ -142,6 +145,8 @@ class CCSD(BaseSolver):
             ccsd.max_cycle = max_cycle
             ccsd.diis_space = diis_space
             ccsd.verbose = self.verbose
+            if _ao2mo_override is not None:
+                ccsd.ao2mo = _ao2mo_override.__get__(ccsd, type(ccsd))
         except Exception as e:
             raise RuntimeError(f"Failed to create CCSD object: {str(e)}") from e
 
@@ -213,54 +218,88 @@ class CCSD(BaseSolver):
             CCSD solution with energy and density matrices
         """
         try:
-            from pyscf import gto, scf
+            from pyscf import gto, scf, ao2mo as _ao2mo
+            from pyscf import lib as pyscf_lib
         except ImportError as e:
             raise ImportError(
                 "PySCF is required for CCSD solver. Install with: pip install pyscf"
             ) from e
 
         nelec = 2 * nocc
+        nvir  = norb - nocc
+        nvir_pair = nvir * (nvir + 1) // 2
 
-        # ── Step 1: canonicalise h1e ──────────────────────────────────────────
-        # EWF cluster Hamiltonians are not diagonal in the embedding basis.
-        # Using np.diag(h1e) as orbital energies gives wrong CCSD denominators
-        # and causes Davidson divergence on large bath fragments.
-        # Diagonalising h1e with occupied/virtual blocks separately gives the
-        # canonical Fock-like orbital energies that CCSD expects.
-        eps, C = np.linalg.eigh(h1e)   # C: columns = MOs in embedding basis
-
-        # ── Step 2: transform h2e into canonical basis ────────────────────────
-        # h2e shape: (norb, norb, norb, norb) — chemist (ij|kl) notation.
-        # Four-index AO→MO transformation: (ij|kl) → (pq|rs)
-        h2e_mo = np.einsum("ijkl,ip,jq,kr,ls->pqrs", h2e, C, C, C, C,
-                           optimize=True)
-
-        # ── Step 3: build fake RHF reference ─────────────────────────────────
+        # ── Step 1: run SCF to get canonical MOs ─────────────────────────────
+        # EWF cluster Hamiltonians are NOT diagonal in the embedding basis.
+        # We must run a proper SCF (not just diagonalise h1e) because the
+        # canonical Fock eigenvalues include both the one-electron h1e and the
+        # two-electron Coulomb/exchange from h2e.  Using np.diag(h1e) as
+        # orbital energies misses the J/K contribution, gives wrong CCSD
+        # amplitude denominators ε_a − ε_i, and causes Davidson divergence
+        # on bath-heavy fragments.
         mol = gto.Mole()
         mol.nelectron = nelec
         mol.nao = norb
         mol.build(dump_input=False, parse_arg=False)
 
         mf = scf.RHF(mol)
-        h1e_mo = np.diag(eps)                       # diagonal in canonical basis
-        mf.get_hcore = lambda *args: h1e_mo
+        mf.get_hcore = lambda *args: h1e
         mf.get_ovlp  = lambda *args: np.eye(norb)
-        mf._eri      = h2e_mo
+        mf._eri      = _ao2mo.restore(1, h2e, norb)
+        mf.kernel()   # self-consistent; sets mo_coeff, mo_energy, mo_occ
 
-        mf.mo_coeff  = np.eye(norb)                 # already canonical
-        mf.mo_occ    = np.zeros(norb)
-        mf.mo_occ[:nocc] = 2.0
-        mf.mo_energy = eps                          # eigenvalues of h1e
+        # ── Step 2: transform h2e into canonical MO basis ────────────────────
+        # PySCF's CCSD ao2mo routine internally calls ao2mo.incore.full which
+        # uses pyscf.lib.einsum.  On some PySCF versions this path has a
+        # tuple-unpacking bug in the contraction list.  We bypass it entirely
+        # by pre-transforming h2e with numpy and injecting the result directly.
+        C      = mf.mo_coeff                                    # (norb, norb)
+        h2e_mo = np.einsum("ijkl,ip,jq,kr,ls->pqrs", h2e, C, C, C, C,
+                           optimize=True)
 
-        # Reference energy: sum of occupied orbital energies minus double-
-        # counted Coulomb/exchange.  For an embedded fragment the "HF" energy
-        # defined this way is self-consistent with the denominators used by
-        # CCSD and gives a well-behaved correlation energy.
-        dm      = mf.make_rdm1()
-        vhf     = mf.get_veff(dm=dm)
-        mf.e_tot = np.einsum("ij,ji->", h1e_mo + 0.5 * vhf, dm)
+        # ── Step 3: build canonical Fock in MO basis ─────────────────────────
+        fock_ao = mf.get_fock()
+        fock_mo = C.T @ fock_ao @ C                             # (norb, norb)
 
-        return self.solve(mf, **kwargs)
+        # ── Step 4: override CCSD.ao2mo with pre-sliced ERIs ─────────────────
+        # _ChemistsERIs packed shapes (from pyscf/cc/ccsd.py pseudo-code):
+        #   oooo : (nocc, nocc, nocc, nocc)
+        #   ovoo : (nocc, nvir, nocc, nocc)
+        #   oovv : (nocc, nocc, nvir, nvir)
+        #   ovov : (nocc, nvir, nocc, nvir)
+        #   ovvo : (nocc, nvir, nvir, nocc)
+        #   ovvv : (nocc, nvir, nvir_pair)   pack_tril on last 2 virt indices
+        #   vvvv : (nvir_pair, nvir_pair)    ao2mo.restore(4) 4-fold symmetry
+        #   fock : (norb, norb)              Fock in canonical MO basis
+        _fock  = fock_mo
+        _h2e   = h2e_mo
+
+        def _ao2mo_patched(cc_obj, mo_coeff=None):
+            from pyscf.cc.ccsd import _ChemistsERIs
+            eris = _ChemistsERIs()
+            eris.nocc      = nocc
+            eris.mol       = mol
+            eris.mo_coeff  = C
+            eris.fock      = _fock
+            eris.mo_energy = _fock.diagonal().real
+            o = slice(0, nocc)
+            v = slice(nocc, norb)
+            eris.oooo = _h2e[o, o, o, o].copy()
+            eris.ovoo = _h2e[o, v, o, o].copy()
+            eris.oovv = _h2e[o, o, v, v].copy()
+            eris.ovov = _h2e[o, v, o, v].copy()
+            eris.ovvo = _h2e[o, v, v, o].copy()
+            # ovvv: pack last two virt indices; PySCF reads eris.ovvv[:,p0:p1]
+            # with axis-0=nocc, axis-1=nvir, axis-2=nvir_pair
+            ovvv_full = _h2e[o, v, v, v]                        # (nocc,nvir,nvir,nvir)
+            eris.ovvv = pyscf_lib.pack_tril(
+                ovvv_full.reshape(nocc * nvir, nvir, nvir)
+            ).reshape(nocc, nvir, nvir_pair)
+            # vvvv: 4-fold symmetry
+            eris.vvvv = _ao2mo.restore(4, _h2e[v, v, v, v], nvir)
+            return eris
+
+        return self.solve(mf, _ao2mo_override=_ao2mo_patched, **kwargs)
 
     @staticmethod
     def split_dm2(nocc: int, dm1: NDArray, dm2: NDArray) -> tuple[NDArray, NDArray, NDArray]:

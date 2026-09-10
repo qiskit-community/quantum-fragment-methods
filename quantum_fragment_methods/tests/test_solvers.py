@@ -336,6 +336,68 @@ class TestCCSDFromIntegrals:
         assert result.energy is not None
         assert isinstance(result.energy, float)
 
+    @pytest.mark.requires_pyscf
+    def test_solve_from_integrals_off_diagonal_h1e(self):
+        """Off-diagonal h1e must not cause Davidson divergence.
+
+        Regression test for the EWF embedding bug where np.diag(h1e) was used
+        as orbital energies, giving wrong CCSD amplitude denominators ε_a − ε_i
+        and causing tolerance blowup to O(100+) on bath-heavy fragments.
+
+        The fix runs a proper SCF to obtain self-consistent canonical MOs
+        (capturing both h1e and the J/K contribution from h2e), then transforms
+        h2e into that basis and injects pre-sliced ERIs into CCSD, bypassing
+        PySCF's internal ao2mo path which has a pyscf.lib.einsum version
+        incompatibility on Python 3.11 / older PySCF builds.
+
+        We use a 4-orbital 2-electron system with large off-diagonal coupling
+        (mimicking an EWF bath fragment) and verify:
+          - CCSD converges (metadata["converged"] is True)
+          - correlation energy is negative (variational lower bound)
+          - energy matches a FCI reference to within 1 mHa
+        """
+        from quantum_fragment_methods.application.solvers.classical_zoo import CCSD, FCI
+
+        rng = np.random.default_rng(42)
+        norb, nocc = 4, 2
+
+        # Build a random symmetric h1e with large off-diagonal elements
+        # (eigenvalue gap ~1 Ha, off-diagonal up to ~0.5 Ha)
+        A = rng.uniform(-0.5, 0.5, (norb, norb))
+        h1e = (A + A.T) / 2
+        np.fill_diagonal(h1e, rng.uniform(-2.0, -0.5, norb))
+
+        # Simple diagonal h2e (Hubbard-like on-site repulsion only)
+        h2e = np.zeros((norb, norb, norb, norb))
+        for i in range(norb):
+            h2e[i, i, i, i] = 0.5
+
+        # CCSD without RDMs — solve_lambda uses pyscf.lib.einsum with 3 tensors
+        # which has a tuple-unpacking bug in older PySCF builds (Python 3.11).
+        # The cluster runs PySCF 2.13.1 where this is fixed.  Convergence and
+        # energy accuracy are the critical properties to verify here.
+        ccsd = CCSD()
+        result = ccsd.solve_from_integrals(h1e, h2e, norb=norb, nocc=nocc,
+                                           compute_rdms=False)
+
+        assert result.metadata["converged"], (
+            "CCSD did not converge for off-diagonal h1e — "
+            "SCF canonicalisation step may be broken"
+        )
+        assert result.metadata["e_corr"] <= 0, "Correlation energy must be non-positive"
+
+        # Consistency with FCI (exact) — should agree within 1 mHa
+        fci = FCI()
+        fci_result = fci.solve_from_integrals(h1e, h2e, norb=norb, nocc=nocc)
+        # FCI is variational lower bound to CCSD
+        assert fci_result.energy <= result.energy + 1e-6, (
+            "FCI energy should be <= CCSD energy (variational principle)"
+        )
+        assert abs(result.energy - fci_result.energy) < 1e-3, (
+            f"CCSD ({result.energy:.6f}) and FCI ({fci_result.energy:.6f}) "
+            "disagree by more than 1 mHa on a 4-orbital test system"
+        )
+
 
 class TestCCSDErrorHandling:
     """Test CCSD error handling for invalid inputs."""
