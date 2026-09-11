@@ -1,0 +1,349 @@
+          |                                    ___       ___
+          |  _______________________________  /   \ . . /   \
+          |                                   \___/     \___/
+          |              VAYESTA                  .  V  .   .
+          |     Quantum Embedding Package          .___.  A  .___
+          |  _______________________________       /   \ . . /   \
+          |                    version 1.0.1       \___/     \___/ 
+          |
+          |
+          |  INITIALIZING EWF
+          |  ================
+          |      Initial E(mean-field)=      -1.11678332 Ha
+          |      Calculated E(HF)=           -1.11678332 Ha
+          |      Difference dE=              +0.00000000 Ha ( -0.0%)
+          |      n(AO)=    2  n(MO)=    2  n(linear dep.)=    0
+          |      Parameters of EWF:
+          |      Options(store_eris=True, global_frag_chempot=None, dm_with_frozen=False, bath_options={'bathtype':
+          |          'mp2', 'canonicalize': True, 'occupation_tolerance': 1e-06, 'dmet_threshold': 1e-08, 'rcut': None,
+          |          'unit': 'Ang', 'order': None, 'max_order': 20, 'threshold': 1e-06, 'truncation': 'occupation',
+          |          'project_dmet_order': 2, 'project_dmet_mode': 'squared-entropy', 'addbuffer': False, 'bathtype_occ':
+          |          None, 'bathtype_vir': None, 'rcut_occ': None, 'rcut_vir': None, 'unit_occ': None, 'unit_vir': None,
+          |          'order_occ': None, 'order_vir': None, 'max_order_occ': None, 'max_order_vir': None, 'threshold_occ':
+          |          None, 'threshold_vir': None, 'truncation_occ': None, 'truncation_vir': None,
+          |          'project_dmet_order_occ': None, 'project_dmet_order_vir': None, 'project_dmet_mode_occ': None,
+          |          'project_dmet_mode_vir': None, 'addbuffer_occ': None, 'addbuffer_dmet_vir': None,
+          |          'canonicalize_occ': None, 'canonicalize_vir': None}, bosonic_bath_options={'bathtype': None,
+          |          'target_orbitals': 'full', 'local_projection': 'fragment', 'threshold': 1e-06, 'truncation':
+          |          'occupation'}, solver_options={'conv_tol': None, 'n_moments': None, 'solve_lambda': True,
+          |          'conv_tol_normt': None, 'level_shift': None, 'diis_space': None, 'diis_start_cycle': None,
+          |          'iterative_damping': None, 'threads': 1, 'max_cycle': 300, 'fix_spin': None, 'lindep': None,
+          |          'davidson_only': True, 'init_guess': 'default', 'max_boson_occ': 2, 'ansatz': None, 'store_as_ccsd':
+          |          None, 'dumpfile': '/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_mtnsbrmv.h5',
+          |          'callback': None, 'compress_cderi': False}, symmetry_tol=1e-06, symmetry_mf_tol=1e-05,
+          |          screening=None, ext_rpa_correction=None, match_cluster_fock=False, iao_minao='auto',
+          |          project_eris=False, project_init_guess=True, energy_functional='wf', calc_e_wf_corr=True,
+          |          calc_e_dm_corr=False, calc_e_ccsd_t_corr=False, t_as_lambda=None, store_wf_type=None,
+          |          bsse_correction=True, bsse_rmax=5.0, nelectron_target=None, sc_mode=0, coupled_iterations=False,
+          |          _debug_wf=None)
+          |      Time for EWF setup: 0.1 s
+          |  IAO Fragmentation
+          |  -----------------
+          |  IAO:  computational basis= sto-3g  minimal reference basis= sto-3g (automatically chosen)
+          |      n(AO)=    2  n(MO)=    2  n(occ-MO)=    1  n(IAO)=    2
+          |      Fragmentation: orthogonal= True, occupied-complete= False, virtual-complete= True
+          |  IAO Fragmentation
+          |  -----------------
+          |  IAO:  computational basis= sto-3g  minimal reference basis= sto-3g (automatically chosen)
+          |      n(AO)=    2  n(MO)=    2  n(occ-MO)=    1  n(IAO)=    2
+          |      Fragmentation: orthogonal= True, occupied-complete= True, virtual-complete= True
+          |  Number of electrons over 2 fragments= 2.00000000  target= 2.00000000
+          |
+          |  MAKING BATH AND CLUSTERS
+          |  ========================
+          |  Making bath and clusters for Fragment 0: H
+          |  ------------------------------------------
+          |      Making DMET Bath
+          |      ----------------
+          |          DMET bath:  n(Bath)=    1  n(occ-Env)=    0  n(vir-Env)=    0
+          |          Mean-field entangled orbitals:
+          |                Bath  Occupation  Entanglement  Character
+          |                ----  ----------  ------------  ------------------------------------------------------
+          |             1   Yes           1             1  H 1s (117%), H 1s (-17%)
+          |          Entanglement entropy: total= 2.500e-01  bath= 2.500e-01 (100.00 %)
+          |          Cluster orbitals:  n(occ)=   1  n(vir)=   1
+          |      Occupied bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Virtual bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Orbitals for Fragment 0: H
+          |      --------------------------
+          |                   Active            Frozen            Total
+          |                   ---------------   ---------------   -----
+          |        Occupied       1 ( 100.0%)       0 (   0.0%)       1
+          |        Virtual        1 ( 100.0%)       0 (   0.0%)       1
+          |        Total          2 ( 100.0%)       0 (   0.0%)       2
+          |  Making bath and clusters for Fragment 1: H
+          |  ------------------------------------------
+          |      Making DMET Bath
+          |      ----------------
+          |          DMET bath:  n(Bath)=    1  n(occ-Env)=    0  n(vir-Env)=    0
+          |          Mean-field entangled orbitals:
+          |                Bath  Occupation  Entanglement  Character
+          |                ----  ----------  ------------  ------------------------------------------------------
+          |             1   Yes           1             1  H 1s (117%), H 1s (-17%)
+          |          Entanglement entropy: total= 2.500e-01  bath= 2.500e-01 (100.00 %)
+          |          Cluster orbitals:  n(occ)=   1  n(vir)=   1
+          |      Occupied bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Virtual bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Orbitals for Fragment 1: H
+          |      --------------------------
+          |                   Active            Frozen            Total
+          |                   ---------------   ---------------   -----
+          |        Occupied       1 ( 100.0%)       0 (   0.0%)       1
+          |        Virtual        1 ( 100.0%)       0 (   0.0%)       1
+          |        Total          2 ( 100.0%)       0 (   0.0%)       2
+          |
+          |  RUNNING SOLVERS
+          |  ===============
+          |  Solving Fragment 0: H
+          |  ---------------------
+          |      Parameters of RClusterHamiltonian:
+          |      RClusterHamiltonian.Options(screening=None, cache_eris=True, match_fock=False)
+          |      Parameters of DumpSolver:
+          |      DumpSolver.Options(dumpfile='/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_mtnsbrmv.h5')
+          |      Time for DUMP solver: 0.0 s
+          |  Solving Fragment 1: H
+          |  ---------------------
+          |      Parameters of RClusterHamiltonian:
+          |      RClusterHamiltonian.Options(screening=None, cache_eris=True, match_fock=False)
+          |      Parameters of DumpSolver:
+          |      DumpSolver.Options(dumpfile='/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_mtnsbrmv.h5')
+          |      Time for DUMP solver: 0.0 s
+          |  Clusters dumped to file '/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_mtnsbrmv.h5'
+          |
+          |  INITIALIZING EWF
+          |  ================
+          |      Initial E(mean-field)=      -1.11678332 Ha
+          |      Calculated E(HF)=           -1.11678332 Ha
+          |      Difference dE=              +0.00000000 Ha ( -0.0%)
+          |      n(AO)=    2  n(MO)=    2  n(linear dep.)=    0
+          |      Parameters of EWF:
+          |      Options(store_eris=True, global_frag_chempot=None, dm_with_frozen=False, bath_options={'bathtype':
+          |          'mp2', 'canonicalize': True, 'occupation_tolerance': 1e-06, 'dmet_threshold': 1e-08, 'rcut': None,
+          |          'unit': 'Ang', 'order': None, 'max_order': 20, 'threshold': 1e-06, 'truncation': 'occupation',
+          |          'project_dmet_order': 2, 'project_dmet_mode': 'squared-entropy', 'addbuffer': False, 'bathtype_occ':
+          |          None, 'bathtype_vir': None, 'rcut_occ': None, 'rcut_vir': None, 'unit_occ': None, 'unit_vir': None,
+          |          'order_occ': None, 'order_vir': None, 'max_order_occ': None, 'max_order_vir': None, 'threshold_occ':
+          |          None, 'threshold_vir': None, 'truncation_occ': None, 'truncation_vir': None,
+          |          'project_dmet_order_occ': None, 'project_dmet_order_vir': None, 'project_dmet_mode_occ': None,
+          |          'project_dmet_mode_vir': None, 'addbuffer_occ': None, 'addbuffer_dmet_vir': None,
+          |          'canonicalize_occ': None, 'canonicalize_vir': None}, bosonic_bath_options={'bathtype': None,
+          |          'target_orbitals': 'full', 'local_projection': 'fragment', 'threshold': 1e-06, 'truncation':
+          |          'occupation'}, solver_options={'conv_tol': None, 'n_moments': None, 'solve_lambda': True,
+          |          'conv_tol_normt': None, 'level_shift': None, 'diis_space': None, 'diis_start_cycle': None,
+          |          'iterative_damping': None, 'threads': 1, 'max_cycle': 300, 'fix_spin': None, 'lindep': None,
+          |          'davidson_only': True, 'init_guess': 'default', 'max_boson_occ': 2, 'ansatz': None, 'store_as_ccsd':
+          |          None, 'dumpfile': '/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_th7sf_il.h5',
+          |          'callback': None, 'compress_cderi': False}, symmetry_tol=1e-06, symmetry_mf_tol=1e-05,
+          |          screening=None, ext_rpa_correction=None, match_cluster_fock=False, iao_minao='auto',
+          |          project_eris=False, project_init_guess=True, energy_functional='wf', calc_e_wf_corr=True,
+          |          calc_e_dm_corr=False, calc_e_ccsd_t_corr=False, t_as_lambda=None, store_wf_type=None,
+          |          bsse_correction=True, bsse_rmax=5.0, nelectron_target=None, sc_mode=0, coupled_iterations=False,
+          |          _debug_wf=None)
+          |      Time for EWF setup: 0.0 s
+          |  IAO Fragmentation
+          |  -----------------
+          |  IAO:  computational basis= sto-3g  minimal reference basis= sto-3g (automatically chosen)
+          |      n(AO)=    2  n(MO)=    2  n(occ-MO)=    1  n(IAO)=    2
+          |      Fragmentation: orthogonal= True, occupied-complete= False, virtual-complete= True
+          |  IAO Fragmentation
+          |  -----------------
+          |  IAO:  computational basis= sto-3g  minimal reference basis= sto-3g (automatically chosen)
+          |      n(AO)=    2  n(MO)=    2  n(occ-MO)=    1  n(IAO)=    2
+          |      Fragmentation: orthogonal= True, occupied-complete= True, virtual-complete= True
+          |  Number of electrons over 2 fragments= 2.00000000  target= 2.00000000
+          |
+          |  MAKING BATH AND CLUSTERS
+          |  ========================
+          |  Making bath and clusters for Fragment 0: H
+          |  ------------------------------------------
+          |      Making DMET Bath
+          |      ----------------
+          |          DMET bath:  n(Bath)=    1  n(occ-Env)=    0  n(vir-Env)=    0
+          |          Mean-field entangled orbitals:
+          |                Bath  Occupation  Entanglement  Character
+          |                ----  ----------  ------------  ------------------------------------------------------
+          |             1   Yes           1             1  H 1s (117%), H 1s (-17%)
+          |          Entanglement entropy: total= 2.500e-01  bath= 2.500e-01 (100.00 %)
+          |          Cluster orbitals:  n(occ)=   1  n(vir)=   1
+          |      Occupied bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Virtual bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Orbitals for Fragment 0: H
+          |      --------------------------
+          |                   Active            Frozen            Total
+          |                   ---------------   ---------------   -----
+          |        Occupied       1 ( 100.0%)       0 (   0.0%)       1
+          |        Virtual        1 ( 100.0%)       0 (   0.0%)       1
+          |        Total          2 ( 100.0%)       0 (   0.0%)       2
+          |  Making bath and clusters for Fragment 1: H
+          |  ------------------------------------------
+          |      Making DMET Bath
+          |      ----------------
+          |          DMET bath:  n(Bath)=    1  n(occ-Env)=    0  n(vir-Env)=    0
+          |          Mean-field entangled orbitals:
+          |                Bath  Occupation  Entanglement  Character
+          |                ----  ----------  ------------  ------------------------------------------------------
+          |             1   Yes           1             1  H 1s (117%), H 1s (-17%)
+          |          Entanglement entropy: total= 2.500e-01  bath= 2.500e-01 (100.00 %)
+          |          Cluster orbitals:  n(occ)=   1  n(vir)=   1
+          |      Occupied bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Virtual bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Orbitals for Fragment 1: H
+          |      --------------------------
+          |                   Active            Frozen            Total
+          |                   ---------------   ---------------   -----
+          |        Occupied       1 ( 100.0%)       0 (   0.0%)       1
+          |        Virtual        1 ( 100.0%)       0 (   0.0%)       1
+          |        Total          2 ( 100.0%)       0 (   0.0%)       2
+          |
+          |  RUNNING SOLVERS
+          |  ===============
+          |  Solving Fragment 0: H
+          |  ---------------------
+          |      Parameters of RClusterHamiltonian:
+          |      RClusterHamiltonian.Options(screening=None, cache_eris=True, match_fock=False)
+          |      Parameters of DumpSolver:
+          |      DumpSolver.Options(dumpfile='/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_th7sf_il.h5')
+          |      Time for DUMP solver: 0.0 s
+          |  Solving Fragment 1: H
+          |  ---------------------
+          |      Parameters of RClusterHamiltonian:
+          |      RClusterHamiltonian.Options(screening=None, cache_eris=True, match_fock=False)
+          |      Parameters of DumpSolver:
+          |      DumpSolver.Options(dumpfile='/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_th7sf_il.h5')
+          |      Time for DUMP solver: 0.0 s
+          |  Clusters dumped to file '/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_th7sf_il.h5'
+          |                                    ___       ___
+          |  _______________________________  /   \ . . /   \
+          |                                   \___/     \___/
+          |              VAYESTA                  .  V  .   .
+          |     Quantum Embedding Package          .___.  A  .___
+          |  _______________________________       /   \ . . /   \
+          |                    version 1.0.1       \___/     \___/ 
+          |
+          |
+          |  INITIALIZING EWF
+          |  ================
+          |      Initial E(mean-field)=      -1.11678332 Ha
+          |      Calculated E(HF)=           -1.11678332 Ha
+          |      Difference dE=              +0.00000000 Ha ( -0.0%)
+          |      n(AO)=    2  n(MO)=    2  n(linear dep.)=    0
+          |      Parameters of EWF:
+          |      Options(store_eris=True, global_frag_chempot=None, dm_with_frozen=False, bath_options={'bathtype':
+          |          'mp2', 'canonicalize': True, 'occupation_tolerance': 1e-06, 'dmet_threshold': 1e-08, 'rcut': None,
+          |          'unit': 'Ang', 'order': None, 'max_order': 20, 'threshold': 1e-06, 'truncation': 'occupation',
+          |          'project_dmet_order': 2, 'project_dmet_mode': 'squared-entropy', 'addbuffer': False, 'bathtype_occ':
+          |          None, 'bathtype_vir': None, 'rcut_occ': None, 'rcut_vir': None, 'unit_occ': None, 'unit_vir': None,
+          |          'order_occ': None, 'order_vir': None, 'max_order_occ': None, 'max_order_vir': None, 'threshold_occ':
+          |          None, 'threshold_vir': None, 'truncation_occ': None, 'truncation_vir': None,
+          |          'project_dmet_order_occ': None, 'project_dmet_order_vir': None, 'project_dmet_mode_occ': None,
+          |          'project_dmet_mode_vir': None, 'addbuffer_occ': None, 'addbuffer_dmet_vir': None,
+          |          'canonicalize_occ': None, 'canonicalize_vir': None}, bosonic_bath_options={'bathtype': None,
+          |          'target_orbitals': 'full', 'local_projection': 'fragment', 'threshold': 1e-06, 'truncation':
+          |          'occupation'}, solver_options={'conv_tol': None, 'n_moments': None, 'solve_lambda': True,
+          |          'conv_tol_normt': None, 'level_shift': None, 'diis_space': None, 'diis_start_cycle': None,
+          |          'iterative_damping': None, 'threads': 1, 'max_cycle': 300, 'fix_spin': None, 'lindep': None,
+          |          'davidson_only': True, 'init_guess': 'default', 'max_boson_occ': 2, 'ansatz': None, 'store_as_ccsd':
+          |          None, 'dumpfile': '/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_owcqk8g0.h5',
+          |          'callback': None, 'compress_cderi': False}, symmetry_tol=1e-06, symmetry_mf_tol=1e-05,
+          |          screening=None, ext_rpa_correction=None, match_cluster_fock=False, iao_minao='auto',
+          |          project_eris=False, project_init_guess=True, energy_functional='wf', calc_e_wf_corr=True,
+          |          calc_e_dm_corr=False, calc_e_ccsd_t_corr=False, t_as_lambda=None, store_wf_type=None,
+          |          bsse_correction=True, bsse_rmax=5.0, nelectron_target=None, sc_mode=0, coupled_iterations=False,
+          |          _debug_wf=None)
+          |      Time for EWF setup: 0.1 s
+          |  IAO Fragmentation
+          |  -----------------
+          |  IAO:  computational basis= sto-3g  minimal reference basis= sto-3g (automatically chosen)
+          |      n(AO)=    2  n(MO)=    2  n(occ-MO)=    1  n(IAO)=    2
+          |      Fragmentation: orthogonal= True, occupied-complete= False, virtual-complete= True
+          |  IAO Fragmentation
+          |  -----------------
+          |  IAO:  computational basis= sto-3g  minimal reference basis= sto-3g (automatically chosen)
+          |      n(AO)=    2  n(MO)=    2  n(occ-MO)=    1  n(IAO)=    2
+          |      Fragmentation: orthogonal= True, occupied-complete= True, virtual-complete= True
+          |  Number of electrons over 2 fragments= 2.00000000  target= 2.00000000
+          |
+          |  MAKING BATH AND CLUSTERS
+          |  ========================
+          |  Making bath and clusters for Fragment 0: H
+          |  ------------------------------------------
+          |      Making DMET Bath
+          |      ----------------
+          |          DMET bath:  n(Bath)=    1  n(occ-Env)=    0  n(vir-Env)=    0
+          |          Mean-field entangled orbitals:
+          |                Bath  Occupation  Entanglement  Character
+          |                ----  ----------  ------------  ------------------------------------------------------
+          |             1   Yes           1             1  H 1s (117%), H 1s (-17%)
+          |          Entanglement entropy: total= 2.500e-01  bath= 2.500e-01 (100.00 %)
+          |          Cluster orbitals:  n(occ)=   1  n(vir)=   1
+          |      Occupied bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Virtual bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Orbitals for Fragment 0: H
+          |      --------------------------
+          |                   Active            Frozen            Total
+          |                   ---------------   ---------------   -----
+          |        Occupied       1 ( 100.0%)       0 (   0.0%)       1
+          |        Virtual        1 ( 100.0%)       0 (   0.0%)       1
+          |        Total          2 ( 100.0%)       0 (   0.0%)       2
+          |  Making bath and clusters for Fragment 1: H
+          |  ------------------------------------------
+          |      Making DMET Bath
+          |      ----------------
+          |          DMET bath:  n(Bath)=    1  n(occ-Env)=    0  n(vir-Env)=    0
+          |          Mean-field entangled orbitals:
+          |                Bath  Occupation  Entanglement  Character
+          |                ----  ----------  ------------  ------------------------------------------------------
+          |             1   Yes           1             1  H 1s (117%), H 1s (-17%)
+          |          Entanglement entropy: total= 2.500e-01  bath= 2.500e-01 (100.00 %)
+          |          Cluster orbitals:  n(occ)=   1  n(vir)=   1
+          |      Occupied bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Virtual bnos:
+          |        Bath: N=    0
+          |        Rest: N=    0
+          |      Orbitals for Fragment 1: H
+          |      --------------------------
+          |                   Active            Frozen            Total
+          |                   ---------------   ---------------   -----
+          |        Occupied       1 ( 100.0%)       0 (   0.0%)       1
+          |        Virtual        1 ( 100.0%)       0 (   0.0%)       1
+          |        Total          2 ( 100.0%)       0 (   0.0%)       2
+          |
+          |  RUNNING SOLVERS
+          |  ===============
+          |  Solving Fragment 0: H
+          |  ---------------------
+          |      Parameters of RClusterHamiltonian:
+          |      RClusterHamiltonian.Options(screening=None, cache_eris=True, match_fock=False)
+          |      Parameters of DumpSolver:
+          |      DumpSolver.Options(dumpfile='/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_owcqk8g0.h5')
+          |      Time for DUMP solver: 0.0 s
+          |  Solving Fragment 1: H
+          |  ---------------------
+          |      Parameters of RClusterHamiltonian:
+          |      RClusterHamiltonian.Options(screening=None, cache_eris=True, match_fock=False)
+          |      Parameters of DumpSolver:
+          |      DumpSolver.Options(dumpfile='/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_owcqk8g0.h5')
+          |      Time for DUMP solver: 0.0 s
+          |  Clusters dumped to file '/var/folders/h5/vk4dp3hj3hl5h63968_bg6c00000gn/T/ewf_cluster_owcqk8g0.h5'

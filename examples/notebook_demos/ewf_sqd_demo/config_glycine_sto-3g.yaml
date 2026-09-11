@@ -35,12 +35,23 @@ embedder:
 # ============================================================================
 # Solver Selection
 # ============================================================================
-# orbital_threshold: 11
-#   → N-fragment (~11 orb) → SQD  (1 QPU fragment, 22 qubits on hardware)
-#   → all others           → FCI  (fast, runs in seconds on a laptop)
+# Three-tier adaptive strategy:
+#   n_orb ≤ 10  → FCI   (H fragments: 3–4 orb)
+#   n_orb ≤ 18  → CCSD  (N:13, Cα:17, O:13 fragments)
+#   n_orb ≥ 19  → SQD   (C=O carbonyl: 19 orb, 38 qubits) ← only QPU fragment
+#
+# Fragment cluster sizes at truncation=1e-4 (active orbitals):
+#   Frag 0 N   : 13  → CCSD
+#   Frag 1 Cα  : 17  → CCSD
+#   Frag 2 C=O : 19  ← SQD  (only fragment at QPU threshold)
+#   Frag 3 O   : 13  → CCSD
+#   Frag 4 O   : 13  → CCSD
+#   Frags 5–9 H: 3–4 → FCI
 solver_selection:
   strategy: adaptive
-  orbital_threshold: 11
+  fci_threshold: 10     # n_orb ≤ this → FCI
+  ccsd_threshold: 18    # fci_threshold < n_orb ≤ this → CCSD
+  sqd_threshold: 19     # n_orb ≥ this → SQD
 
 # ============================================================================
 # QPU Configuration — backend name only (no credentials here)
@@ -48,7 +59,15 @@ solver_selection:
 # ============================================================================
 qpu:
   provider: qrmi
-  backend_name: ibm_pittsburgh
+  backend_name: ibm_kingston      # must match QRMI_JOB_QPU_RESOURCES in .env
+  sampler_options:
+    default_shots: 100000         # 100k shots — sufficient for demo
+    dynamical_decoupling:
+      enable: true
+      sequence_type: XY4
+    twirling:
+      enable_gates: false
+      enable_measure: false
 
 # ============================================================================
 # SQD Solver Configuration
@@ -56,25 +75,17 @@ qpu:
 sqd:
   lucj:
     n_reps: 1
-    max_connection: 10            # ≤ norb-1 = 10; caps alpha-beta interaction range
+    max_connection: 18            # ≤ norb-1 = 18; caps alpha-beta interaction range
     connect_every_n: 4
 
-  transpilation:
-    optimization_level: 0
-    seed_transpiler: 42
-
   # classical_backend: python — stock qiskit-addon-sqd (no C++ needed on laptop)
+  # NOTE: norb=19 FCI is intractable without max_dim. On HPC use classical_backend: sbd.
   classical_backend: python
   symmetrize_spin: true
-  n_batches: 3                    # 3 batches × 500 samples = manageable on a laptop
-  iterations: 5
-  samples_per_batch: 500
-  shots: 10000                    # shots submitted to QPU per fragment
+  n_batches: 1
+  iterations: 3
+  samples_per_batch: 300
+  max_dim: 2000              # cap CI subspace — keeps FCI tractable on laptop
   energy_tol: 1.e-8
   occupancies_tol: 1.e-5
   carryover_threshold: 1.e-4
-  add_hf_string: true
-
-  sbd:
-    exe_path: /workspace/executable/diag   # local SBD binary (see BUILD-GUIDE.md)
-    cpus_per_batch: 4                       # 4 CPUs is fine for ~11-orbital problems

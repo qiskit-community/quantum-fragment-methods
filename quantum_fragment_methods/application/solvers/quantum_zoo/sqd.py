@@ -196,24 +196,44 @@ def _use_hpc_classical_preprocess() -> Iterator[None]:
 
 
 def counts_to_bit_array(
-    counts: Mapping[str, int],
+    counts: Mapping[str | int, int],
     *,
     num_bits: int | None = None,
 ) -> BitArray:
     """Convert a QPU counts dictionary into a :class:`~qiskit.primitives.BitArray`.
 
+    Handles both string keys (``'0110...'``) and integer keys that arise when
+    a counts dict is round-tripped through ``np.save`` / ``np.load``.
+
     Args:
-        counts: Measurement counts mapping bitstrings to shot counts.
-        num_bits: Number of bits per shot. Defaults to the longest key length.
+        counts: Measurement counts mapping bitstrings (or integers) to shot counts.
+        num_bits: Number of bits per shot. Required when keys are integers.
 
     Returns:
         BitArray suitable for ``qiskit-addon-sqd``.
     """
     if not counts:
         raise ValueError("counts dictionary must contain at least one bitstring.")
-    if num_bits is None:
-        num_bits = max(len(bitstring) for bitstring in counts)
-    return BitArray.from_counts(dict(counts), num_bits=num_bits)
+
+    # Normalise keys → zero-padded binary strings.
+    # np.load(...).item() converts string keys to Python ints, so we must
+    # handle both forms here.
+    first_key = next(iter(counts))
+    if isinstance(first_key, (int, np.integer)):
+        if num_bits is None:
+            raise ValueError(
+                "num_bits must be provided when counts keys are integers "
+                "(e.g. after np.load round-trip)."
+            )
+        str_counts: dict[str, int] = {
+            format(int(k), f"0{num_bits}b"): int(v) for k, v in counts.items()
+        }
+    else:
+        str_counts = dict(counts)  # type: ignore[arg-type]
+        if num_bits is None:
+            num_bits = max(len(k) for k in str_counts)
+
+    return BitArray.from_counts(str_counts, num_bits=num_bits)
 
 
 def make_sbd_sci_solver(
@@ -590,7 +610,7 @@ class SQDSolver(BaseSolver):
         # Determine workflow stage
         if counts_file.exists():
             # Stage 3: Post-processing (counts already retrieved)
-            counts = np.load(counts_file, allow_pickle=True).item()
+            counts = self._load_counts_npy(counts_file)
             print(f"  Resuming from checkpoint: {sum(counts.values())} shots loaded", flush=True)
 
         elif job_id_file.exists():
@@ -667,13 +687,14 @@ class SQDSolver(BaseSolver):
     ) -> Any:
         """Build a hardware-native LUCJ ansatz circuit using ffsim's pass manager.
 
-        Delegates entirely to ``ffsim.qiskit.lucj_pass_manager``, which:
-          - Constructs the UCJ operator from t2 (and optionally t1) amplitudes
-          - Selects the optimal zigzag qubit layout on the IBM heavy-hex backend
+        Delegates entirely to ``ffsim.qiskit.generate_lucj_pass_manager``, which:
+          - Accepts a Qiskit BackendV2 and selects the optimal qubit layout on
+            the IBM heavy-hex topology
           - Transpiles and folds Rzz angles in one shot
 
-        This replaces the previous manual rustworkx zigzag + Qiskit preset
-        pass manager approach (lucj.py) with ffsim's authoritative router.
+        Alpha-beta interaction pairs are derived from the LUCJ config:
+          - ``connect_every_n`` (default 4): include pairs (p, p) for p % n == 0
+          - ``max_connection`` (default norb-1): cap orbital index of pairs
 
         Args:
             t1: CCSD single excitation amplitudes (norb × norb)
@@ -686,7 +707,7 @@ class SQDSolver(BaseSolver):
         """
         try:
             import ffsim
-            from ffsim.qiskit import lucj_pass_manager
+            from ffsim.qiskit import generate_lucj_pass_manager
             from qiskit import QuantumCircuit, QuantumRegister
         except ImportError as e:
             raise ImportError(
@@ -700,10 +721,14 @@ class SQDSolver(BaseSolver):
                                      self.transpilation_config.get("optimization_level", 0))
         seed = cfg.get("seed_transpiler",
                        self.transpilation_config.get("seed_transpiler", 0))
+        connectivity = cfg.get("connectivity", "heavy-hex")
+        max_connection = cfg.get("max_connection", norb - 1)
+        connect_every_n = cfg.get("connect_every_n", 4)
 
         logger.info(
             f"Building LUCJ circuit: norb={norb}, nelec={nelec}, "
-            f"n_reps={n_reps}, optimization_level={optimization_level}"
+            f"n_reps={n_reps}, optimization_level={optimization_level}, "
+            f"connectivity={connectivity}"
         )
 
         # --- UCJ operator from CCSD amplitudes ---
@@ -721,16 +746,39 @@ class SQDSolver(BaseSolver):
 
         logger.info(f"Abstract circuit: {circuit.num_qubits} qubits, depth={circuit.depth()}")
 
-        # --- ffsim pass manager: layout + routing + transpilation in one step ---
-        target = self.qpu_backend.backend
-        if target is None:
-            raise RuntimeError("Backend not initialized. Call qpu_backend.get_backend() first.")
+        # --- Qiskit BackendV2 required by generate_lucj_pass_manager ---
+        qiskit_backend = getattr(self.qpu_backend, "_qiskit_backend", None)
+        if qiskit_backend is None:
+            raise RuntimeError(
+                "Qiskit BackendV2 not initialised. "
+                "Call qpu_backend.get_backend() first."
+            )
 
-        pm = lucj_pass_manager(
-            target=target,
+        # --- Interaction pairs for heavy-hex LUCJ layout ---
+        # pairs_aa: linear chain along orbital indices
+        pairs_aa: list[tuple[int, int]] = [(p, p + 1) for p in range(norb - 1)]
+        # pairs_ab: alpha-beta cross connections spaced every connect_every_n orbitals
+        pairs_ab: list[tuple[int, int]] = [
+            (p, p)
+            for p in range(min(norb, max_connection + 1))
+            if p % connect_every_n == 0
+        ]
+        interaction_pairs = (pairs_aa, pairs_ab)
+
+        logger.info(f"LUCJ interaction_pairs: pairs_aa={pairs_aa}, pairs_ab={pairs_ab}")
+
+        # --- ffsim pass manager: layout + routing + transpilation in one step ---
+        # generate_lucj_pass_manager returns (StagedPassManager, effective_pairs_ab)
+        pm, effective_pairs_ab = generate_lucj_pass_manager(
+            backend=qiskit_backend,
+            norb=norb,
+            connectivity=connectivity,
+            interaction_pairs=interaction_pairs,
             optimization_level=optimization_level,
             seed_transpiler=seed,
         )
+        logger.info(f"Effective pairs_ab after layout: {effective_pairs_ab}")
+
         isa_circuit = pm.run(circuit)
 
         logger.info(
@@ -772,6 +820,26 @@ class SQDSolver(BaseSolver):
         logger.info(f"Job submitted to QPU. Job ID: {job_id}")
         return job_id
 
+    @staticmethod
+    def _load_counts_npy(counts_file: Path) -> Dict[str, int]:
+        """Load counts from .npy and normalise keys to binary strings.
+
+        np.save serialises dict keys as-is; np.load().item() silently converts
+        string keys to Python ints. ``BitArray.from_counts`` then calls
+        int.to_bytes() on values that are too wide, causing OverflowError.
+        We detect integer keys and convert them back to zero-padded bit strings.
+        """
+        raw: dict = np.load(counts_file, allow_pickle=True).item()
+        if not raw:
+            return {}
+        first_key = next(iter(raw))
+        if isinstance(first_key, (int, np.integer)):
+            # Infer bit width from the largest key value
+            max_val = max(int(k) for k in raw)
+            num_bits = max_val.bit_length() if max_val > 0 else 1
+            return {format(int(k), f"0{num_bits}b"): int(v) for k, v in raw.items()}
+        return {str(k): int(v) for k, v in raw.items()}
+
     def _retrieve_counts(self, job_id: str, workflow_path: Path) -> Dict[str, int]:
         """Retrieve measurement counts from completed QPU job."""
         logger.info(f"Retrieving results for job {job_id}...")
@@ -779,7 +847,7 @@ class SQDSolver(BaseSolver):
         counts_file = workflow_path / "counts.npy"
         if counts_file.exists():
             logger.info(f"Loading counts from {counts_file}")
-            return np.load(counts_file, allow_pickle=True).item()
+            return self._load_counts_npy(counts_file)
 
         try:
             status = self.qpu_backend.get_job_status(job_id)
@@ -829,7 +897,7 @@ class SQDSolver(BaseSolver):
         counts_file = workflow_path / "counts.npy"
         if counts_file.exists():
             logger.info(f"Loading existing counts from {counts_file}")
-            return np.load(counts_file, allow_pickle=True).item()
+            return self._load_counts_npy(counts_file)
 
         try:
             status = self.qpu_backend.get_job_status(job_id)
@@ -895,7 +963,20 @@ class SQDSolver(BaseSolver):
         """Retrieve and save results from a completed job."""
         try:
             result = self.qpu_backend.get_job_result(job_id)
-            counts = result[0].data.meas.get_counts()
+            raw_counts = result[0].data.meas.get_counts()
+
+            # get_counts() may return integer keys on some QRMI versions.
+            # Normalise to zero-padded binary strings before saving/returning
+            # so BitArray.from_counts never sees oversized ints.
+            if raw_counts and isinstance(next(iter(raw_counts)), (int, np.integer)):
+                num_bits = result[0].data.meas.num_bits
+                counts: Dict[str, int] = {
+                    format(int(k), f"0{num_bits}b"): int(v)
+                    for k, v in raw_counts.items()
+                }
+            else:
+                counts = {str(k): int(v) for k, v in raw_counts.items()}
+
             counts_file = workflow_path / "counts.npy"
             np.save(counts_file, counts)
             logger.info(f"Counts saved to {counts_file}  ({sum(counts.values())} shots)")
@@ -915,8 +996,9 @@ class SQDSolver(BaseSolver):
         nelec: Tuple[int, int],
         workflow_path: Path,
     ) -> SolverResult:
-        """Classical post-processing with SBD solver."""
-        logger.debug("Starting SBD post-processing via qiskit-addon-sqd")
+        """Classical post-processing using qiskit-addon-sqd 0.13.1 API."""
+        from functools import partial as _partial
+        from qiskit_addon_sqd.fermion import solve_sci_batch
 
         iterations = self.sqd_config.get("iterations", 5)
         n_batches = self.sqd_config.get("n_batches", 10)
@@ -926,21 +1008,38 @@ class SQDSolver(BaseSolver):
         carryover_threshold = self.sqd_config.get("carryover_threshold", 1.0e-4)
         symmetrize_spin = self.sqd_config.get("symmetrize_spin", True)
         classical_backend = self.sqd_config.get("classical_backend", "python")
+        max_dim = self.sqd_config.get("max_dim", None)
 
         print(
-            f"  SBD: {iterations} iter × {n_batches} batches × {samples_per_batch} samples"
+            f"  SQD: {iterations} iter × {n_batches} batches × {samples_per_batch} samples"
             f"  backend={classical_backend}",
             flush=True,
         )
 
-        sqd_workflow_path = workflow_path / "sqd_diagonalizer"
-        sqd_workflow_path.mkdir(parents=True, exist_ok=True)
+        # Convert raw counts dict → BitArray (required by 0.13.1 API)
+        bit_array = counts_to_bit_array(counts, num_bits=2 * norb)
 
-        result = diagonalize_fermionic_hamiltonian(
+        # Bootstrap initial_occupancies from uniform HF occupancy.
+        # Without this, diagonalize_fermionic_hamiltonian raises ValueError when
+        # the first recovery batch contains no valid (correct Hamming-weight)
+        # bitstrings — which is common with small shot counts or tiny samples_per_batch.
+        num_elec_a, num_elec_b = nelec
+        hf_occ_a = np.array([1.0 if i < num_elec_a else 0.0 for i in range(norb)])
+        hf_occ_b = np.array([1.0 if i < num_elec_b else 0.0 for i in range(norb)])
+        initial_occupancies = (hf_occ_a, hf_occ_b)
+
+        # Build sci_solver — python uses qiskit-addon-sqd's built-in solver;
+        # sbd uses the SBD eigensolver bindings.
+        if classical_backend == "sbd":
+            sci_solver = make_sbd_sci_solver(self.sbd_config)
+        else:
+            # python (default) or hpc — use built-in solve_sci_batch
+            sci_solver = _partial(solve_sci_batch, spin_sq=0.0)
+
+        result = _addon_diagonalize_fermionic_hamiltonian(
             h1e,
             h2e,
-            counts,
-            symmetrize_spin=symmetrize_spin,
+            bit_array,
             samples_per_batch=samples_per_batch,
             norb=norb,
             nelec=nelec,
@@ -949,13 +1048,22 @@ class SQDSolver(BaseSolver):
             occupancies_tol=occupancies_tol,
             max_iterations=iterations,
             carryover_threshold=carryover_threshold,
-            workflow_path=str(sqd_workflow_path),
-            sbd_config=self.sbd_config,
-            classical_backend=classical_backend,
+            symmetrize_spin=symmetrize_spin,
+            sci_solver=sci_solver,
+            initial_occupancies=initial_occupancies,
+            max_dim=max_dim,
         )
 
-        rdm1 = result.rdm1 if result.rdm1 is not None else result.sci_state.rdm(rank=1)
-        rdm2 = result.rdm2 if result.rdm2 is not None else result.sci_state.rdm(rank=2)
+        # rdm1/rdm2 on SCIResult are spin-summed; fall back to sci_state if None.
+        # SCIState.rdm(rank=1) returns (dm_a, dm_b) — sum for spin-summed form.
+        rdm1 = result.rdm1
+        rdm2 = result.rdm2
+        if rdm1 is None:
+            dm_a, dm_b = result.sci_state.rdm(rank=1, spin_summed=False)
+            rdm1 = dm_a + dm_b
+        if rdm2 is None:
+            dm2_aa, dm2_ab, dm2_bb = result.sci_state.rdm(rank=2, spin_summed=False)
+            rdm2 = dm2_aa + dm2_ab + dm2_ab.transpose(2, 3, 0, 1) + dm2_bb
 
         solver_result = SolverResult(
             energy=result.energy,
@@ -971,7 +1079,7 @@ class SQDSolver(BaseSolver):
             },
         )
 
-        logger.debug(f"SBD post-processing complete. Energy: {solver_result.energy:.8f}")
+        logger.debug(f"SQD post-processing complete. Energy: {solver_result.energy:.8f}")
         return solver_result
 
     def solve_from_integrals(

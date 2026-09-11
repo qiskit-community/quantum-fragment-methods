@@ -12,6 +12,8 @@
 
 # quantum_fragment_methods/workflow.py
 
+from pathlib import Path
+
 from .application.embedding.base import EmbeddingResult
 
 
@@ -333,10 +335,17 @@ class QFWorkflow:
                             f"Failed to read Vayesta cluster data from HDF5 file {dumpfile}: {e}"
                         ) from e
 
+                    # Per-fragment checkpoint directory so QPU jobs don't collide
+                    frag_workflow_path = str(
+                        Path(self.save_path) / f"fragment_{fragment_id}"
+                    )
+
                     # Solve using integrals - always compute RDMs for energy reconstruction
                     if hasattr(solver, "solve_from_integrals"):
                         result = solver.solve_from_integrals(
-                            h1e, h2e, norb, nocc, compute_rdms=True
+                            h1e, h2e, norb, nocc,
+                            compute_rdms=True,
+                            workflow_path=frag_workflow_path,
                         )
 
                         # Store additional data needed for partitioned cumulant energy

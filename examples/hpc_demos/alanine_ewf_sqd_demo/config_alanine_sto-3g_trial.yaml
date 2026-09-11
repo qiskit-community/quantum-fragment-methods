@@ -58,10 +58,6 @@ sqd:
   lucj:
     n_reps: 1
 
-  transpilation:
-    optimization_level: 0
-    seed_transpiler: 42
-
   classical_backend: hpc
   symmetrize_spin: true
   n_batches: 1
@@ -70,11 +66,9 @@ sqd:
   energy_tol: 1.0e-8
   occupancies_tol: 1.0e-5
   carryover_threshold: 1.0e-4
-  add_hf_string: true
 
   sbd:
     device: cpu          # → gpu once GPU container is built
-    mpi_ranks: 1         # SBD Davidson uses OMP threads internally
 
   # Circuit saving disabled for trial (no SQD circuits produced)
   circuit_save_dir: null

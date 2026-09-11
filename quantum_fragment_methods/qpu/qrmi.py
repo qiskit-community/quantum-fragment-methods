@@ -85,8 +85,9 @@ class QRMIBackend(QPUBackend):
 
     def __init__(self, config: Dict[str, Any]):
         super().__init__(config)
-        self._qrmi = None   # raw QRMI resource object
-        self._target = None  # Qiskit transpiler Target built from QRMI resource
+        self._qrmi = None           # raw QRMI resource object
+        self._target = None         # Qiskit transpiler Target built from QRMI resource
+        self._qiskit_backend = None  # Qiskit BackendV2 required by generate_lucj_pass_manager
 
     # ------------------------------------------------------------------
     # Core interface
@@ -138,10 +139,12 @@ class QRMIBackend(QPUBackend):
         logger.info(f"QRMI initialized: {self._qrmi.metadata()}")
 
     def get_backend(self, backend_name: Optional[str] = None) -> Any:
-        """Build and return a Qiskit transpiler Target from the QRMI resource.
+        """Build and cache both the Qiskit transpiler Target and BackendV2 from the QRMI resource.
 
-        The returned Target is set as self.backend and used by SQDSolver's
-        _transpile_circuit() to generate a pass manager.
+        Stores:
+          - ``self._target`` / ``self.backend``: Qiskit transpiler ``Target``
+          - ``self._qiskit_backend``: Qiskit ``BackendV2`` required by
+            ``ffsim.qiskit.generate_lucj_pass_manager``
 
         Returns:
             Qiskit transpiler Target built from QRMI backend configuration
@@ -150,7 +153,7 @@ class QRMIBackend(QPUBackend):
             raise RuntimeError("QRMI not initialized. Call initialize() first.")
 
         try:
-            from qrmi.primitives.ibm import get_target
+            from qrmi.primitives.ibm import get_backend as _qrmi_get_backend, get_target
         except ImportError as e:
             raise ImportError(
                 "qrmi[ibm] is required. Install: pip install 'qrmi[ibm]'"
@@ -158,7 +161,11 @@ class QRMIBackend(QPUBackend):
 
         self._target = get_target(self._qrmi)
         self.backend = self._target
-        logger.info(f"Built transpiler target from QRMI resource: {self._qrmi.resource_id()}")
+        self._qiskit_backend = _qrmi_get_backend(self._qrmi)
+        logger.info(
+            f"Built transpiler target and Qiskit backend from QRMI resource: "
+            f"{self._qrmi.resource_id()}"
+        )
         return self.backend
 
     def create_sampler(

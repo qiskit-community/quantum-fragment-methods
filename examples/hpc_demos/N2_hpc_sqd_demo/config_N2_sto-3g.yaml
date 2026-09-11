@@ -24,11 +24,6 @@ sqd:
   lucj:
     n_reps: 1
 
-  # Transpilation options (passed to ffsim lucj_pass_manager)
-  transpilation:
-    optimization_level: 0
-    seed_transpiler: 42
-
   # SQD algorithm parameters
   # classical_backend: python uses stock qiskit-addon-sqd; hpc uses C++ bindings
   classical_backend: python
@@ -39,9 +34,7 @@ sqd:
   energy_tol: 1.e-8
   occupancies_tol: 1.e-5
   carryover_threshold: 1.e-4
-  add_hf_string: true
 
   # SBD solver options — sbd-eigensolver Python bindings (container v4.0+)
   sbd:
     device: cpu
-    mpi_ranks: 1

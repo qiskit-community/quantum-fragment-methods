@@ -196,6 +196,8 @@ class EWF(BaseEmbedder):
             n_orbitals = 0
             n_electrons = getattr(vfrag, "nelectron", 0)
             bath_orbitals = None
+            # IAO fragment-only orbital count (stable across bath sizes)
+            n_frag_orbitals = getattr(vfrag, "nao", 0)
 
             if hasattr(vfrag, "cluster") and vfrag.cluster is not None:
                 cluster = vfrag.cluster
@@ -208,10 +210,14 @@ class EWF(BaseEmbedder):
 
             # Fallback to nao if cluster not available
             if n_orbitals == 0:
-                n_orbitals = getattr(vfrag, "nao", 0)
+                n_orbitals = n_frag_orbitals
 
-            # Create metadata
-            metadata = {"bath_orbitals": bath_orbitals, "vayesta_fragment": vfrag}
+            # Create metadata — store both cluster and fragment-only orbital counts
+            metadata = {
+                "bath_orbitals": bath_orbitals,
+                "n_frag_orbitals": n_frag_orbitals,
+                "vayesta_fragment": vfrag,
+            }
 
             # Create Fragment object
             fragment = Fragment(

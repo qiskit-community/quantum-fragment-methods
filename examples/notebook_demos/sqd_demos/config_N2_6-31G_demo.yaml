@@ -1,60 +1,34 @@
-# QPU Configuration
+# N₂ / 6-31G  SQD notebook demo configuration
 #
 # Credentials are read from environment variables (.env), not from this file.
 # See .env.example in this directory.
-#
-# ============================================================================
-# Workflow Configuration
-# ============================================================================
-workflow:
-  basis: '6-31g'  # Basis set for molecular calculations
-
-# ============================================================================
-# Embedder Configuration
-# ============================================================================
-embedder:
-  ewf:
-    bath_type: 'mp2'  # Options: 'mp2', 'dmet', 'full'
-    truncation: 1.e-5  # Bath orbital truncation threshold
-    fragmentation: 'iao'  # Fragmentation scheme: 'iao' or 'atomic'
 
 # ============================================================================
 # QPU Configuration
 # ============================================================================
 qpu:
-  provider: "qrmi"
-  backend_name: "ibm_kingston"
-
+  provider: qrmi
+  backend_name: ibm_kingston     # must match QRMI_JOB_QPU_RESOURCES
 
   sampler_options:
-    default_shots: 20000  # Number of measurement shots
-
+    default_shots: 100000
     dynamical_decoupling:
       enable: true
-      sequence_type: "XY4"  # Options: XY4, XpXm, XY4pm
-
+      sequence_type: XY4
     twirling:
-      enable_gates: false  # Pauli twirling for gate noise mitigation
-      enable_measure: false  # Measurement twirling
+      enable_gates: false
+      enable_measure: false
 
 # ============================================================================
 # SQD Solver Configuration
 # ============================================================================
 sqd:
-  # LUCJ ansatz parameters.
-  # Circuit layout and routing are handled by ffsim's lucj_pass_manager;
-  # max_connection / connect_every_n are no longer used.
   lucj:
     n_reps: 1
 
-  # Transpilation options (passed to ffsim lucj_pass_manager)
-  transpilation:
-    optimization_level: 0
-    seed_transpiler: 42
-
-  # SQD algorithm parameters
-  # classical_backend: python uses stock qiskit-addon-sqd; hpc uses C++ bindings
-  classical_backend: hpc
+  # classical_backend: python — stock qiskit-addon-sqd (no C++ needed on laptop)
+  # classical_backend: sbd    — sbd-eigensolver bindings (HPC/GPU)
+  classical_backend: python
   symmetrize_spin: true
   n_batches: 1
   iterations: 5
@@ -62,17 +36,7 @@ sqd:
   energy_tol: 1.e-8
   occupancies_tol: 1.e-5
   carryover_threshold: 1.e-4
-  add_hf_string: true
 
-  # SBD solver options — sbd-eigensolver Python bindings
+  # sbd: only used when classical_backend: sbd
   sbd:
     device: cpu
-    mpi_ranks: 1
-
-# ============================================================================
-# ext-SQD Configuration (for extended SQD algorithm)
-# ============================================================================
-ext_sqd:
-  dprime_cutoff: 1.e-5  # Cutoff for amplitudes of dominant configurations
-  # Lower cutoff = more configurations included (more accurate, more expensive)
-  # Higher cutoff = fewer configurations (less accurate, less expensive)
