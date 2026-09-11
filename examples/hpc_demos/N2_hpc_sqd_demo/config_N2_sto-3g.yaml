@@ -9,7 +9,7 @@
 # ============================================================================
 qpu:
   provider: "qrmi"
-  backend_name: "ibm_pittsburgh"  # must match QRMI_JOB_QPU_RESOURCES in .qrmi_config
+  backend_name: "ibm_kingston"  # must match QRMI_JOB_QPU_RESOURCES in .qrmi_config
 
   sampler_options:
     default_shots: 1000000

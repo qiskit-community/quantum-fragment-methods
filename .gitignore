@@ -236,10 +236,11 @@ examples/notebook_demos/ewf_sqd_demo/config_glycine_sto-3g.yaml
 examples/serverless/
 
 # Notebook runtime artefacts
-examples/notebook_demos/ewf_sqd_demo/job_id.txt
-examples/notebook_demos/ewf_sqd_demo/vlog.txt
-examples/notebook_demos/sqd_demos/sqd_results/
-examples/notebook_demos/sqd_demos/job_id.txt
+examples/notebook_demos/**/*.npy
+examples/notebook_demos/**/*.pkl
+examples/notebook_demos/**/job_id.txt
+examples/notebook_demos/**/vlog.txt
+examples/notebook_demos/**/sqd_results/
 
 # .env credential files (belt-and-suspenders for notebook subdirs)
 examples/notebook_demos/**/.env

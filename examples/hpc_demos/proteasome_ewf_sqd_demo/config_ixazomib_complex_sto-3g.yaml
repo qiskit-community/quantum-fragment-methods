@@ -39,7 +39,7 @@ solver_selection:
 # ============================================================================
 qpu:
   provider: qrmi
-  backend_name: ibm_pittsburgh
+  backend_name: ibm_kingston
 
   sampler_options:
     default_shots: 1000000

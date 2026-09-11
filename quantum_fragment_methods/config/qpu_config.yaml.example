@@ -16,7 +16,7 @@ qpu:
   # provider: qrmi  — env-var auth; preferred for notebooks and HPC pipelines
   # provider: ibm_quantum  — token/CRN auth via IBMQuantumBackend (local use only)
   provider: "qrmi"
-  backend_name: "ibm_pittsburgh"   # must match QRMI_JOB_QPU_RESOURCES prefix in .env / .qrmi_config
+  backend_name: "ibm_kingston"   # must match QRMI_JOB_QPU_RESOURCES prefix in .env / .qrmi_config
 
   sampler_options:
     default_shots: 1000000  # Number of measurement shots

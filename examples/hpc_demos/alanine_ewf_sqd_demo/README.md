@@ -73,12 +73,12 @@ Open `.hpc_config` and set these 5 values:
 
 ```bash
 cat > $HPC_PROJECT/.qrmi_config << 'EOF'
-export QRMI_JOB_QPU_RESOURCES=ibm_pittsburgh
+export QRMI_JOB_QPU_RESOURCES=ibm_kingston
 export QRMI_JOB_QPU_TYPES=qiskit-runtime-service
-export ibm_pittsburgh_QRMI_IBM_QRS_ENDPOINT=https://quantum.cloud.ibm.com/api/v1
-export ibm_pittsburgh_QRMI_IBM_QRS_IAM_ENDPOINT=https://iam.cloud.ibm.com
-export ibm_pittsburgh_QRMI_IBM_QRS_IAM_APIKEY=your_apikey        # ← your key here
-export ibm_pittsburgh_QRMI_IBM_QRS_SERVICE_CRN=your_crn          # ← your CRN here
+export ibm_kingston_QRMI_IBM_QRS_ENDPOINT=https://quantum.cloud.ibm.com/api/v1
+export ibm_kingston_QRMI_IBM_QRS_IAM_ENDPOINT=https://iam.cloud.ibm.com
+export ibm_kingston_QRMI_IBM_QRS_IAM_APIKEY=your_apikey        # ← your key here
+export ibm_kingston_QRMI_IBM_QRS_SERVICE_CRN=your_crn          # ← your CRN here
 EOF
 chmod 600 $HPC_PROJECT/.qrmi_config
 ```

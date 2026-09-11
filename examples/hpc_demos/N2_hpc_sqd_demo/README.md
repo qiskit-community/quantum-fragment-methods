@@ -86,19 +86,19 @@ Create a credentials file on the shared filesystem with your IBM Quantum API key
 ```bash
 # Run this on the cluster (or copy the file there via scp/rsync)
 cat > $HPC_PROJECT/.qrmi_config << 'EOF'
-export QRMI_JOB_QPU_RESOURCES=ibm_pittsburgh
+export QRMI_JOB_QPU_RESOURCES=ibm_kingston
 export QRMI_JOB_QPU_TYPES=qiskit-runtime-service
-export ibm_pittsburgh_QRMI_IBM_QRS_ENDPOINT=https://quantum.cloud.ibm.com/api/v1
-export ibm_pittsburgh_QRMI_IBM_QRS_IAM_ENDPOINT=https://iam.cloud.ibm.com
-export ibm_pittsburgh_QRMI_IBM_QRS_IAM_APIKEY=your_apikey        # ← your key here
-export ibm_pittsburgh_QRMI_IBM_QRS_SERVICE_CRN=your_crn          # ← your CRN here
+export ibm_kingston_QRMI_IBM_QRS_ENDPOINT=https://quantum.cloud.ibm.com/api/v1
+export ibm_kingston_QRMI_IBM_QRS_IAM_ENDPOINT=https://iam.cloud.ibm.com
+export ibm_kingston_QRMI_IBM_QRS_IAM_APIKEY=your_apikey        # ← your key here
+export ibm_kingston_QRMI_IBM_QRS_SERVICE_CRN=your_crn          # ← your CRN here
 EOF
 chmod 600 $HPC_PROJECT/.qrmi_config
 ```
 
 > **Note on variable naming:** the prefix before `_QRMI_` must exactly match the
 > value of `QRMI_JOB_QPU_RESOURCES`. If you use a different backend (e.g.
-> `ibm_torino`), rename all `ibm_pittsburgh_QRMI_*` variables to `ibm_torino_QRMI_*`
+> `ibm_torino`), rename all `ibm_kingston_QRMI_*` variables to `ibm_torino_QRMI_*`
 > and update `QRMI_JOB_QPU_RESOURCES` to match. Also update `backend_name` in
 > `config_N2_sto-3g.yaml`.
 
@@ -245,7 +245,7 @@ python 02_run_sqd.py --config config_N2_sto-3g.yaml --force-resubmit
 
 ## Expected results
 
-Verified run on IBM SCC H200, `ibm_pittsburgh` QPU.
+Verified run on IBM SCC H200, `ibm_kingston` QPU.
 
 | Method | Total Energy (Ha) | Error vs FCI |
 |---|---|---|
