@@ -228,3 +228,6 @@ examples/hpc_sqd_demo/config_local.yaml
 executable/
 # SBD source cloned onto GPFS for native compile (not part of the repo)
 sbd_src/
+
+# Glycine notebook config — may contain real IBM Quantum token/CRN
+examples/notebook_demos/ewf_sqd_demo/config_glycine_sto-3g.yaml
