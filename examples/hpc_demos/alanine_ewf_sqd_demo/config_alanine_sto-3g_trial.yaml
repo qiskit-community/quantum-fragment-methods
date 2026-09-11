@@ -53,10 +53,10 @@ qpu:
 # SQD Solver Configuration (unused in trial)
 # ============================================================================
 sqd:
+  # Circuit layout and routing are handled by ffsim's lucj_pass_manager;
+  # max_connection / connect_every_n are no longer used.
   lucj:
     n_reps: 1
-    max_connection: 12
-    connect_every_n: 4
 
   transpilation:
     optimization_level: 0

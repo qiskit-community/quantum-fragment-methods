@@ -329,7 +329,17 @@ def _patched_solve_fragments():
                 max_wait_time=args.max_wait_time,
             )
         else:
-            result = solver.solve_from_integrals(h1e, h2e, norb, nocc, compute_rdms=True)
+            try:
+                result = solver.solve_from_integrals(h1e, h2e, norb, nocc, compute_rdms=True)
+            except RuntimeError as _ccsd_err:
+                if "CCSD calculation failed" not in str(_ccsd_err):
+                    raise
+                print(f"  WARNING: fragment {frag_id} CCSD failed ({_ccsd_err}); "
+                      f"retrying with scf_level_shift=0.3 and level_shift=0.2")
+                result = solver.solve_from_integrals(
+                    h1e, h2e, norb, nocc, compute_rdms=True,
+                    scf_level_shift=0.3, level_shift=0.2, max_cycle=100,
+                )
 
         timings[frag_id] = _time.time() - _t0
 

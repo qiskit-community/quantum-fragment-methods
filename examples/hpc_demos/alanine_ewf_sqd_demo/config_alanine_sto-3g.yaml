@@ -47,13 +47,13 @@ qpu:
 # SQD Solver Configuration
 # ============================================================================
 sqd:
-  # LUCJ ansatz parameters
+  # LUCJ ansatz parameters.
+  # Circuit layout and routing are handled by ffsim's lucj_pass_manager;
+  # max_connection / connect_every_n are no longer used.
   lucj:
     n_reps: 1
-    max_connection: 12
-    connect_every_n: 4
 
-  # Transpilation options
+  # Transpilation options (passed to ffsim lucj_pass_manager)
   transpilation:
     optimization_level: 0
     seed_transpiler: 42
@@ -78,8 +78,6 @@ sqd:
                          # Raise and launch with "mpirun -np N python ..." to distribute
                          # batches across ranks (MPI parallelism sub-task).
 
-  # Circuit persistence
-  # Both the abstract (pre-transpile) and ISA (post-transpile) circuits are saved
-  # in QPY format under this directory, one sub-folder per fragment.
-  # Set to null or remove this key to skip circuit saving.
+  # Circuit persistence — ISA circuit saved per fragment in QPY format.
+  # Set to null or remove to skip circuit saving.
   circuit_save_dir: circuits

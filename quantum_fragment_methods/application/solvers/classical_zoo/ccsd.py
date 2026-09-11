@@ -134,6 +134,7 @@ class CCSD(BaseSolver):
         conv_tol = kwargs.get("conv_tol", self.conv_tol)
         max_cycle = kwargs.get("max_cycle", self.max_cycle)
         diis_space = kwargs.get("diis_space", self.diis_space)
+        level_shift = kwargs.get("level_shift", 0.0)
 
         # Pop internal override before forwarding kwargs to PySCF
         _ao2mo_override = kwargs.pop("_ao2mo_override", None)
@@ -144,6 +145,7 @@ class CCSD(BaseSolver):
             ccsd.conv_tol = conv_tol
             ccsd.max_cycle = max_cycle
             ccsd.diis_space = diis_space
+            ccsd.level_shift = level_shift
             ccsd.verbose = self.verbose
             if _ao2mo_override is not None:
                 ccsd.ao2mo = _ao2mo_override.__get__(ccsd, type(ccsd))
@@ -246,6 +248,7 @@ class CCSD(BaseSolver):
         mf.get_hcore = lambda *args: h1e
         mf.get_ovlp  = lambda *args: np.eye(norb)
         mf._eri      = _ao2mo.restore(1, h2e, norb)
+        mf.level_shift = kwargs.pop("scf_level_shift", 0.0)
         mf.kernel()   # self-consistent; sets mo_coeff, mo_energy, mo_occ
 
         # ── Step 2: transform h2e into canonical MO basis ────────────────────

@@ -163,7 +163,7 @@ class TestAlanineSmokeLocal:
         from quantum_fragment_methods.application.solvers.quantum_zoo.utils import (
             make_sbd_sci_solver,
         )
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver as mss2,
         )
         assert make_sbd_sci_solver is mss2

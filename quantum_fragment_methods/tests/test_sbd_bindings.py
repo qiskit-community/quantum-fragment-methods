@@ -53,7 +53,7 @@ class TestImportGuard:
     """make_sbd_sci_solver raises a clear ImportError when sbd is not installed."""
 
     def test_raises_import_error_when_sbd_missing(self):
-        import quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local as fl
+        import quantum_fragment_methods.application.solvers.quantum_zoo.sqd as fl
 
         # Temporarily pretend sbd didn't import
         original = fl._sbd_solve_sci_batch
@@ -74,12 +74,12 @@ class TestMakeSbdSciSolverMocked:
 
     @pytest.fixture(autouse=True)
     def _patch_sbd(self):
-        """Inject mock solve_sci_batch and DeviceConfig into fermion_local."""
+        """Inject mock solve_sci_batch and DeviceConfig into sqd module."""
         mock_solve = MagicMock(name="solve_sci_batch")
         mock_device_cls = MagicMock(name="DeviceConfig")
         mock_device_cls.return_value = MagicMock(name="DeviceConfig_instance")
 
-        import quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local as fl
+        import quantum_fragment_methods.application.solvers.quantum_zoo.sqd as fl
         with (
             patch.object(fl, "_sbd_solve_sci_batch", mock_solve),
             patch.object(fl, "_SBDDeviceConfig", mock_device_cls),
@@ -89,21 +89,21 @@ class TestMakeSbdSciSolverMocked:
             yield
 
     def test_returns_partial(self):
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver,
         )
         solver = make_sbd_sci_solver(_make_dummy_sbd_config())
         assert isinstance(solver, partial)
 
     def test_partial_wraps_solve_sci_batch(self):
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver,
         )
         solver = make_sbd_sci_solver(_make_dummy_sbd_config())
         assert solver.func is self._mock_solve
 
     def test_device_config_cpu(self):
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver,
         )
         make_sbd_sci_solver(_make_dummy_sbd_config(device="cpu"))
@@ -111,7 +111,7 @@ class TestMakeSbdSciSolverMocked:
 
     def test_device_config_kwarg_default(self):
         """device kwarg default is 'cpu' when config has no 'device' key."""
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver,
         )
         cfg = {k: v for k, v in _make_dummy_sbd_config().items() if k != "device"}
@@ -120,7 +120,7 @@ class TestMakeSbdSciSolverMocked:
 
     def test_device_config_kwarg_overridden_by_config_key(self):
         """sbd_config['device'] takes precedence over the device= kwarg."""
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver,
         )
         make_sbd_sci_solver(_make_dummy_sbd_config(device="gpu"), device="cpu")
@@ -128,7 +128,7 @@ class TestMakeSbdSciSolverMocked:
 
     def test_non_tpb_keys_stripped(self):
         """exe_path, cpus_per_batch, device, mri_ranks must not reach solve_sci_batch."""
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver,
         )
         cfg = _make_dummy_sbd_config()
@@ -143,7 +143,7 @@ class TestMakeSbdSciSolverMocked:
 
     def test_tpb_keys_forwarded(self):
         """TPB_SBD knobs are passed through untouched."""
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver,
         )
         cfg = _make_dummy_sbd_config(method="davidson", eps=1e-10, max_it=100)
@@ -154,14 +154,14 @@ class TestMakeSbdSciSolverMocked:
         assert forwarded["max_it"] == 100
 
     def test_mpi_comm_none_by_default(self):
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver,
         )
         solver = make_sbd_sci_solver(_make_dummy_sbd_config())
         assert solver.keywords["mpi_comm"] is None
 
     def test_mpi_comm_forwarded(self):
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver,
         )
         fake_comm = MagicMock(name="MPI.COMM_WORLD")
@@ -170,7 +170,7 @@ class TestMakeSbdSciSolverMocked:
 
     def test_old_exe_path_config_does_not_raise(self):
         """Old-style config with exe_path is silently stripped — no ValueError."""
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver,
         )
         old_cfg = {
@@ -218,7 +218,7 @@ class TestSbdIntegration:
         assert "cpu" in backends, f"Expected 'cpu' in {backends}"
 
     def test_make_sbd_sci_solver_real(self):
-        from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+        from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
             make_sbd_sci_solver,
         )
         solver = make_sbd_sci_solver({"device": "cpu", "method": "davidson"})

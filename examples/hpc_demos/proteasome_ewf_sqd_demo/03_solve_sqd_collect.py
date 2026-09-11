@@ -48,7 +48,7 @@ logging.basicConfig(
 from quantum_fragment_methods.application.embedding.base import EmbeddingResult, Fragment
 from quantum_fragment_methods.application.solvers.base import SolverResult
 from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import SQDSolver
-from quantum_fragment_methods.application.solvers.quantum_zoo.utils.fermion_local import (
+from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import (
     diagonalize_fermionic_hamiltonian,
     counts_to_bit_array,
 )

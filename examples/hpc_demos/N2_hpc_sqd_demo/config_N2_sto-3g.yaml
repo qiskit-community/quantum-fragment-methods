@@ -18,13 +18,13 @@ qpu:
 # SQD Solver Configuration
 # ============================================================================
 sqd:
-  # LUCJ ansatz parameters
+  # LUCJ ansatz parameters.
+  # Circuit layout and routing are handled by ffsim's lucj_pass_manager;
+  # max_connection / connect_every_n are no longer used.
   lucj:
     n_reps: 1
-    max_connection: 12
-    connect_every_n: 4
 
-  # Transpilation options
+  # Transpilation options (passed to ffsim lucj_pass_manager)
   transpilation:
     optimization_level: 0
     seed_transpiler: 42
@@ -41,10 +41,7 @@ sqd:
   carryover_threshold: 1.e-4
   add_hf_string: true
 
-  # SBD solver options
-  # exe_path: /opt/executable/diag is baked into the container image (v3.0+).
-  #           Falls back to /workspace/executable/diag if running with the old image
-  #           (binary compiled natively on GPFS).
+  # SBD solver options — sbd-eigensolver Python bindings (container v4.0+)
   sbd:
-    exe_path: '/opt/executable/diag'
-    cpus_per_batch: 8
+    device: cpu
+    mpi_ranks: 1

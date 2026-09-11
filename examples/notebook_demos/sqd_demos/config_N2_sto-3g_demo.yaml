@@ -1,7 +1,7 @@
-# QPU Configuration Template
+# QPU Configuration
 #
-# Copy this file to config.yaml and fill in your credentials.
-# IMPORTANT: config.yaml is gitignored - never commit credentials!
+# Credentials are read from environment variables (.env), not from this file.
+# See .env.example in this directory.
 #
 # ============================================================================
 # Workflow Configuration
@@ -22,16 +22,9 @@ embedder:
 # QPU Configuration
 # ============================================================================
 qpu:
-  provider: "ibm_quantum"
+  provider: "qrmi"
   backend_name: "ibm_pittsburgh"
 
-  credentials:
-    channel: "ibm_cloud"  # or "ibm_quantum" for IBM Quantum Network
-    # Get your token from: https://quantum.ibm.com/account
-    token: "<YOUR_TOKEN_HERE>"
-    # Instance format: crn:v1:bluemix:public:quantum-computing:REGION:a/ACCOUNT_ID:SERVICE_ID::
-    # Find at: https://quantum.ibm.com/account
-    instance: "<YOUR_CRN_HERE>"
 
   sampler_options:
     default_shots: 1000  # Number of measurement shots
@@ -48,36 +41,33 @@ qpu:
 # SQD Solver Configuration
 # ============================================================================
 sqd:
-  # LUCJ ansatz parameters
+  # LUCJ ansatz parameters.
+  # Circuit layout and routing are handled by ffsim's lucj_pass_manager;
+  # max_connection / connect_every_n are no longer used.
   lucj:
-    n_reps: 1  # Number of LUCJ repetitions
-    max_connection: 12  # Maximum orbital index for alpha-beta connections
-    connect_every_n: 4  # Connect alpha-beta pairs every N qubits (for heavy-hex topology)
-  
-  # Transpilation options
+    n_reps: 1
+
+  # Transpilation options (passed to ffsim lucj_pass_manager)
   transpilation:
-    optimization_level: 0  # Qiskit optimization level (0-3)
-    seed_transpiler: 42  # Seed for reproducibility
-  
+    optimization_level: 0
+    seed_transpiler: 42
+
   # SQD algorithm parameters
   # classical_backend: python uses stock qiskit-addon-sqd; hpc uses C++ bindings
   classical_backend: hpc
-  symmetrize_spin: True # Usage of identical alpha and beta strings. Right now only "true" is supported
-  n_batches: 1  # Number of batches to run in parallel (10 usually best)
-  iterations: 3  # Number of self-consistent iterations (5 usually best)
-  samples_per_batch: 200  # Number of measurement outcomes per batch (3000 usually best)
-  energy_tol: 1.e-8  # Energy convergence tolerance
-  occupancies_tol: 1.e-5  # Occupancy convergence tolerance
-  carryover_threshold: 1.e-4  # Threshold for carrying over configurations
-  add_hf_string: true  # Add Hartree-Fock string to all subspaces (critical for challenging sampling)
+  symmetrize_spin: true
+  n_batches: 1
+  iterations: 3
+  samples_per_batch: 200
+  energy_tol: 1.e-8
+  occupancies_tol: 1.e-5
+  carryover_threshold: 1.e-4
+  add_hf_string: true
 
-  # SBD solver options
+  # SBD solver options — sbd-eigensolver Python bindings
   sbd:
-    exe_path: '/workspace/executable/diag'  # Path to SBD executable
-    cpus_per_batch: 8  # Number of CPUs per batch (don't use less than 8)
-    # Options below are used in HPC runs. Will be added in future updates.
-    #submission_delay: 1  # Delay between job submissions (seconds)
-    #monitor_delay: 10  # Delay between job status checks (seconds)
+    device: cpu
+    mpi_ranks: 1
 
 # ============================================================================
 # ext-SQD Configuration (for extended SQD algorithm)
