@@ -230,7 +230,6 @@ executable/
 sbd_src/
 
 # Glycine notebook config — may contain real IBM Quantum token/CRN
-examples/notebook_demos/ewf_sqd_demo/config_glycine_sto-3g.yaml
 
 # Serverless / QDC challenge work — kept private, never committed
 examples/serverless/
