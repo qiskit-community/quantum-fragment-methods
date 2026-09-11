@@ -1,70 +1,70 @@
 # QPU Configuration Template
 #
-# Copy this file to config.yaml and fill in your credentials.
-# IMPORTANT: config.yaml is gitignored - never commit credentials!
+# Copy this file to config.yaml and fill in any non-credential settings.
 #
-# For container workflows, mount this file:
+# IMPORTANT: credentials are NEVER stored here.
+#   • Notebooks: copy .env.example → .env and fill in your IBM Quantum API key + CRN.
+#   • HPC pipelines: set up .qrmi_config on the shared filesystem (see IBM-SCC-BUILD-GUIDE.md).
+#
+# For container workflows, mount this config file:
 #   podman run -v $(pwd)/config.yaml:/workspace/config.yaml quantum-fragment-methods
 
 # ============================================================================
 # QPU Configuration
 # ============================================================================
 qpu:
-  provider: "ibm_quantum"
-  backend_name: "ibm_fez"  
-  
-  credentials:
-    channel: "ibm_cloud"  # or "ibm_quantum" for IBM Quantum Network
-    # Get your token from: https://quantum.ibm.com/account
-    token: "YOUR_IBM_QUANTUM_TOKEN_HERE"
-    # Instance format: crn:v1:bluemix:public:quantum-computing:REGION:a/ACCOUNT_ID:SERVICE_ID::
-    # Find at: https://quantum.ibm.com/account
-    instance: "YOUR_IBM_QUANTUM_INSTANCE_HERE"
-  
+  # provider: qrmi  — env-var auth; preferred for notebooks and HPC pipelines
+  # provider: ibm_quantum  — token/CRN auth via IBMQuantumBackend (local use only)
+  provider: "qrmi"
+  backend_name: "ibm_pittsburgh"   # must match QRMI_JOB_QPU_RESOURCES prefix in .env / .qrmi_config
+
   sampler_options:
     default_shots: 1000000  # Number of measurement shots
-    
+
     dynamical_decoupling:
       enable: true
       sequence_type: "XY4"  # Options: XY4, XpXm, XY4pm
-    
+
     twirling:
-      enable_gates: false  # Pauli twirling for gate noise mitigation
+      enable_gates: false   # Pauli twirling for gate noise mitigation
       enable_measure: false  # Measurement twirling
 
 # ============================================================================
 # SQD Solver Configuration
 # ============================================================================
 sqd:
-  # LUCJ ansatz parameters
+  # LUCJ ansatz parameters.
+  # Circuit layout and routing are handled by ffsim's lucj_pass_manager;
+  # max_connection / connect_every_n are no longer used.
   lucj:
     n_reps: 1  # Number of LUCJ repetitions
-    max_connection: 12  # Maximum orbital index for alpha-beta connections
-    connect_every_n: 4  # Connect alpha-beta pairs every N qubits (for heavy-hex topology)
-  
-  # Transpilation options
+
+  # Transpilation options (passed to ffsim lucj_pass_manager)
   transpilation:
-    optimization_level: 0  # Qiskit optimization level (0-3)
-    seed_transpiler: 0  # Seed for reproducibility
-  
+    optimization_level: 0  # Qiskit optimization level (0–3)
+    seed_transpiler: 42    # Seed for reproducibility
+
   # SQD algorithm parameters
   # classical_backend: python uses stock qiskit-addon-sqd; hpc uses C++ bindings
   classical_backend: hpc
-  symmetrize_spin: True  # Identical alpha/beta CI strings (required for current SBD)
-  n_batches: 10  # Number of batches to run in parallel (10 usually best)
-  iterations: 5  # Number of self-consistent iterations (5 usually best)
-  samples_per_batch: 3000  # Number of measurement outcomes per batch (3000 usually best)
-  energy_tol: 1.e-8  # Energy convergence tolerance
-  occupancies_tol: 1.e-5  # Occupancy convergence tolerance
-  carryover_threshold: 1.e-4  # Threshold for carrying over configurations
-  add_hf_string: true  # Add Hartree-Fock string to all subspaces (critical for challenging sampling)
-  
-  # SBD solver options
+  symmetrize_spin: true     # Identical alpha/beta CI strings (required for current SBD)
+  n_batches: 10             # Number of batches (10 usually best)
+  iterations: 5             # Self-consistent iterations (5 usually best)
+  samples_per_batch: 3000   # Measurement outcomes per batch (3000 usually best)
+  energy_tol: 1.e-8         # Energy convergence tolerance
+  occupancies_tol: 1.e-5    # Occupancy convergence tolerance
+  carryover_threshold: 1.e-4  # Threshold for carrying over configurations between iterations
+  add_hf_string: true       # Add Hartree-Fock string to all subspaces (critical for challenging sampling)
+
+  # SBD solver options — sbd-eigensolver Python bindings
   sbd:
-    exe_path: '/workspace/executable/diag'  # Path to SBD executable
-    cpus_per_batch: 8  # Number of CPUs per batch (don't use less than 8)
-    submission_delay: 1  # Delay between job submissions (seconds)
-    monitor_delay: 60  # Delay between job status checks (seconds)
+    device: cpu    # cpu | gpu (gpu requires container v4.0+ with CUDA)
+    mpi_ranks: 1   # SBD Davidson uses OMP threads internally;
+                   # raise and launch with "mpirun -np N" to distribute batches
+
+  # Circuit persistence — ISA circuit saved per fragment in QPY format.
+  # Set to null or remove to skip circuit saving.
+  circuit_save_dir: circuits
 
 # ============================================================================
 # ext-SQD Configuration (for extended SQD algorithm)
