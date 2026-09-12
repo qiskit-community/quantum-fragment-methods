@@ -204,9 +204,15 @@ class QFWorkflow:
         if self.mf is None:
             raise RuntimeError("Must run mean-field calculation first")
 
+        # Persist the Vayesta DUMP dumpfile alongside the checkpoint directory
+        # so it survives after the EWF run and can be reloaded in later cells.
+        dumpfile = str(Path(self.save_path) / "vayesta_dump.h5")
+        Path(self.save_path).mkdir(parents=True, exist_ok=True)
+
         # Pass fragmentation scheme and any additional options to embedder
         self.embedding_result = self.embedder.create_fragments(
-            self.mf, fragmentation=self.fragmentation, **self.embedding_options
+            self.mf, fragmentation=self.fragmentation, dumpfile=dumpfile,
+            **self.embedding_options
         )
         return self.embedding_result
 
