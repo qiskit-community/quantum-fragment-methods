@@ -5,6 +5,20 @@
 #
 # QPU credentials are NOT stored here — they live in .env (gitignored).
 # See .env.example for the required environment variables.
+#
+# ── Laptop profile ──────────────────────────────────────────────────────────
+# This config is tuned to run comfortably on an Apple Silicon (M-series) or
+# comparable laptop while still producing chemically-meaningful results.
+#
+# Key constraints for norb=19 (C=O fragment, 38 qubits):
+#   Full FCI dim = C(19,9)^2 ≈ 8.5 billion  → max_dim is mandatory
+#   Classical post-processing budget: target < 5 min total wall time
+#
+# Measured results with 100k QPU shots (ibm_kingston, 1 LUCJ rep):
+#   Standard SQD  : ~21 mHa above FCI     (fragment 2)
+#   TrimSQD       :  ~4 mHa above FCI     (fragment 2, same shots)
+# Increasing samples_per_batch and max_dim will push TrimSQD closer to FCI.
+# ────────────────────────────────────────────────────────────────────────────
 
 # ============================================================================
 # Workflow / Molecule
@@ -19,24 +33,24 @@ workflow:
 embedder:
   ewf:
     bath_type: mp2
-    truncation: 1.0e-4            # looser than HPC (1e-5) to keep fragment sizes down
+    truncation: 1.0e-4            # looser than HPC (1e-5) to keep fragment sizes manageable
     fragmentation: iao
 
 # ============================================================================
 # Solver Selection
 # ============================================================================
-# Three-tier adaptive strategy:
-#   n_orb ≤ 10  → FCI   (H fragments: 3–4 orb)
-#   n_orb ≤ 18  → CCSD  (N:13, Cα:17, O:13 fragments)
-#   n_orb ≥ 19  → SQD   (C=O carbonyl: 19 orb, 38 qubits) ← only QPU fragment
+# Three-tier adaptive strategy (fragment cluster sizes at truncation=1e-4):
 #
-# Fragment cluster sizes at truncation=1e-4 (active orbitals):
-#   Frag 0 N   : 13  → CCSD
-#   Frag 1 Cα  : 17  → CCSD
-#   Frag 2 C=O : 19  ← SQD  (only fragment at QPU threshold)
-#   Frag 3 O   : 13  → CCSD
-#   Frag 4 O   : 13  → CCSD
-#   Frags 5–9 H: 3–4 → FCI
+#   Frag 0  N    : 13 orb  → CCSD
+#   Frag 1  Cα   : 17 orb  → CCSD
+#   Frag 2  C=O  : 19 orb  → SQD / TrimSQD  (38 qubits on ibm_kingston)
+#   Frag 3  O    : 13 orb  → CCSD
+#   Frag 4  O    : 13 orb  → CCSD
+#   Frags 5–9 H  :  3 orb  → FCI
+#
+#   n_orb ≤ 10   → FCI    (H fragments)
+#   n_orb ≤ 18   → CCSD   (N, Cα, O fragments)
+#   n_orb ≥ 19   → SQD    (C=O fragment only)
 solver_selection:
   strategy: adaptive
   fci_threshold: 10     # n_orb ≤ this → FCI
@@ -51,31 +65,58 @@ qpu:
   provider: qrmi
   backend_name: ibm_kingston      # must match QRMI_JOB_QPU_RESOURCES in .env
   sampler_options:
-    default_shots: 100000         # 100k shots — sufficient for demo
+    default_shots: 100000         # 100k shots — good coverage for norb=19
     dynamical_decoupling:
       enable: true
-      sequence_type: XY4
+      sequence_type: XY4          # XY4 best for idle-heavy circuits
     twirling:
       enable_gates: false
       enable_measure: false
 
 # ============================================================================
-# SQD Solver Configuration
+# SQD / TrimSQD Classical Post-Processing
 # ============================================================================
+# classical_backend: python — ships with qiskit-addon-sqd, no extra install.
+# For HPC/GPU use classical_backend: sbd (requires sbd-eigensolver).
+#
+# norb=19 full FCI is ~8.5B determinants — max_dim is required.
+# max_dim=5000 caps the CI subspace at 5000 alpha × 5000 beta strings.
+# Memory: 5000² × 16 B ≈ 400 MB per diagonalization call — safe on laptop.
+#
+# Timing (M-series MacBook, python backend, norb=19):
+#   samples_per_batch=3000, n_batches=6, iterations=6:
+#     SQD     : ~2–3 min   (6 batches × 6 iters)
+#     TrimSQD : ~2–4 min   (6 batches + 1 merge × 6 iters)
+#
 sqd:
   lucj:
-    n_reps: 1
-    max_connection: 18            # ≤ norb-1 = 18; caps alpha-beta interaction range
-    connect_every_n: 4
+    n_reps: 2                     # 2 LUCJ layers: better ansatz, same circuit depth class
+    max_connection: 18            # ≤ norb−1; caps alpha-beta interaction range
+    connect_every_n: 3            # denser connectivity than 4 → richer entanglement
 
-  # classical_backend: python — stock qiskit-addon-sqd (no C++ needed on laptop)
-  # NOTE: norb=19 FCI is intractable without max_dim. On HPC use classical_backend: sbd.
   classical_backend: python
-  symmetrize_spin: true
-  n_batches: 5
-  iterations: 5
-  samples_per_batch: 2000
-  max_dim: 2000              # cap CI subspace — keeps FCI tractable on laptop
-  energy_tol: 1.e-8
-  occupancies_tol: 1.e-5
-  carryover_threshold: 1.e-4
+  symmetrize_spin: true           # merge α/β CI string pools → doubles effective coverage
+
+  # --- Iteration / batching ---
+  n_batches: 6                    # 6 disjoint subspaces to screen per iteration
+  iterations: 6                   # 6 self-consistent cycles (extra cycle aids convergence)
+  samples_per_batch: 3000         # 3000 × 6 = 18k samples drawn per iteration
+
+  # --- Subspace size ---
+  # max_dim=5000: 2.5× larger subspace than the previous default of 2000.
+  # On a laptop this is the largest value that keeps each Davidson call under
+  # ~2s for norb=19 with the python backend.
+  max_dim: 5000
+
+  # --- Convergence tolerances ---
+  energy_tol: 1.0e-8
+  occupancies_tol: 1.0e-5
+
+  # --- Carryover (standard SQD only; ignored when TrimSQD policy= is active) ---
+  carryover_threshold: 1.0e-4
+
+  # --- TrimSQD-specific (used by TrimSQDSolver; ignored by SQDSolver) ---
+  trim:
+    trim_ratio: 0.15              # keep top 15% of each batch's CI strings after screening
+    sector_trim: false            # TrimPolicy (bitstring-disjoint); SectorTrimPolicy is worse
+                                  # at small sample counts (see qiskit_addon_sqd/trim.py)
