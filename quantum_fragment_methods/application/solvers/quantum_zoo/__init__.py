@@ -16,8 +16,9 @@ from __future__ import annotations
 
 from quantum_fragment_methods.application.solvers.quantum_zoo.ext_sqd import extSQD
 from quantum_fragment_methods.application.solvers.quantum_zoo.sqd import SQDSolver
+from quantum_fragment_methods.application.solvers.quantum_zoo.trim_sqd import TrimSQDSolver
 
 # Backward compatibility alias
 SQD = SQDSolver
 
-__all__ = ["extSQD", "SQD", "SQDSolver"]
+__all__ = ["extSQD", "SQD", "SQDSolver", "TrimSQDSolver"]

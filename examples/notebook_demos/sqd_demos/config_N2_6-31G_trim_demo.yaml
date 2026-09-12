@@ -1,0 +1,53 @@
+# N₂ / 6-31G  TrimSQD notebook demo configuration
+#
+# Same system as config_N2_6-31G_demo.yaml — this config adds TrimSQD-specific
+# parameters.  The QPU job is shared with the standard SQD demo (same checkpoint).
+#
+# Credentials are read from environment variables (.env), not from this file.
+# See .env.example in this directory.
+
+# ============================================================================
+# QPU Configuration
+# ============================================================================
+qpu:
+  provider: qrmi
+  backend_name: ibm_kingston     # must match QRMI_JOB_QPU_RESOURCES
+
+  sampler_options:
+    default_shots: 100000
+    dynamical_decoupling:
+      enable: true
+      sequence_type: XY4
+    twirling:
+      enable_gates: false
+      enable_measure: false
+
+# ============================================================================
+# SQD Solver Configuration
+# ============================================================================
+sqd:
+  lucj:
+    n_reps: 1
+
+  # ── Standard SQD baseline (for comparison) ────────────────────────────────
+  classical_backend: python
+  symmetrize_spin: true
+  n_batches: 5
+  iterations: 5
+  samples_per_batch: 300
+  max_dim: 500               # keep FCI tractable on laptop (norb=8 for N₂ 6-31G)
+  energy_tol: 1.e-8
+  occupancies_tol: 1.e-5
+  carryover_threshold: 1.e-4
+
+  # ── TrimSQD policy parameters ──────────────────────────────────────────────
+  trim:
+    trim_ratio: 0.5           # retain top 50% of CI strings from each batch
+    max_strings_per_trim: 250 # hard cap per batch/spin-sector
+    max_carryover:            # null → no cap on merged carryover
+    sector_trim: false        # false → TrimPolicy;  true → SectorTrimPolicy
+    partition_carryover: true # SectorTrimPolicy only
+
+  # sbd: only used when classical_backend: sbd
+  sbd:
+    device: cpu
