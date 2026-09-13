@@ -90,9 +90,9 @@ qpu:
 #
 sqd:
   lucj:
-    n_reps: 2                     # 2 LUCJ layers: better ansatz, same circuit depth class
-    max_connection: 18            # ≤ norb−1; caps alpha-beta interaction range
-    connect_every_n: 3            # denser connectivity than 4 → richer entanglement
+    n_reps: 2                     # 2 LUCJ layers: richer ansatz, same circuit depth class
+    max_connection: 18            # ≤ norb−1; caps orbital index of alpha-beta pairs
+    connect_every_n: 4            # ffsim default for heavy-hex; every_n=3 strips all pairs
 
   classical_backend: python
   symmetrize_spin: true           # merge α/β CI string pools → doubles effective coverage
