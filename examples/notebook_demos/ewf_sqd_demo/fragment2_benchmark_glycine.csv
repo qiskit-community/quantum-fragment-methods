@@ -1,0 +1,4 @@
+Solver,Fragment 2 energy (Ha),Δ from FCI (mHa),Δ from FCI (kcal/mol)
+FCI (CASCI),-143.00695148,0.0000,0.0000
+Standard SQD,-143.00251279,4.4387,2.7853
+TrimSQD,-142.97713201,29.8195,18.7120

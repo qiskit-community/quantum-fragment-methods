@@ -1,4 +1,5 @@
-Method,Embedding,Solver(s),Fragments,QPU,Total energy (Ha),Δ from ref (mHa)
+Method,Embedding,Solver(s),Fragments,QPU,Total energy (Ha),Δ from CCSD ref (mHa)
 Full CCSD,None,CCSD,1,No,-279.21623926,0.0000
 EWF+CCSD,EWF,CCSD × all frags,10,No,-279.27127361,-55.0344
-EWF+(FCI+SQD),EWF,FCI×5 + CCSD×4 + SQD×1,10,ibm_kingston,-279.27001415,-53.7749
+EWF+(FCI+SQD),EWF,FCI×5 + CCSD×4 + SQD×1,10,ibm_kingston,-279.26684187,-50.6026
+EWF+(FCI+TrimSQD),EWF,FCI×5 + CCSD×4 + TrimSQD×1,10,ibm_kingston (reused),-279.24146109,-25.2218
