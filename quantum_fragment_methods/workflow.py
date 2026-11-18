@@ -12,8 +12,10 @@
 
 # quantum_fragment_methods/workflow.py
 
+import logging
 from .application.embedding.base import EmbeddingResult
 
+logger = logging.getLogger(__name__)
 
 class SolverRule:
     """Rule for assigning solvers to fragments based on fragment properties."""
@@ -43,7 +45,7 @@ class QFWorkflow:
     """Orchestrator for quantum fragment calculations (EWF, DMET, MBE)."""
 
     def __init__(
-        self, geometry, basis, embedder=None, save_path="results/", fragmentation="atomic", **kwargs
+        self, geometry = None, basis = None, mf = None, embedder=None, save_path="results/", fragmentation="atomic", **kwargs
     ):
         """
         Initialize quantum fragment workflow.
@@ -54,6 +56,7 @@ class QFWorkflow:
             Molecular geometry (XYZ string or coordinates)
         basis : str
             Basis set name (e.g., 'sto-3g', '6-31g')
+        mf : Mean-Field object (e.g., pyscf.scf.RHF), optional
         embedder : BaseEmbedder, optional
             Embedding method instance (EWF, DMET, or MBE). If None, workflow
             can only run mean-field calculations (no fragmentation).
@@ -75,15 +78,19 @@ class QFWorkflow:
         ...     fragmentation='iao'
         ... )
         """
-        self.geometry = geometry
-        self.basis = basis
+        if mf is not None:
+            self.mf = mf
+        else:    
+            self.geometry = geometry
+            self.basis = basis
+            self.mf = None
+        
         self.embedder = embedder
         self.save_path = save_path
         self.fragmentation = fragmentation
         self.embedding_options = kwargs  # Store additional options for embedder
         self.solver_rules = []
         self.default_solver = None
-        self.mf = None
         self.embedding_result = None
 
     def add_solver_rule(self, solver_factory, condition=None, priority=0):
@@ -140,6 +147,8 @@ class QFWorkflow:
         2. Creates a PySCF Mole object
         3. Runs RHF calculation with density fitting
         4. Stores the mean-field object for fragment creation
+
+        Note: This function currently does not support PBC mean_field computations.
         """
         import os
 
@@ -208,23 +217,37 @@ class QFWorkflow:
         fragment_solvers = {}
 
         for fragment_id, fragment in self.embedding_result.fragments.items():
-            # Find first matching rule
             solver = None
-            for rule in self.solver_rules:
-                if rule.applies_to(fragment):
-                    solver = rule.create_solver(fragment)
-                    break
 
-            # Use default solver if no rule matched
-            if solver is None:
-                if self.default_solver is None:
-                    raise RuntimeError(
-                        f"No solver rule matched fragment '{fragment_id}' and no default solver set"
-                    )
-                solver = self.default_solver(fragment)
+            # Safely check if this fragment is a symmetry-generated child
+            metadata = getattr(fragment, "metadata", None) or {}
+            vfrag = metadata.get("vayesta_fragment")
+            sym_parent = getattr(vfrag, "sym_parent", None) if vfrag is not None else None
+
+            # Only assign solvers to independent (parent) fragments
+            if sym_parent is None:
+                # Find first matching rule
+                for rule in self.solver_rules:
+                    if rule.applies_to(fragment):
+                        solver = rule.create_solver(fragment)
+                        break
+
+                # Use default solver if no rule matched
+                if solver is None:
+                    if self.default_solver is None:
+                        raise RuntimeError(
+                            f"No solver rule matched fragment '{fragment_id}' and no default solver set"
+                        )
+                    solver = self.default_solver(fragment)
 
             fragment_solvers[fragment_id] = solver
-
+            logger.debug(
+                "Fragment id: %s, sym_parent: %s, solver: %s",
+                fragment_id,
+                sym_parent,
+                solver,
+            )
+             
         return fragment_solvers
 
     def solve_fragments(self):
@@ -247,172 +270,179 @@ class QFWorkflow:
 
         for fragment_id, fragment in self.embedding_result.fragments.items():
             solver = solvers[fragment_id]
-
-            print(f"Solving fragment {fragment_id} with {solver.name}...")
-
-            # Get fragment data from metadata
-            if "hamiltonian" in fragment.metadata:
-                # Fragment has pre-computed Hamiltonian integrals
-                h1e = fragment.metadata["hamiltonian"]["h1e"]
-                h2e = fragment.metadata["hamiltonian"]["h2e"]
-                norb = fragment.n_orbitals
-                nelec = (
-                    fragment.n_electrons
-                    if isinstance(fragment.n_electrons, int)
-                    else sum(fragment.n_electrons)
+            if solver == None:
+                logger.debug(
+                    "Skipping fragment %s as it is a symmetric fragment with symmetry %s",
+                    fragment_id,
+                    fragment.metadata["vayesta_fragment"].sym_parent,
                 )
-                nocc = nelec // 2
-
-                # Solve using integrals
-                if hasattr(solver, "solve_from_integrals"):
-                    result = solver.solve_from_integrals(h1e, h2e, norb, nocc)
-                else:
-                    raise NotImplementedError(
-                        f"Solver {solver.name} does not support solve_from_integrals(). "
-                        "Fragment Hamiltonians are available but solver requires mean-field object."
+                fragment_results[fragment_id] = None
+            else:
+                print(f"Solving fragment {fragment_id} with {solver.name}...")
+    
+                # Get fragment data from metadata
+                if "hamiltonian" in fragment.metadata:
+                    # Fragment has pre-computed Hamiltonian integrals
+                    h1e = fragment.metadata["hamiltonian"]["h1e"]
+                    h2e = fragment.metadata["hamiltonian"]["h2e"]
+                    norb = fragment.n_orbitals
+                    nelec = (
+                        fragment.n_electrons
+                        if isinstance(fragment.n_electrons, int)
+                        else sum(fragment.n_electrons)
                     )
-            elif "mean_field" in fragment.metadata:
-                # Fragment has mean-field object
-                frag_mf = fragment.metadata["mean_field"]
-                result = solver.solve(frag_mf)
-            elif "vayesta_fragment" in fragment.metadata:
-                # Extract Hamiltonian from Vayesta fragment
-                vfrag = fragment.metadata["vayesta_fragment"]
-
-                # Check if Vayesta used DUMP solver (writes to HDF5)
-                # The dumpfile path is stored in the embedding result metadata
-                dumpfile = self.embedding_result.metadata.get("dumpfile", None)
-
-                # Fallback: try to get from vayesta_ewf object
-                if dumpfile is None and "vayesta_ewf" in self.embedding_result.metadata:
-                    vayesta_ewf = self.embedding_result.metadata["vayesta_ewf"]
-                    if hasattr(vayesta_ewf, "opts") and hasattr(vayesta_ewf.opts, "solver_options"):
-                        solver_opts = vayesta_ewf.opts.solver_options
-                        if isinstance(solver_opts, dict) and "dumpfile" in solver_opts:
-                            dumpfile = solver_opts["dumpfile"]
-                        elif hasattr(solver_opts, "dumpfile"):
-                            dumpfile = solver_opts.dumpfile
-
-                if dumpfile:
-                    # Hamiltonians are in HDF5 file, need to read them
-                    import os
-
-                    import h5py
-
-                    try:
-                        if not os.path.exists(dumpfile):
-                            raise FileNotFoundError(f"Dumpfile {dumpfile} does not exist")
-
-                        with h5py.File(dumpfile, "r") as f:
-                            # Find the fragment group in HDF5
-                            frag_key = f"fragment_{fragment_id}"
-                            if frag_key in f:
-                                frag_group = f[frag_key]
-                                h1e = frag_group["heff"][:]
-                                h2e = frag_group["eris"][:]
-                                norb = int(frag_group.attrs["norb"])
-                                nocc = int(frag_group.attrs["nocc"])
-                            else:
-                                raise KeyError(
-                                    f"Fragment {fragment_id} not found in HDF5 file {dumpfile}. "
-                                    f"Available keys: {list(f.keys())}"
-                                )
-                    except Exception as e:
-                        raise RuntimeError(
-                            f"Failed to read Vayesta cluster data from HDF5 file {dumpfile}: {e}"
-                        ) from e
-
-                    # Solve using integrals - always compute RDMs for energy reconstruction
-                    if hasattr(solver, "solve_from_integrals"):
-                        result = solver.solve_from_integrals(
-                            h1e, h2e, norb, nocc, compute_rdms=True
-                        )
-
-                        # Store additional data needed for partitioned cumulant energy
-                        # Load c_frag and c_cluster from HDF5 for fragment projector
-                        try:
-                            with h5py.File(dumpfile, "r") as f:
-                                frag_group = f[frag_key]
-                                c_frag = frag_group["c_frag"][:] if "c_frag" in frag_group else None
-                                c_cluster = (
-                                    frag_group["c_cluster"][:]
-                                    if "c_cluster" in frag_group
-                                    else None
-                                )
-
-                                # Store in result metadata for energy reconstruction
-                                if c_frag is not None:
-                                    result.metadata["c_frag"] = c_frag
-                                if c_cluster is not None:
-                                    result.metadata["c_cluster"] = c_cluster
-                                result.metadata["norb"] = norb
-                                result.metadata["nocc"] = nocc
-                        except Exception as e:
-                            print(
-                                f"Warning: Could not load c_frag/c_cluster for fragment {fragment_id}: {e}"
-                            )
-                    else:
-                        raise NotImplementedError(
-                            f"Solver {solver.name} does not support solve_from_integrals(). "
-                            "Vayesta DUMP solver requires solvers that can work with Hamiltonian integrals."
-                        )
-
-                # Get cluster Hamiltonian from Vayesta fragment (in-memory)
-                elif hasattr(vfrag, "cluster") and vfrag.cluster is not None:
-                    cluster = vfrag.cluster
-
-                    # Extract Hamiltonian integrals from Vayesta cluster
-                    # Vayesta clusters have different methods depending on version
-                    if hasattr(cluster, "get_heff"):
-                        h1e = cluster.get_heff()
-                    elif hasattr(cluster, "heff"):
-                        h1e = cluster.heff
-                    else:
-                        raise AttributeError(
-                            f"Vayesta cluster for fragment {fragment_id} has no 'get_heff()' or 'heff' attribute. "
-                            "Cannot extract one-electron Hamiltonian."
-                        )
-
-                    if hasattr(cluster, "get_eris_bare"):
-                        h2e = cluster.get_eris_bare()
-                    elif hasattr(cluster, "eris"):
-                        h2e = cluster.eris
-                    else:
-                        raise AttributeError(
-                            f"Vayesta cluster for fragment {fragment_id} has no 'get_eris_bare()' or 'eris' attribute. "
-                            "Cannot extract two-electron integrals."
-                        )
-
-                    norb = cluster.norb
-                    nelec = cluster.nelec if isinstance(cluster.nelec, int) else sum(cluster.nelec)
                     nocc = nelec // 2
-
+    
                     # Solve using integrals
                     if hasattr(solver, "solve_from_integrals"):
                         result = solver.solve_from_integrals(h1e, h2e, norb, nocc)
                     else:
                         raise NotImplementedError(
                             f"Solver {solver.name} does not support solve_from_integrals(). "
-                            "Vayesta fragments require solvers that can work with Hamiltonian integrals."
+                            "Fragment Hamiltonians are available but solver requires mean-field object."
+                        )
+                elif "mean_field" in fragment.metadata:
+                    # Fragment has mean-field object
+                    frag_mf = fragment.metadata["mean_field"]
+                    result = solver.solve(frag_mf)
+                elif "vayesta_fragment" in fragment.metadata:
+                    # Extract Hamiltonian from Vayesta fragment
+                    vfrag = fragment.metadata["vayesta_fragment"]
+    
+                    # Check if Vayesta used DUMP solver (writes to HDF5)
+                    # The dumpfile path is stored in the embedding result metadata
+                    dumpfile = self.embedding_result.metadata.get("dumpfile", None)
+    
+                    # Fallback: try to get from vayesta_ewf object
+                    if dumpfile is None and "vayesta_ewf" in self.embedding_result.metadata:
+                        vayesta_ewf = self.embedding_result.metadata["vayesta_ewf"]
+                        if hasattr(vayesta_ewf, "opts") and hasattr(vayesta_ewf.opts, "solver_options"):
+                            solver_opts = vayesta_ewf.opts.solver_options
+                            if isinstance(solver_opts, dict) and "dumpfile" in solver_opts:
+                                dumpfile = solver_opts["dumpfile"]
+                            elif hasattr(solver_opts, "dumpfile"):
+                                dumpfile = solver_opts.dumpfile
+    
+                    if dumpfile:
+                        # Hamiltonians are in HDF5 file, need to read them
+                        import os
+    
+                        import h5py
+    
+                        try:
+                            if not os.path.exists(dumpfile):
+                                raise FileNotFoundError(f"Dumpfile {dumpfile} does not exist")
+    
+                            with h5py.File(dumpfile, "r") as f:
+                                # Find the fragment group in HDF5
+                                frag_key = f"fragment_{fragment_id}"
+                                if frag_key in f:
+                                    frag_group = f[frag_key]
+                                    h1e = frag_group["heff"][:]
+                                    h2e = frag_group["eris"][:]
+                                    norb = int(frag_group.attrs["norb"])
+                                    nocc = int(frag_group.attrs["nocc"])
+                                else:
+                                    raise KeyError(
+                                        f"Fragment {fragment_id} not found in HDF5 file {dumpfile}. "
+                                        f"Available keys: {list(f.keys())}"
+                                    )
+                        except Exception as e:
+                            raise RuntimeError(
+                                f"Failed to read Vayesta cluster data from HDF5 file {dumpfile}: {e}"
+                            ) from e
+    
+                        # Solve using integrals - always compute RDMs for energy reconstruction
+                        if hasattr(solver, "solve_from_integrals"):
+                            result = solver.solve_from_integrals(
+                                h1e, h2e, norb, nocc, compute_rdms=True
+                            )
+    
+                            # Store additional data needed for partitioned cumulant energy
+                            # Load c_frag and c_cluster from HDF5 for fragment projector
+                            try:
+                                with h5py.File(dumpfile, "r") as f:
+                                    frag_group = f[frag_key]
+                                    c_frag = frag_group["c_frag"][:] if "c_frag" in frag_group else None
+                                    c_cluster = (
+                                        frag_group["c_cluster"][:]
+                                        if "c_cluster" in frag_group
+                                        else None
+                                    )
+    
+                                    # Store in result metadata for energy reconstruction
+                                    if c_frag is not None:
+                                        result.metadata["c_frag"] = c_frag
+                                    if c_cluster is not None:
+                                        result.metadata["c_cluster"] = c_cluster
+                                    result.metadata["norb"] = norb
+                                    result.metadata["nocc"] = nocc
+                            except Exception as e:
+                                print(
+                                    f"Warning: Could not load c_frag/c_cluster for fragment {fragment_id}: {e}"
+                                )
+                        else:
+                            raise NotImplementedError(
+                                f"Solver {solver.name} does not support solve_from_integrals(). "
+                                "Vayesta DUMP solver requires solvers that can work with Hamiltonian integrals."
+                            )
+    
+                    # Get cluster Hamiltonian from Vayesta fragment (in-memory)
+                    elif hasattr(vfrag, "cluster") and vfrag.cluster is not None:
+                        cluster = vfrag.cluster
+    
+                        # Extract Hamiltonian integrals from Vayesta cluster
+                        # Vayesta clusters have different methods depending on version
+                        if hasattr(cluster, "get_heff"):
+                            h1e = cluster.get_heff()
+                        elif hasattr(cluster, "heff"):
+                            h1e = cluster.heff
+                        else:
+                            raise AttributeError(
+                                f"Vayesta cluster for fragment {fragment_id} has no 'get_heff()' or 'heff' attribute. "
+                                "Cannot extract one-electron Hamiltonian."
+                            )
+    
+                        if hasattr(cluster, "get_eris_bare"):
+                            h2e = cluster.get_eris_bare()
+                        elif hasattr(cluster, "eris"):
+                            h2e = cluster.eris
+                        else:
+                            raise AttributeError(
+                                f"Vayesta cluster for fragment {fragment_id} has no 'get_eris_bare()' or 'eris' attribute. "
+                                "Cannot extract two-electron integrals."
+                            )
+    
+                        norb = cluster.norb
+                        nelec = cluster.nelec if isinstance(cluster.nelec, int) else sum(cluster.nelec)
+                        nocc = nelec // 2
+    
+                        # Solve using integrals
+                        if hasattr(solver, "solve_from_integrals"):
+                            result = solver.solve_from_integrals(h1e, h2e, norb, nocc)
+                        else:
+                            raise NotImplementedError(
+                                f"Solver {solver.name} does not support solve_from_integrals(). "
+                                "Vayesta fragments require solvers that can work with Hamiltonian integrals."
+                            )
+                    else:
+                        raise RuntimeError(
+                            f"Fragment {fragment_id} has Vayesta fragment but no cluster data. "
+                            "Ensure EWF kernel() has been run."
                         )
                 else:
                     raise RuntimeError(
-                        f"Fragment {fragment_id} has Vayesta fragment but no cluster data. "
-                        "Ensure EWF kernel() has been run."
+                        f"Fragment {fragment_id} missing Hamiltonian data. "
+                        "Fragments must contain 'hamiltonian', 'mean_field', or 'vayesta_fragment' in metadata."
                     )
-            else:
-                raise RuntimeError(
-                    f"Fragment {fragment_id} missing Hamiltonian data. "
-                    "Fragments must contain 'hamiltonian', 'mean_field', or 'vayesta_fragment' in metadata."
-                )
-
-            fragment_results[fragment_id] = result
-            # For EWF, print correlation energy (not total cluster energy which overlaps)
-            if hasattr(result, "metadata") and "e_corr" in result.metadata:
-                e_corr = result.metadata["e_corr"]
-                print(f"  Fragment {fragment_id} correlation energy: {e_corr:.8f} Ha")
-            else:
-                print(f"  Fragment {fragment_id} energy: {result.energy:.8f} Ha")
+    
+                fragment_results[fragment_id] = result
+                # For EWF, print correlation energy (not total cluster energy which overlaps)
+                if hasattr(result, "metadata") and "e_corr" in result.metadata:
+                    e_corr = result.metadata["e_corr"]
+                    print(f"  Fragment {fragment_id} correlation energy: {e_corr:.8f} Ha")
+                else:
+                    print(f"  Fragment {fragment_id} energy: {result.energy:.8f} Ha")
 
         return fragment_results
 
@@ -437,7 +467,8 @@ class QFWorkflow:
 
     def run(self):
         """Execute full workflow."""
-        self.run_mean_field()
+        if self.mf == None:
+            self.run_mean_field()
         self.create_fragments()
         fragment_results = self.solve_fragments()
         total_energy = self.reconstruct_energy(fragment_results)

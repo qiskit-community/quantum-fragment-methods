@@ -403,6 +403,7 @@ class TestFragmentSolving:
 
         mock_vfrag = Mock()
         mock_vfrag.cluster = mock_cluster
+        mock_vfrag.sym_parent = None
 
         frag = Fragment(
             fragment_id=0,
@@ -425,6 +426,52 @@ class TestFragmentSolving:
             assert results[0].energy == -2.0
             mock_cluster.get_heff.assert_called_once()
             mock_cluster.get_eris_bare.assert_called_once()
+
+    def test_solve_fragments_with_symmetry_child(self):
+        """Test that fragments with a symmetry parent are handled without redundant solving."""
+        from quantum_fragment_methods.application.embedding.base import EmbeddingResult, Fragment
+        from quantum_fragment_methods.application.solvers.base import SolverResult
+        from quantum_fragment_methods.application.solvers.classical_zoo import CCSD
+        from quantum_fragment_methods.workflow import QFWorkflow
+        from unittest.mock import Mock, patch
+        import numpy as np
+
+        workflow = QFWorkflow(geometry="", basis="sto-3g", embedder=Mock())
+    
+        # Parent fragment
+        parent_vfrag = Mock()
+        parent_vfrag.cluster = Mock(norb=4, nelec=4, get_heff=Mock(return_value=np.eye(4)), get_eris_bare=Mock(return_value=np.zeros((4,4,4,4))))
+        parent_vfrag.sym_parent = None
+    
+        frag_parent = Fragment(
+            fragment_id=0,
+            atom_indices=[0],
+            orbital_indices=[0, 1],
+            n_electrons=2,
+            metadata={"vayesta_fragment": parent_vfrag},
+        )
+    
+        # Child fragment (has sym_parent pointing to parent_vfrag)
+        child_vfrag = Mock()
+        child_vfrag.sym_parent = parent_vfrag
+    
+        frag_child = Fragment(
+            fragment_id=1,
+            atom_indices=[1],
+            orbital_indices=[2, 3],
+            n_electrons=2,
+            metadata={"vayesta_fragment": child_vfrag},
+        )
+    
+        workflow.embedding_result = EmbeddingResult(fragments={0: frag_parent, 1: frag_child})
+        workflow.add_solver_rule(solver_factory=lambda frag: CCSD(), condition=None, priority=0)
+    
+        with patch.object(CCSD, "solve_from_integrals") as mock_solve:
+            mock_solve.return_value = SolverResult(energy=-1.5)
+            results = workflow.solve_fragments()
+    
+            # The solver should only be called once (for parent), not for the symmetry child
+            assert mock_solve.call_count == 1
 
     def test_solve_fragments_missing_data(self):
         """Test that solving fails when fragment has no Hamiltonian data."""
